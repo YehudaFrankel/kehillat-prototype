@@ -138,17 +138,25 @@ body {
   flex-shrink: 0;
 }
 
-@media (max-width: 480px) {
-  body { padding: 24px 12px; }
-  .step-panel { padding: 24px 16px 20px; }
-  .step-tabs { gap: 0; }
+@media (max-width: 520px) {
+  body { padding: 16px 8px; }
+  .wizard-container { max-width: 100%; }
+  .step-panel { padding: 20px 16px; min-width: 100%; }
+  .steps-viewport { overflow: hidden; max-width: 100%; }
+  .step-tabs { gap: 0; padding: 0 4px; }
   .step-tab-label { font-size: .7rem; padding: 5px 8px; }
   .step-tab-line { width: 12px; }
-  h2 { font-size: 1.3rem; }
-  .subtitle { font-size: .82rem; margin-bottom: 20px; }
+  h2 { font-size: 1.2rem; }
+  .subtitle { font-size: .8rem; margin-bottom: 16px; }
   .field-row { flex-direction: column; gap: 0; }
   .btn-row { flex-direction: column; gap: 8px; }
   .toggle-row { font-size: .85rem; }
+  .type-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .type-card { padding: 14px 8px; }
+  .type-label { font-size: .78rem; }
+  .invite-row input { font-size: 14px; }
+  .btn { font-size: 14px; padding: 10px 16px; }
+  .summary-card { padding: 16px; }
 }
 
 /* ---- Typography ---- */
