@@ -200,9 +200,11 @@ body {
 }
 .two-col {
   display: grid;
-  grid-template-columns: 1fr 380px;
+  grid-template-columns: 1fr minmax(0, 380px);
   gap: 28px;
+  min-width: 0;
 }
+.two-col > * { min-width: 0; overflow: hidden; }
 
 /* ── View containers ──────────────────────────────── */
 .view { display: none; }
@@ -902,7 +904,7 @@ table.aliyah-table {
 .nl-toolbar button:hover { border-color: var(--purple); color: var(--purple); }
 
 /* ── Responsive ───────────────────────────────────── */
-@media (max-width: 860px) {
+@media (max-width: 960px) {
   .header { padding: 20px 20px 0; }
   .nav-tabs { padding: 0 20px; }
   .main { padding: 20px; }
