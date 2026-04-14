@@ -1,0 +1,1895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fyremantle — Member</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --purple:       #6B5CE7;
+  --purple-light: #EDE9FC;
+  --purple-dark:  #5548C4;
+  --green:        #4CAF7D;
+  --green-light:  #E8F5EE;
+  --green-dark:   #3D9268;
+  --amber:        #E5A84B;
+  --amber-light:  #FDF3E0;
+  --amber-dark:   #C98F34;
+  --red:          #E05555;
+  --red-light:    #FDEAEA;
+  --bg:           #F8F7F5;
+  --white:        #FFFFFF;
+  --text:         #1A1A1A;
+  --text-sec:     #6B6B6B;
+  --text-muted:   #9B9B9B;
+  --border:       #EEECEC;
+  --shadow:       0 1px 3px rgba(0,0,0,.06);
+  --shadow-md:    0 4px 12px rgba(0,0,0,.08);
+  --radius:       12px;
+  --radius-sm:    8px;
+  --radius-full:  9999px;
+
+  /* category colors */
+  --cat-torah-bg:      #EDE9FC; --cat-torah-fg:      #6B5CE7;
+  --cat-current-bg:    #FDF3E0; --cat-current-fg:    #C98F34;
+  --cat-community-bg:  #E8F5EE; --cat-community-fg:  #3D9268;
+  --cat-politics-bg:   #F0EDED; --cat-politics-fg:   #7A7A7A;
+}
+
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+.shell {
+  max-width: 680px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: var(--bg);
+  position: relative;
+}
+@media (max-width: 520px) {
+  .shell { max-width: 100%; }
+  .header { padding: 16px 16px 10px; }
+  .tabs { padding: 10px 16px; gap: 8px; justify-content: flex-start; }
+  .tab-btn { padding: 7px 16px; font-size: 13px; flex-shrink: 0; }
+  .tab-content { padding: 0 0 20px; }
+  .section { padding: 0 16px; }
+  .section-hdr { padding: 0; }
+  .cat-pills { padding: 0 12px; }
+  .disc-card { margin: 0 16px 10px; }
+  .event-card { margin: 0 16px 8px; }
+  .news-card, .news-list-card { margin: 0 16px 10px; }
+  .ded-card { margin: 0 16px 8px; }
+  .ded-cta { margin: 8px 16px 0; }
+  .fab { right: 16px; }
+  .modal-overlay.open { align-items: flex-end; }
+  .modal { max-width: 100%; border-radius: 20px 20px 0 0; margin: 0; }
+}
+
+/* ── HEADER ── */
+.header {
+  padding: 20px 20px 12px;
+  background: var(--white);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+.header-left h1 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.3px;
+}
+.header-left p {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.header-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--purple);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ── TABS ── */
+.tabs {
+  display: flex;
+  gap: 8px;
+  padding: 12px 20px;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.tab-btn {
+  border: 1.5px solid var(--border);
+  background: var(--white);
+  color: var(--text-sec);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 7px 18px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all .2s;
+  white-space: nowrap;
+}
+.tab-btn.active {
+  background: var(--purple);
+  color: #fff;
+  border-color: var(--purple);
+}
+.tab-btn:not(.active):hover {
+  border-color: var(--purple);
+  color: var(--purple);
+}
+
+/* ── CONTENT AREA ── */
+.tab-content { display: none; padding: 0 0 24px; }
+.tab-content.active { display: block; }
+
+/* ── SECTION HEADERS ── */
+.section {
+  padding: 0 20px;
+  margin-top: 24px;
+}
+.section-hdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+}
+.section-link {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--purple);
+  text-decoration: none;
+  cursor: pointer;
+}
+.section-link:hover { text-decoration: underline; }
+
+/* ── CATEGORY PILLS ── */
+.cat-pills {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 0 20px 14px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.cat-pills::-webkit-scrollbar { display: none; }
+.cat-pill {
+  border: none;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all .2s;
+  opacity: .55;
+}
+.cat-pill.active { opacity: 1; }
+.cat-pill[data-cat="all"]  { background: var(--purple-light); color: var(--purple); }
+.cat-pill[data-cat="cat1"] { background: var(--cat1-bg); color: var(--cat1-fg); }
+.cat-pill[data-cat="cat2"] { background: var(--cat2-bg); color: var(--cat2-fg); }
+.cat-pill[data-cat="cat3"] { background: var(--cat3-bg); color: var(--cat3-fg); }
+.cat-pill[data-cat="cat4"] { background: var(--cat4-bg); color: var(--cat4-fg); }
+
+/* ── DISCUSSION CARDS ── */
+.disc-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin: 0 20px 12px;
+  box-shadow: var(--shadow);
+}
+.disc-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.disc-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+.disc-meta { flex: 1; }
+.disc-author-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.disc-author {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+.disc-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+  letter-spacing: .3px;
+}
+.disc-time {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+.disc-body {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+.disc-link-preview {
+  border-left: 3px solid var(--border);
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: var(--bg);
+}
+.disc-link-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.disc-link-domain {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.disc-footer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.disc-replies {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.disc-reply-btn {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--purple);
+  border: 1.5px solid var(--purple);
+  background: transparent;
+  padding: 4px 14px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  font-family: inherit;
+  transition: all .15s;
+}
+.disc-reply-btn:hover {
+  background: var(--purple);
+  color: #fff;
+}
+
+/* ── COMING UP / EVENTS ── */
+.event-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin: 0 20px 10px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: var(--shadow);
+}
+.event-date-box {
+  width: 52px;
+  min-width: 52px;
+  text-align: center;
+  background: var(--purple-light);
+  border-radius: var(--radius-sm);
+  padding: 8px 4px;
+}
+.event-day {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--purple);
+  line-height: 1;
+}
+.event-month {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--purple);
+  letter-spacing: .5px;
+  margin-top: 2px;
+}
+.event-info { flex: 1; }
+.event-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+.event-detail {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.event-rsvp {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  font-family: inherit;
+  transition: all .15s;
+  white-space: nowrap;
+  border: 1.5px solid var(--green);
+  background: transparent;
+  color: var(--green);
+}
+.event-rsvp.going {
+  background: var(--green);
+  color: #fff;
+  border-color: var(--green);
+}
+
+/* ── NEWSLETTER ── */
+.news-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 18px;
+  margin: 0 20px 12px;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: box-shadow .2s;
+}
+.news-card:hover { box-shadow: var(--shadow-md); }
+.news-date {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--purple);
+  letter-spacing: .8px;
+  margin-bottom: 6px;
+}
+.news-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.news-preview {
+  font-size: 13px;
+  color: var(--text-sec);
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+.news-gave {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--green);
+  background: var(--green-light);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+}
+
+/* ── DEDICATIONS ── */
+.ded-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin: 0 20px 10px;
+  display: flex;
+  gap: 12px;
+  box-shadow: var(--shadow);
+}
+.ded-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+.ded-text {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text);
+}
+.ded-text b { font-weight: 600; }
+.ded-type {
+  color: var(--purple);
+  font-weight: 600;
+}
+.ded-time {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* ── YAHRZEITS ── */
+.yahr-item {
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.yahr-item:last-child { border-bottom: none; }
+.yahr-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+.yahr-name span {
+  font-weight: 400;
+  color: var(--text-muted);
+}
+.yahr-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* ── POST DISCUSSION FAB ── */
+.fab {
+  position: fixed;
+  bottom: 24px;
+  right: max(20px, calc(50% - 320px));
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--purple);
+  color: #fff;
+  border: none;
+  font-size: 26px;
+  font-weight: 300;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(107,92,231,.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .15s;
+  z-index: 90;
+}
+.fab:hover { transform: scale(1.08); }
+
+/* ── MAKE DEDICATION BUTTON ── */
+.ded-cta {
+  display: block;
+  width: calc(100% - 40px);
+  margin: 14px 20px 0;
+  padding: 12px;
+  background: var(--purple);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition: background .15s;
+}
+.ded-cta:hover { background: var(--purple-dark); }
+
+/* ── MODALS ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--white);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 520px;
+  max-height: 92vh;
+  overflow-y: auto;
+  padding: 24px 20px 32px;
+  margin: auto;
+  animation: slideUp .25s ease-out;
+}
+@keyframes slideUp {
+  from { transform: translateY(40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.modal-hdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.modal-title {
+  font-size: 18px;
+  font-weight: 700;
+}
+.modal-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: var(--bg);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-sec);
+}
+
+/* form elements */
+.form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-sec);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  margin-bottom: 6px;
+  margin-top: 16px;
+}
+.form-label:first-of-type { margin-top: 0; }
+.form-input, .form-textarea {
+  width: 100%;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--text);
+  background: var(--white);
+  transition: border-color .15s;
+  outline: none;
+}
+.form-input:focus, .form-textarea:focus {
+  border-color: var(--purple);
+}
+.form-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+select.form-input {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%236B6B6B' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+}
+
+/* pill selectors */
+.pill-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.pill-opt {
+  padding: 8px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-full);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  background: var(--white);
+  color: var(--text-sec);
+  cursor: pointer;
+  transition: all .15s;
+}
+.pill-opt.selected {
+  background: var(--purple);
+  color: #fff;
+  border-color: var(--purple);
+}
+
+/* amount chips */
+.amt-chips {
+  display: flex;
+  gap: 8px;
+}
+.amt-chip {
+  flex: 1;
+  padding: 10px 0;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  background: var(--white);
+  color: var(--text);
+  text-align: center;
+  cursor: pointer;
+  transition: all .15s;
+}
+.amt-chip.selected {
+  background: var(--purple);
+  color: #fff;
+  border-color: var(--purple);
+}
+
+/* submit */
+.btn-submit {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: var(--radius);
+  background: var(--purple);
+  color: #fff;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background .15s;
+}
+.btn-submit:hover { background: var(--purple-dark); }
+
+/* dedication preview */
+/* zelle info */
+.zelle-info {
+  background: var(--purple-light);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.5;
+  margin-top: 4px;
+}
+.zelle-info b { color: var(--purple); }
+
+/* ── NEWSLETTER MODAL (full-screen reading view) ── */
+#news-modal.open {
+  align-items: stretch;
+  background: var(--white);
+}
+/* ded-modal uses base centered style */
+#news-modal .modal {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 0;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+}
+.nl-wrapper { max-width: 640px; margin: 0 auto; }
+.nl-header {
+  background: linear-gradient(135deg, var(--purple) 0%, #8B7CF0 100%);
+  padding: 48px 32px 32px;
+  color: #fff;
+  position: relative;
+}
+.nl-header-close {
+  position: fixed; top: 16px; right: 16px; z-index: 210;
+  width: 36px; height: 36px; border-radius: 50%;
+  border: none; background: rgba(0,0,0,.3);
+  color: #fff; font-size: 20px; cursor: pointer;
+  backdrop-filter: blur(8px);
+}
+.nl-header-close:hover { background: rgba(0,0,0,.5); }
+.nl-header-label {
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+  opacity: .7; margin-bottom: 8px;
+}
+.nl-header-name { font-size: 28px; font-weight: 700; margin-bottom: 4px; line-height: 1.2; }
+.nl-header-date { font-size: 14px; opacity: .8; }
+.nl-glance {
+  background: var(--bg); padding: 20px 32px;
+  border-bottom: 1px solid var(--border);
+}
+.nl-glance-label {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .8px; color: var(--text-muted); margin-bottom: 12px;
+}
+.nl-glance .reports-strip { padding: 0; flex-wrap: wrap; }
+.nl-body {
+  padding: 32px;
+  font-size: 16px;
+  line-height: 1.9;
+  color: var(--text);
+}
+.nl-body p { margin-bottom: 16px; }
+.nl-body h3 {
+  font-size: 18px; font-weight: 700; color: var(--purple);
+  margin: 32px 0 10px; padding-bottom: 8px;
+  border-bottom: 2px solid var(--purple-light);
+}
+.nl-body h3:first-child { margin-top: 0; }
+.nl-footer {
+  background: var(--bg); padding: 24px 32px 32px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: 12px; color: var(--text-muted); line-height: 1.6;
+}
+.nl-footer-name { font-weight: 600; color: var(--text); font-size: 14px; margin-bottom: 4px; }
+.nl-footer a { color: var(--purple); text-decoration: none; }
+@media (max-width: 520px) {
+  .nl-header { padding: 40px 20px 24px; }
+  .nl-header-name { font-size: 22px; }
+  .nl-glance { padding: 16px 20px; }
+  .nl-body { padding: 24px 20px; font-size: 15px; }
+  .nl-footer { padding: 20px; }
+}
+/* ── WEEKLY REPORTS ── */
+.reports-strip {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  padding: 10px 0 6px;
+}
+.reports-strip::-webkit-scrollbar { display: none; }
+.report-chip {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--purple-light);
+  border: 1px solid rgba(107,92,231,.12);
+  border-radius: var(--radius-full);
+  padding: 5px 12px 5px 8px;
+  font-size: 12px;
+  color: var(--text);
+  white-space: nowrap;
+}
+.report-chip-icon { font-size: 14px; }
+.report-chip-label { font-weight: 600; color: var(--purple); }
+.report-chip-value { color: var(--text-sec); }
+@media (max-width: 520px) {
+  .reports-strip { flex-wrap: nowrap; overflow-x: auto; }
+}
+/* ── GROUP SWITCHER ── */
+.group-switcher {
+  font-size: 11px;
+  padding: 5px 24px 5px 10px;
+  border: 1px solid var(--purple-light);
+  border-radius: var(--radius-full);
+  background: var(--purple-light);
+  color: var(--purple);
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  margin-top: 4px;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%236B5CE7' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+}
+.group-switcher:hover { border-color: var(--purple); }
+
+/* ── REPLY MODAL ── */
+.reply-original {
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: var(--text-sec);
+  line-height: 1.5;
+  border-left: 3px solid var(--purple);
+}
+.reply-original b {
+  color: var(--text);
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* ── EVENTS EXPANDED ── */
+.events-month-label {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .8px;
+  color: var(--text-muted);
+  padding: 20px 20px 8px;
+}
+
+/* ── TOAST ── */
+.toast {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--text);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: var(--radius-full);
+  font-size: 13px;
+  font-weight: 600;
+  z-index: 300;
+  opacity: 0;
+  transition: all .3s;
+  white-space: nowrap;
+}
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* ── EMPTY STATE ── */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* ── EXPANDED NEWSLETTER LIST ── */
+.news-list-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin: 0 20px 10px;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: box-shadow .2s;
+}
+.news-list-card:hover { box-shadow: var(--shadow-md); }
+.news-list-date {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--purple);
+  letter-spacing: .6px;
+  margin-bottom: 4px;
+}
+.news-list-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.news-list-excerpt {
+  font-size: 13px;
+  color: var(--text-sec);
+  line-height: 1.4;
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <h1 id="groupName">Fyremantle</h1>
+      <p id="groupGreeting">Good morning, Moshe</p>
+      <select class="group-switcher" onchange="switchGroup(this.value)">
+        <option value="shul">Shul / Minyan</option>
+        <option value="sports">Sports Team</option>
+        <option value="learning">Learning Group</option>
+        <option value="chavurah">Chavurah</option>
+      </select>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <a onclick="copyInviteLink()" style="font-size:12px;color:var(--purple);text-decoration:none;font-weight:600;cursor:pointer;">Invite</a>
+      <div class="header-avatar">MK</div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="home">Home</button>
+    <button class="tab-btn" data-tab="events">Events</button>
+    <button class="tab-btn" data-tab="newsletters">Newsletters</button>
+    <button class="tab-btn" data-tab="dedications">Dedications</button>
+  </div>
+
+  <!-- ═══════════════ HOME TAB ═══════════════ -->
+  <div class="tab-content active" id="tab-home">
+
+    <!-- Discussions -->
+    <div class="section">
+      <div class="section-hdr">
+        <span class="section-title" data-label="discussions">Discussions</span>
+      </div>
+    </div>
+    <div class="cat-pills">
+      <button class="cat-pill active" data-cat="all">All</button>
+      <button class="cat-pill" data-cat="cat1">Torah</button>
+      <button class="cat-pill" data-cat="cat2">Current events</button>
+      <button class="cat-pill" data-cat="cat3">Community</button>
+      <button class="cat-pill" data-cat="cat4">Politics</button>
+    </div>
+    <div id="disc-list">
+      <!-- populated by JS -->
+    </div>
+
+    <!-- Coming Up -->
+    <div class="section">
+      <div class="section-hdr">
+        <span class="section-title" data-label="comingUp">Coming Up</span>
+        <a class="section-link" onclick="switchTab('events')">See all</a>
+      </div>
+    </div>
+    <div id="events-preview">
+      <!-- populated by JS -->
+    </div>
+
+    <!-- Latest Newsletter -->
+    <div class="section">
+      <div class="section-hdr">
+        <span class="section-title" data-label="newsletter">Latest Newsletter</span>
+        <a class="section-link" onclick="switchTab('newsletters')">View all</a>
+      </div>
+    </div>
+    <div id="news-preview">
+      <!-- populated by JS -->
+    </div>
+
+    <!-- Dedications This Week -->
+    <div class="section">
+      <div class="section-hdr">
+        <span class="section-title" data-label="dedications">Dedications This Week</span>
+        <a class="section-link" onclick="switchTab('dedications')">See all</a>
+      </div>
+    </div>
+    <div id="ded-preview">
+      <!-- populated by JS -->
+    </div>
+    <button class="ded-cta" onclick="openDedicationModal()">Make a Dedication</button>
+
+    <!-- Yahrzeits This Week -->
+    <div class="section" id="yahr-section" style="margin-top:28px">
+      <div class="section-hdr">
+        <span class="section-title" data-label="yahrzeits">Yahrzeits This Week</span>
+      </div>
+    </div>
+    <div id="yahr-list">
+      <!-- populated by JS -->
+    </div>
+
+  </div>
+
+  <!-- ═══════════════ EVENTS TAB ═══════════════ -->
+  <div class="tab-content" id="tab-events">
+    <div class="section">
+      <div class="section-hdr">
+        <span class="section-title" data-label="eventsTab">Upcoming Events</span>
+      </div>
+    </div>
+    <div id="events-full">
+      <!-- populated by JS -->
+    </div>
+  </div>
+
+  <!-- ═══════════════ NEWSLETTERS TAB ═══════════════ -->
+  <div class="tab-content" id="tab-newsletters">
+    <div class="section">
+      <div class="section-hdr">
+        <span class="section-title" data-label="newslettersTab">Newsletters</span>
+      </div>
+    </div>
+    <div id="news-full">
+      <!-- populated by JS -->
+    </div>
+  </div>
+
+  <!-- ═══════════════ DEDICATIONS TAB ═══════════════ -->
+  <div class="tab-content" id="tab-dedications">
+    <div class="section">
+      <div class="section-hdr">
+        <span class="section-title" data-label="dedicationsTab">Dedications</span>
+      </div>
+      <p class="section-desc" id="ded-tab-desc" style="font-size:13px; color:var(--text-sec); margin:-8px 0 12px; padding:0 20px;">Honor a loved one, celebrate a milestone, or support the community.</p>
+    </div>
+    <div id="ded-full">
+      <!-- populated by JS -->
+    </div>
+    <button class="ded-cta" onclick="openDedicationModal()">Make a Dedication</button>
+  </div>
+
+  <!-- FAB (new discussion) -->
+  <button class="fab" onclick="openPostModal()" title="New discussion">+</button>
+</div>
+
+<!-- ═══════════ POST DISCUSSION MODAL ═══════════ -->
+<div class="modal-overlay" id="post-modal">
+  <div class="modal">
+    <div class="modal-hdr">
+      <span class="modal-title">New Discussion</span>
+      <button class="modal-close" onclick="closeModal('post-modal')">&times;</button>
+    </div>
+    <label class="form-label">Category</label>
+    <div class="pill-grid" id="post-cat-pills">
+      <button class="pill-opt selected" data-val="cat1">Torah</button>
+      <button class="pill-opt" data-val="cat2">Current events</button>
+      <button class="pill-opt" data-val="cat3">Community</button>
+      <button class="pill-opt" data-val="cat4">Politics</button>
+    </div>
+    <label class="form-label">Your post</label>
+    <textarea class="form-textarea" id="post-body" rows="4" placeholder="Share a thought, question, or link..."></textarea>
+    <label class="form-label">Link (optional)</label>
+    <input class="form-input" id="post-link" placeholder="https://...">
+    <button class="btn-submit" onclick="submitPost()">Post</button>
+  </div>
+</div>
+
+<!-- ═══════════ REPLY MODAL ═══════════ -->
+<div class="modal-overlay" id="reply-modal">
+  <div class="modal">
+    <div class="modal-hdr">
+      <span class="modal-title">Reply</span>
+      <button class="modal-close" onclick="closeModal('reply-modal')">&times;</button>
+    </div>
+    <div class="reply-original" id="reply-original"></div>
+    <textarea class="form-textarea" id="reply-body" rows="3" placeholder="Write your reply..."></textarea>
+    <button class="btn-submit" onclick="submitReply()">Reply</button>
+  </div>
+</div>
+
+<!-- ═══════════ NEWSLETTER MODAL ═══════════ -->
+<div class="modal-overlay" id="news-modal">
+  <div class="modal">
+    <div class="nl-wrapper">
+      <div class="nl-header">
+        <button class="nl-header-close" onclick="closeModal('news-modal')">&times;</button>
+        <div class="nl-header-label" id="nl-label">WEEKLY NEWSLETTER</div>
+        <div class="nl-header-name" id="nl-name"></div>
+        <div class="nl-header-date" id="nl-date"></div>
+      </div>
+      <div class="nl-glance" id="nl-glance"></div>
+      <div class="nl-body" id="nl-body"></div>
+      <div class="nl-footer" id="nl-footer"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ DEDICATION MODAL ═══════════ -->
+<div class="modal-overlay" id="ded-modal">
+  <div class="modal">
+    <div class="modal-hdr">
+      <span class="modal-title">Make a Dedication</span>
+      <button class="modal-close" onclick="closeModal('ded-modal')">&times;</button>
+    </div>
+
+    <label class="form-label">Type</label>
+    <div class="pill-grid" id="ded-type-pills">
+      <button class="pill-opt selected" data-val="kiddush">Shabbat kiddush</button>
+      <button class="pill-opt" data-val="aliyah">Aliyah</button>
+      <button class="pill-opt" data-val="sponsorship">Event sponsorship</button>
+      <button class="pill-opt" data-val="gift">General gift</button>
+      <button class="pill-opt" data-val="yahrzeit">Yahrzeit</button>
+      <button class="pill-opt" data-val="simcha">Simcha</button>
+    </div>
+
+    <label class="form-label">In honor or memory of</label>
+    <input class="form-input" id="ded-honoree" placeholder="e.g. My grandmother, Sarah bat Rivka">
+
+    <label class="form-label">Personal message (optional)</label>
+    <textarea class="form-textarea" id="ded-message" rows="2" placeholder="A short message..."></textarea>
+
+    <label class="form-label">Amount</label>
+    <div class="amt-chips" id="ded-amt-chips">
+      <button class="amt-chip" data-amt="54">$54</button>
+      <button class="amt-chip selected" data-amt="100">$100</button>
+      <button class="amt-chip" data-amt="180">$180</button>
+      <button class="amt-chip" data-amt="other">Other</button>
+    </div>
+    <input class="form-input" id="ded-custom-amt" placeholder="Enter amount" style="display:none; margin-top:8px;" type="number">
+
+    <label class="form-label">How would you like to give?</label>
+    <div class="zelle-info">
+      Send via <b>Zelle</b> to <b>treasurer@kehillatshalom.org</b><br>
+      Include your name and dedication type in the memo.
+    </div>
+
+    <button class="btn-submit" onclick="submitDedication()" style="margin-top:20px;">Submit Dedication</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ══════════════════════════════════════════
+   GROUP DATA — each key is a full data set
+   ══════════════════════════════════════════ */
+var groupData = {
+  shul: {
+    name: 'Kehilat Shalom', greeting: 'Good morning, Moshe',
+    tabLabel: { dedications: 'Dedications', newsletters: 'Newsletters' },
+    labels: {
+      discussions: 'Discussions', dedications: 'Dedications This Week', yahrzeits: 'Yahrzeits This Week', comingUp: 'Coming Up',
+      newsletter: 'Latest Newsletter', eventsTab: 'Upcoming Events', newslettersTab: 'Newsletters',
+      dedicationsTab: 'Dedications', dedTabDesc: 'Honor a loved one, celebrate a milestone, or support the community.'
+    },
+    dedCta: 'Make a Dedication', showYahrzeits: true,
+    dedModal: {
+      title: 'Make a Dedication',
+      types: ['Shabbat kiddush', 'Aliyah', 'Event sponsorship', 'General gift', 'Yahrzeit', 'Simcha'],
+      placeholder: 'e.g. My grandmother, Sarah bat Rivka',
+      payment: 'Send via <b>Zelle</b> to <b>treasurer@kehilatshalom.org</b><br>Include your name and dedication type in the memo.',
+      amounts: [54, 100, 180],
+      submit: 'Submit Dedication'
+    },
+    cats: { cat1: 'Torah', cat2: 'Current events', cat3: 'Community', cat4: 'Politics' },
+    catColors: { cat1: ['#EDE9FC','#6B5CE7'], cat2: ['#FDF3E0','#C98F34'], cat3: ['#E8F5EE','#3D9268'], cat4: ['#F0EDED','#7A7A7A'] },
+    discussions: [
+      { id:1, author:'Rabbi David', initials:'RD', color:'#6B5CE7', cat:'cat1', time:'2h ago', body:'This week\'s parsha has a beautiful insight on gratitude. The Ramban explains that Yaakov\'s gratitude wasn\'t just for the miracles, but for the everyday blessings we overlook.', link:null, replies:12 },
+      { id:2, author:'Sarah M.', initials:'SM', color:'#4CAF7D', cat:'cat3', time:'4h ago', body:'Has anyone seen the new article about community resilience? Really thoughtful piece about how small kehillot are adapting.', link:{ title:'How Small Communities Are Thriving', domain:'jewishjournal.com' }, replies:5 },
+      { id:3, author:'Avi R.', initials:'AR', color:'#E5A84B', cat:'cat2', time:'6h ago', body:'Interesting development on the education funding bill. This could significantly impact day school tuition assistance programs.', link:{ title:'Education Funding Update 2024', domain:'forward.com' }, replies:23 },
+      { id:4, author:'Devorah L.', initials:'DL', color:'#E05555', cat:'cat3', time:'1d ago', body:'Reminder: the community chesed drive is this Sunday! Drop off donations at the shul between 9am-1pm. We especially need winter coats and blankets.', link:null, replies:8 },
+      { id:5, author:'Yosef B.', initials:'YB', color:'#7A7A7A', cat:'cat4', time:'1d ago', body:'What does everyone think about the proposed zoning changes near the shul? Could affect parking for Shabbat.', link:null, replies:31 }
+    ],
+    events: [
+      { id:1, name:'Shabbat Kiddush', detail:'11:30 AM \u00B7 Main Hall', day:14, month:'DEC', going:true },
+      { id:2, name:'Parsha Shiur', detail:'7:00 PM \u00B7 Beit Midrash', day:15, month:'DEC', going:false },
+      { id:3, name:'Community Chanukah Party', detail:'5:00 PM \u00B7 Social Hall', day:18, month:'DEC', going:false },
+      { id:4, name:'Women\'s Learning Circle', detail:'8:00 PM \u00B7 Library', day:19, month:'DEC', going:true },
+      { id:5, name:'Youth Bowling Night', detail:'6:30 PM \u00B7 Strike Zone Lanes', day:21, month:'DEC', going:false }
+    ],
+    newsletters: [
+      { id:1, date:'DEC 10, 2024', parsha:'Parshat Vayechi', title:'Week in Review', preview:'A look back at a wonderful week of learning, community, and chesed...', body:'<h3>Shabbat Shalom!</h3><p>This week we had the pleasure of welcoming three new families to our community. The Goldberg, Fischer, and Levi families have all moved into the neighborhood and we are thrilled to have them join us. Please introduce yourself when you see them at kiddush this Shabbat.</p><h3>Learning Highlights</h3><p>Rabbi David\'s Tuesday night shiur on Hilchot Shabbat continues to draw record attendance \u2014 38 people this week! This week\'s topic on muktzeh generated lively discussion that spilled over into the parking lot. The shiur will continue next Tuesday at 8:00 PM in the Beit Midrash.</p><h3>Community Chesed</h3><p>Thank you to all who volunteered at the food drive. We collected over 500 pounds of food for local families in need. Special thanks to the Schwartz family for organizing the logistics and to the youth group for sorting and packing.</p><h3>Upcoming</h3><p>Don\'t forget: Community Chanukah Party is next Wednesday at 5:00 PM in the Social Hall. Latkes, sufganiyot, and live music. Bring the whole family!</p><p>The annual board meeting is December 22nd. All members are welcome to attend. Agenda includes the building fund update, new programming proposals, and election of officers.</p>', gave:true, reports:[
+        { icon:'\uD83D\uDD6F\uFE0F', label:'Shabbat', value:'Candles 4:12 PM \u00B7 Havdalah 5:18 PM' },
+        { icon:'\uD83D\uDC65', label:'Attendance', value:'127 at Shabbat services' },
+        { icon:'\uD83D\uDCDA', label:'Daf Yomi', value:'Bava Metzia 42' }
+      ]},
+      { id:2, date:'DEC 3, 2024', parsha:'Parshat Vayigash', title:'Chanukah Wrap-Up', preview:'Eight beautiful nights of light, community, and celebration...', body:'<h3>Chanukah Wrap-Up</h3><p>Our menorah lighting drew over 200 people each night. We raised $3,200 for the building fund.</p>', gave:false, reports:[
+        { icon:'\uD83D\uDD6F\uFE0F', label:'Shabbat', value:'Candles 4:09 PM \u00B7 Havdalah 5:15 PM' },
+        { icon:'\uD83D\uDCB0', label:'Building Fund', value:'$3,200 raised \u2014 goal met!' }
+      ]}
+    ],
+    dedications: [
+      { id:1, name:'David & Miriam G.', initials:'DG', color:'#4CAF7D', type:'Shabbat kiddush', honor:'the birth of their grandson', time:'2 days ago' },
+      { id:2, name:'Avi R.', initials:'AR', color:'#E5A84B', type:'aliyah', honor:'his father\'s yahrzeit', time:'3 days ago' },
+      { id:3, name:'The Fischer Family', initials:'FF', color:'#6B5CE7', type:'general gift', honor:'joining the community', time:'4 days ago' }
+    ],
+    yahrzeits: [
+      { name:'Avraham ben Yitzchak', date:'12 Tevet', family:'Remembered by the Goldberg Family' },
+      { name:'Rivka bat Moshe', date:'13 Tevet', family:'Remembered by the Cohen Family' },
+      { name:'Shlomo ben David', date:'14 Tevet', family:'Remembered by the Levi Family' }
+    ]
+  },
+
+  sports: {
+    name: 'Maccabi Mets', greeting: 'Hey Coach Mike',
+    tabLabel: { dedications: 'Sponsorships', newsletters: 'Updates' },
+    labels: {
+      discussions: 'Team Talk', dedications: 'Sponsors This Week', yahrzeits: '', comingUp: 'Upcoming Games',
+      newsletter: 'Latest Update', eventsTab: 'Schedule', newslettersTab: 'Updates',
+      dedicationsTab: 'Sponsorships', dedTabDesc: 'Sponsor a game, fund equipment, or celebrate a teammate.'
+    },
+    dedCta: 'Sponsor a Game', showYahrzeits: false,
+    dedModal: {
+      title: 'Sponsor',
+      types: ['Game ball', 'Equipment fund', 'Pizza party', 'Jersey sponsor', 'Tournament', 'General'],
+      placeholder: 'e.g. Our son\'s first home run',
+      payment: 'Send via <b>Venmo</b> to <b>@maccabi-mets</b><br>Include your name and sponsorship type in the note.',
+      amounts: [25, 50, 100],
+      submit: 'Submit Sponsorship'
+    },
+    cats: { cat1: 'Game talk', cat2: 'Strategy', cat3: 'Off-field', cat4: 'Trades' },
+    catColors: { cat1: ['#E8F5EE','#3D9268'], cat2: ['#EDE9FC','#6B5CE7'], cat3: ['#FDF3E0','#C98F34'], cat4: ['#F0EDED','#7A7A7A'] },
+    discussions: [
+      { id:1, author:'Coach Mike', initials:'CM', color:'#4CAF7D', cat:'cat2', time:'1h ago', body:'Thinking about switching to a 4-3 defense for the playoffs. Our secondary has been lights out but the run game is killing us. Thoughts?', link:null, replies:18 },
+      { id:2, author:'Jake R.', initials:'JR', color:'#E5A84B', cat:'cat1', time:'3h ago', body:'What a game last night! That double play in the 7th was the turning point. Hernandez has really stepped up this season.', link:null, replies:9 },
+      { id:3, author:'Danny S.', initials:'DS', color:'#6B5CE7', cat:'cat3', time:'5h ago', body:'Team BBQ this Saturday at Memorial Park after the game. Bring your families! I\'ll handle the burgers, need someone on drinks.', link:null, replies:14 },
+      { id:4, author:'Sam T.', initials:'ST', color:'#E05555', cat:'cat4', time:'1d ago', body:'Heard the Eagles are looking to trade their backup catcher. Could be a good pickup for us if the price is right.', link:null, replies:7 }
+    ],
+    events: [
+      { id:1, name:'vs Hawks (Home)', detail:'Sat 2:00 PM \u00B7 Memorial Field', day:14, month:'DEC', going:true },
+      { id:2, name:'Practice', detail:'Wed 6:30 PM \u00B7 Central Park', day:18, month:'DEC', going:false },
+      { id:3, name:'vs Eagles (Away)', detail:'Sun 11:00 AM \u00B7 Riverside Diamond', day:22, month:'DEC', going:false },
+      { id:4, name:'Team BBQ', detail:'Sat 5:00 PM \u00B7 Memorial Park', day:14, month:'DEC', going:true },
+      { id:5, name:'Playoffs Round 1', detail:'TBD \u00B7 TBD', day:28, month:'DEC', going:false }
+    ],
+    newsletters: [
+      { id:1, date:'DEC 10, 2024', parsha:'Week 14', title:'Game Recap', preview:'Huge win against the Hawks! Final score 8-5. Hernandez went 3-for-4 with a double...', body:'<h3>Game Recap: Mets 8, Hawks 5</h3><p>Hernandez went 3-for-4 with a double and 3 RBIs. Our pitching held strong through 7 innings. The bullpen closed it out in the 8th.</p><h3>Standings</h3><p>We\'re now 2nd in the division at 18-6. Hawks dropped to 3rd.</p>', gave:false, reports:[
+        { icon:'\u26BE', label:'Last Game', value:'W 8-5 vs Hawks' },
+        { icon:'\uD83C\uDFC6', label:'Record', value:'18-6 (2nd in division)' },
+        { icon:'\uD83D\uDC65', label:'Players', value:'18 confirmed for Saturday' }
+      ]},
+      { id:2, date:'DEC 3, 2024', parsha:'Week 13', title:'Playoff Push', preview:'Two games left in the regular season. Win one and we clinch a playoff spot...', body:'<h3>Playoff Math</h3><p>Win one of the next two and we\'re in. The pitching rotation is set: Rivera starts Saturday, Chen on Sunday.</p>', gave:false, reports:[
+        { icon:'\u26BE', label:'Last Game', value:'W 5-2 vs Badgers' },
+        { icon:'\uD83C\uDFC6', label:'Record', value:'17-6 (2nd in division)' },
+        { icon:'\uD83D\uDCB0', label:'League Dues', value:'22 of 24 paid' }
+      ]}
+    ],
+    dedications: [
+      { id:1, name:'Mike & Lisa R.', initials:'MR', color:'#4CAF7D', type:'game sponsorship', honor:'their son\'s first home run', time:'2 days ago' },
+      { id:2, name:'Jake R.', initials:'JR', color:'#E5A84B', type:'equipment fund', honor:'new batting cage nets', time:'4 days ago' },
+      { id:3, name:'Team Parents', initials:'TP', color:'#6B5CE7', type:'pizza party', honor:'the playoff clinch', time:'5 days ago' }
+    ],
+    yahrzeits: []
+  },
+
+  learning: {
+    name: 'Daf Yomi Chevra', greeting: 'Welcome back, Ari',
+    tabLabel: { dedications: 'Contributions', newsletters: 'Progress' },
+    labels: {
+      discussions: 'Discussion', dedications: 'Contributions This Week', yahrzeits: '', comingUp: 'Upcoming Sessions',
+      newsletter: 'Latest Progress', eventsTab: 'Sessions', newslettersTab: 'Progress',
+      dedicationsTab: 'Contributions', dedTabDesc: 'Support the chevra with seforim, kiddush, or guest speakers.'
+    },
+    dedCta: 'Make a Contribution', showYahrzeits: false,
+    dedModal: {
+      title: 'Make a Contribution',
+      types: ['Seforim fund', 'Kiddush', 'Guest speaker', 'Learning materials', 'Siyum', 'General'],
+      placeholder: 'e.g. Completing masechet Bava Metzia',
+      payment: 'Send via <b>Zelle</b> to <b>dafchevra@gmail.com</b><br>Include your name and contribution type in the memo.',
+      amounts: [36, 72, 180],
+      submit: 'Submit Contribution'
+    },
+    cats: { cat1: 'Gemara', cat2: 'Halacha', cat3: 'General', cat4: 'Resources' },
+    catColors: { cat1: ['#EDE9FC','#6B5CE7'], cat2: ['#FDF3E0','#C98F34'], cat3: ['#E8F5EE','#3D9268'], cat4: ['#E0F0FD','#3B82C4'] },
+    discussions: [
+      { id:1, author:'Rav Moshe', initials:'RM', color:'#6B5CE7', cat:'cat1', time:'1h ago', body:'Today\'s daf has a fascinating machlokes about kinyanim. The Rashba\'s approach completely changes how we understand the sugya. Let\'s discuss in tonight\'s session.', link:null, replies:8 },
+      { id:2, author:'Ari K.', initials:'AK', color:'#4CAF7D', cat:'cat4', time:'3h ago', body:'Found an incredible resource — the Steinsaltz app now has audio shiurim synced to each daf. Free for the first month.', link:{ title:'Steinsaltz Daf Yomi Audio', domain:'steinsaltz.org' }, replies:12 },
+      { id:3, author:'Dovid M.', initials:'DM', color:'#E5A84B', cat:'cat2', time:'6h ago', body:'Practical question from today\'s daf: does the halacha follow Rav or Shmuel in cases of monetary disputes? Affects a real shaila I\'m working through.', link:null, replies:15 },
+      { id:4, author:'Noam B.', initials:'NB', color:'#E05555', cat:'cat3', time:'1d ago', body:'Just hit 100 consecutive days. This chevra is the only reason I\'ve stuck with it. Thank you all.', link:null, replies:22 }
+    ],
+    events: [
+      { id:1, name:'Evening Daf', detail:'8:00 PM \u00B7 Zoom + In Person', day:14, month:'DEC', going:true },
+      { id:2, name:'Morning Daf', detail:'6:15 AM \u00B7 Beit Midrash', day:15, month:'DEC', going:false },
+      { id:3, name:'Shabbat Review', detail:'4:00 PM \u00B7 Rabbi\'s Home', day:21, month:'DEC', going:true },
+      { id:4, name:'Siyum Celebration', detail:'7:30 PM \u00B7 Social Hall', day:28, month:'DEC', going:false },
+      { id:5, name:'Guest Lecturer: Rav Asher', detail:'8:00 PM \u00B7 Main Shul', day:30, month:'DEC', going:false }
+    ],
+    newsletters: [
+      { id:1, date:'DEC 10, 2024', parsha:'Bava Metzia 42-48', title:'Weekly Progress', preview:'Another strong week! 12 members maintained their streak. We covered 7 dapim including the famous sugya on shomrim...', body:'<h3>This Week in Learning</h3><p>We covered Bava Metzia 42-48, including the famous sugya on the four shomrim. Attendance averaged 14 per session.</p><h3>Streak Leaders</h3><p>Ari K. (142 days), Noam B. (100 days), Dovid M. (87 days). Keep it up!</p>', gave:false, reports:[
+        { icon:'\uD83D\uDCDA', label:'This Week', value:'7 dapim completed' },
+        { icon:'\uD83D\uDD25', label:'Streak', value:'12 members on track' },
+        { icon:'\uD83D\uDC65', label:'Avg Attendance', value:'14 per session' }
+      ]},
+      { id:2, date:'DEC 3, 2024', parsha:'Bava Metzia 35-41', title:'Milestone Week', preview:'Noam hit 100 days! Plus we started the shomrim sugya that everyone\'s been waiting for...', body:'<h3>Milestone!</h3><p>Noam B. hit 100 consecutive days of learning. The chevra gave him a standing ovation at Thursday\'s shiur.</p>', gave:false, reports:[
+        { icon:'\uD83D\uDCDA', label:'This Week', value:'7 dapim completed' },
+        { icon:'\uD83C\uDFC6', label:'Milestone', value:'Noam B. \u2014 100 days!' },
+        { icon:'\uD83D\uDCCA', label:'Total Progress', value:'142 of 2,711 dapim' }
+      ]}
+    ],
+    dedications: [
+      { id:1, name:'Ari K.', initials:'AK', color:'#4CAF7D', type:'seforim fund', honor:'completing masechet', time:'2 days ago' },
+      { id:2, name:'The Schwartz Family', initials:'SF', color:'#E5A84B', type:'kiddush', honor:'Noam\'s 100-day streak', time:'4 days ago' }
+    ],
+    yahrzeits: []
+  },
+
+  chavurah: {
+    name: 'Bayit Chadash', greeting: 'Shalom, Rivka',
+    tabLabel: { dedications: 'Dedications', newsletters: 'Newsletters' },
+    labels: {
+      discussions: 'Discussions', dedications: 'Dedications This Week', yahrzeits: 'Yahrzeits This Week', comingUp: 'Coming Up',
+      newsletter: 'Latest Newsletter', eventsTab: 'Upcoming Events', newslettersTab: 'Newsletters',
+      dedicationsTab: 'Dedications', dedTabDesc: 'Honor a loved one, celebrate a milestone, or support the chavurah.'
+    },
+    dedCta: 'Make a Dedication', showYahrzeits: true,
+    dedModal: {
+      title: 'Make a Dedication',
+      types: ['Shabbat dinner', 'Kiddush', 'Event', 'General gift', 'Yahrzeit', 'Simcha'],
+      placeholder: 'e.g. Our new home',
+      payment: 'Send via <b>Zelle</b> to <b>bayitchadash@gmail.com</b><br>Include your name and dedication type in the memo.',
+      amounts: [54, 100, 180],
+      submit: 'Submit Dedication'
+    },
+    cats: { cat1: 'Torah', cat2: 'Logistics', cat3: 'Community', cat4: 'Food' },
+    catColors: { cat1: ['#EDE9FC','#6B5CE7'], cat2: ['#FDF3E0','#C98F34'], cat3: ['#E8F5EE','#3D9268'], cat4: ['#FDEAEA','#E05555'] },
+    discussions: [
+      { id:1, author:'Rivka S.', initials:'RS', color:'#6B5CE7', cat:'cat1', time:'2h ago', body:'For this Shabbat\'s drash I was thinking about the theme of homecoming. Anyone want to share a thought before I finalize?', link:null, replies:6 },
+      { id:2, author:'Ezra N.', initials:'EN', color:'#4CAF7D', cat:'cat4', time:'4h ago', body:'I\'m on kiddush this week. Planning hummus, tabbouleh, and challah. Anyone have dietary restrictions I should know about?', link:null, replies:9 },
+      { id:3, author:'Tali F.', initials:'TF', color:'#E5A84B', cat:'cat2', time:'8h ago', body:'We need to find a new space for January. The community center raised their rates. Any leads on affordable venues?', link:null, replies:17 },
+      { id:4, author:'Yoni M.', initials:'YM', color:'#E05555', cat:'cat3', time:'1d ago', body:'Beautiful article about independent minyanim and how they\'re reshaping Jewish community. Sounds exactly like us.', link:{ title:'The Rise of the Chavurah', domain:'tabletmag.com' }, replies:11 }
+    ],
+    events: [
+      { id:1, name:'Shabbat Dinner', detail:'6:30 PM \u00B7 Rivka\'s Home', day:14, month:'DEC', going:true },
+      { id:2, name:'Shabbat Morning', detail:'9:30 AM \u00B7 Community Center', day:15, month:'DEC', going:true },
+      { id:3, name:'Chanukah Potluck', detail:'5:00 PM \u00B7 Ezra\'s Apt', day:18, month:'DEC', going:false },
+      { id:4, name:'Planning Meeting', detail:'8:00 PM \u00B7 Zoom', day:22, month:'DEC', going:false }
+    ],
+    newsletters: [
+      { id:1, date:'DEC 10, 2024', parsha:'Parshat Vayechi', title:'This Week at Bayit Chadash', preview:'Shabbat dinner at Rivka\'s, Chanukah potluck coming up, and a call for venue ideas for January...', body:'<h3>Shabbat Shalom!</h3><p>Dinner is at Rivka\'s this Friday at 6:30. Shabbat morning at the community center as usual. Kiddush by Ezra.</p><h3>Looking Ahead</h3><p>Chanukah potluck at Ezra\'s on the 18th. Bring a dish and a candle!</p>', gave:true, reports:[
+        { icon:'\uD83D\uDD6F\uFE0F', label:'Shabbat', value:'Candles 4:12 PM \u00B7 Havdalah 5:18 PM' },
+        { icon:'\uD83D\uDC65', label:'This Week', value:'8 families confirmed' },
+        { icon:'\uD83C\uDF72', label:'Kiddush', value:'Ezra N. (hummus + challah)' }
+      ]},
+      { id:2, date:'DEC 3, 2024', parsha:'Parshat Vayigash', title:'Chanukah Planning', preview:'Eight nights, one community. Sign up to host a night of candle lighting...', body:'<h3>Chanukah!</h3><p>We\'re doing round-robin hosting this year. Each family hosts one night. Sign up in the thread!</p>', gave:false, reports:[
+        { icon:'\uD83D\uDD6F\uFE0F', label:'Shabbat', value:'Candles 4:09 PM \u00B7 Havdalah 5:15 PM' },
+        { icon:'\uD83C\uDF6E', label:'Hosts Needed', value:'3 nights still open' }
+      ]}
+    ],
+    dedications: [
+      { id:1, name:'Rivka & Avi S.', initials:'RS', color:'#4CAF7D', type:'Shabbat dinner', honor:'their new home', time:'3 days ago' },
+      { id:2, name:'Tali F.', initials:'TF', color:'#6B5CE7', type:'kiddush', honor:'her mother\'s yahrzeit', time:'5 days ago' }
+    ],
+    yahrzeits: [
+      { name:'Miriam bat Yaakov', date:'12 Tevet', family:'Remembered by the Friedman Family' },
+      { name:'Yosef ben Avraham', date:'14 Tevet', family:'Remembered by the Nadler Family' }
+    ]
+  }
+};
+
+/* ── Active data (swapped by switchGroup) ── */
+var currentGroup = 'shul';
+var discussions = groupData.shul.discussions;
+var events = groupData.shul.events;
+var newsletters = groupData.shul.newsletters;
+var dedications = groupData.shul.dedications;
+var yahrzeits = groupData.shul.yahrzeits;
+var catLabels = groupData.shul.cats;
+var catBg = { cat1:'var(--cat1-bg)', cat2:'var(--cat2-bg)', cat3:'var(--cat3-bg)', cat4:'var(--cat4-bg)' };
+var catFg = { cat1:'var(--cat1-fg)', cat2:'var(--cat2-fg)', cat3:'var(--cat3-fg)', cat4:'var(--cat4-fg)' };
+
+var activeFilter = 'all';
+var replyTarget = null;
+
+function switchGroup(type) {
+  var g = groupData[type];
+  if (!g) return;
+  currentGroup = type;
+  discussions = g.discussions;
+  events = g.events;
+  newsletters = g.newsletters;
+  dedications = g.dedications;
+  yahrzeits = g.yahrzeits || [];
+  catLabels = g.cats;
+  activeFilter = 'all';
+
+  /* update header */
+  document.getElementById('groupName').textContent = g.name;
+  document.getElementById('groupGreeting').textContent = g.greeting;
+
+  /* update tab labels */
+  var tabBtns = document.querySelectorAll('.tab-btn');
+  for (var i = 0; i < tabBtns.length; i++) {
+    if (tabBtns[i].getAttribute('data-tab') === 'dedications') tabBtns[i].textContent = g.tabLabel.dedications;
+    if (tabBtns[i].getAttribute('data-tab') === 'newsletters') tabBtns[i].textContent = g.tabLabel.newsletters;
+  }
+
+  /* update section labels via data-label */
+  var secTitles = document.querySelectorAll('.section-title[data-label]');
+  for (var i = 0; i < secTitles.length; i++) {
+    var key = secTitles[i].getAttribute('data-label');
+    if (g.labels[key] !== undefined) secTitles[i].textContent = g.labels[key];
+  }
+
+  /* update dedications tab description */
+  var dedDesc = document.getElementById('ded-tab-desc');
+  if (dedDesc) dedDesc.textContent = g.labels.dedTabDesc || '';
+
+  /* update category colors */
+  if (g.catColors) {
+    var root = document.documentElement;
+    root.style.setProperty('--cat1-bg', g.catColors.cat1[0]);
+    root.style.setProperty('--cat1-fg', g.catColors.cat1[1]);
+    root.style.setProperty('--cat2-bg', g.catColors.cat2[0]);
+    root.style.setProperty('--cat2-fg', g.catColors.cat2[1]);
+    root.style.setProperty('--cat3-bg', g.catColors.cat3[0]);
+    root.style.setProperty('--cat3-fg', g.catColors.cat3[1]);
+    root.style.setProperty('--cat4-bg', g.catColors.cat4[0]);
+    root.style.setProperty('--cat4-fg', g.catColors.cat4[1]);
+  }
+
+  /* update category filter pills */
+  var pills = document.querySelectorAll('.cat-pill');
+  for (var i = 0; i < pills.length; i++) {
+    var cat = pills[i].getAttribute('data-cat');
+    if (cat === 'all') { pills[i].classList.add('active'); continue; }
+    pills[i].textContent = g.cats[cat] || '';
+    pills[i].classList.remove('active');
+  }
+
+  /* update post modal category pills */
+  var postPills = document.querySelectorAll('#post-cat-pills .pill-opt');
+  for (var i = 0; i < postPills.length; i++) {
+    var key = postPills[i].getAttribute('data-val');
+    postPills[i].textContent = g.cats[key] || '';
+    postPills[i].classList.remove('selected');
+  }
+  if (postPills[0]) postPills[0].classList.add('selected');
+
+  /* update all dedication CTA buttons */
+  var dedBtns = document.querySelectorAll('.ded-cta');
+  for (var i = 0; i < dedBtns.length; i++) dedBtns[i].textContent = g.dedCta;
+
+  /* show/hide yahrzeits section */
+  var yahrList = document.getElementById('yahr-list');
+  var yahrSec = document.getElementById('yahr-section');
+  if (yahrList) yahrList.style.display = g.showYahrzeits ? '' : 'none';
+  if (yahrSec) yahrSec.style.display = g.showYahrzeits ? '' : 'none';
+
+  /* re-render everything */
+  renderDiscussions('disc-list', 4);
+  renderEvents('events-preview', 3);
+  renderEvents('events-full');
+  renderNewsPreview();
+  renderNewsFull();
+  renderDedications('ded-preview', 3);
+  renderDedications('ded-full');
+  renderYahrzeits();
+}
+
+/* ══════════════════════════════════════════
+   RENDER
+   ══════════════════════════════════════════ */
+
+function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function renderDiscussions(containerId, limit) {
+  var el = document.getElementById(containerId);
+  var list = discussions;
+  if (activeFilter !== 'all') {
+    list = [];
+    for (var i = 0; i < discussions.length; i++) {
+      if (discussions[i].cat === activeFilter) list.push(discussions[i]);
+    }
+  }
+  if (limit) list = list.slice(0, limit);
+  var html = '';
+  for (var i = 0; i < list.length; i++) {
+    var d = list[i];
+    html += '<div class="disc-card" data-cat="' + d.cat + '">';
+    html += '<div class="disc-top">';
+    html += '<div class="disc-avatar" style="background:' + d.color + '">' + esc(d.initials) + '</div>';
+    html += '<div class="disc-meta">';
+    html += '<div class="disc-author-row">';
+    html += '<span class="disc-author">' + esc(d.author) + '</span>';
+    html += '<span class="disc-badge" style="background:' + catBg[d.cat] + ';color:' + catFg[d.cat] + '">' + esc(catLabels[d.cat]) + '</span>';
+    html += '</div>';
+    html += '<div class="disc-time">' + esc(d.time) + '</div>';
+    html += '</div></div>';
+    html += '<div class="disc-body">' + esc(d.body) + '</div>';
+    if (d.link) {
+      html += '<a class="disc-link-preview" href="https://' + esc(d.link.domain) + '" target="_blank" style="display:block;text-decoration:none;color:inherit;">';
+      html += '<div class="disc-link-title">' + esc(d.link.title) + '</div>';
+      html += '<div class="disc-link-domain">' + esc(d.link.domain) + '</div>';
+      html += '</a>';
+    }
+    if (d.lastReply) {
+      html += '<div style="background:var(--bg);border-radius:8px;padding:10px 12px;margin-top:8px;font-size:13px;">';
+      html += '<span style="font-weight:600;color:var(--purple);">' + esc(d.lastReply.author) + '</span> ';
+      html += '<span style="color:var(--text-sec);">' + esc(d.lastReply.body) + '</span>';
+      html += '</div>';
+    }
+    html += '<div class="disc-footer">';
+    html += '<span class="disc-replies">' + d.replies + ' replies</span>';
+    html += '<button class="disc-reply-btn" onclick="openReply(' + d.id + ')">Reply</button>';
+    html += '</div></div>';
+  }
+  if (!list.length) html = '<div class="empty-state">No discussions in this category yet.</div>';
+  el.innerHTML = html;
+}
+
+function renderEvents(containerId, limit) {
+  var el = document.getElementById(containerId);
+  var list = limit ? events.slice(0, limit) : events;
+  var html = '';
+  for (var i = 0; i < list.length; i++) {
+    var e = list[i];
+    html += '<div class="event-card">';
+    html += '<div class="event-date-box">';
+    html += '<div class="event-day">' + e.day + '</div>';
+    html += '<div class="event-month">' + esc(e.month) + '</div>';
+    html += '</div>';
+    html += '<div class="event-info">';
+    html += '<div class="event-name">' + esc(e.name) + '</div>';
+    html += '<div class="event-detail">' + esc(e.detail) + '</div>';
+    html += '</div>';
+    html += '<button class="event-rsvp' + (e.going ? ' going' : '') + '" onclick="toggleRsvp(' + e.id + ')">' + (e.going ? 'Going' : 'RSVP') + '</button>';
+    html += '</div>';
+  }
+  el.innerHTML = html;
+}
+
+function buildReportsStrip(reports) {
+  if (!reports || !reports.length) return '';
+  var html = '<div class="reports-strip">';
+  for (var i = 0; i < reports.length; i++) {
+    var r = reports[i];
+    html += '<span class="report-chip">';
+    html += '<span class="report-chip-icon">' + r.icon + '</span>';
+    html += '<span class="report-chip-label">' + esc(r.label) + '</span>';
+    html += '<span class="report-chip-value">' + esc(r.value) + '</span>';
+    html += '</span>';
+  }
+  html += '</div>';
+  return html;
+}
+
+function renderNewsPreview() {
+  var n = newsletters[0];
+  var html = '<div class="news-card" onclick="openNewsletter(0)">';
+  html += '<div class="news-date">' + esc(n.date) + ' &mdash; ' + esc(n.parsha) + '</div>';
+  html += '<div class="news-title">' + esc(n.title) + '</div>';
+  html += buildReportsStrip(n.reports);
+  html += '<div class="news-preview">' + esc(n.preview) + '</div>';
+  if (n.gave) html += '<span class="news-gave">\u2714 You gave this week</span>';
+  html += '</div>';
+  document.getElementById('news-preview').innerHTML = html;
+}
+
+function renderNewsFull() {
+  var html = '';
+  for (var i = 0; i < newsletters.length; i++) {
+    var n = newsletters[i];
+    html += '<div class="news-list-card" onclick="openNewsletter(' + i + ')">';
+    html += '<div class="news-list-date">' + esc(n.date) + ' &mdash; ' + esc(n.parsha) + '</div>';
+    html += '<div class="news-list-title">' + esc(n.title) + '</div>';
+    html += buildReportsStrip(n.reports);
+    html += '<div class="news-list-excerpt">' + esc(n.preview) + '</div>';
+    if (n.gave) html += '<span class="news-gave" style="margin-top:8px">\u2714 You gave this week</span>';
+    html += '</div>';
+  }
+  document.getElementById('news-full').innerHTML = html;
+}
+
+function renderDedications(containerId, limit) {
+  var el = document.getElementById(containerId);
+  var list = limit ? dedications.slice(0, limit) : dedications;
+  var html = '';
+  for (var i = 0; i < list.length; i++) {
+    var d = list[i];
+    html += '<div class="ded-card">';
+    html += '<div class="ded-avatar" style="background:' + d.color + '">' + esc(d.initials) + '</div>';
+    html += '<div>';
+    html += '<div class="ded-text"><b>' + esc(d.name) + '</b> sponsored <span class="ded-type">' + esc(d.type) + '</span> in honor of ' + esc(d.honor) + '</div>';
+    html += '<div class="ded-time">' + esc(d.time) + '</div>';
+    html += '</div></div>';
+  }
+  el.innerHTML = html;
+}
+
+function renderYahrzeits() {
+  var html = '';
+  for (var i = 0; i < yahrzeits.length; i++) {
+    var y = yahrzeits[i];
+    html += '<div class="yahr-item">';
+    html += '<div class="yahr-name">' + esc(y.name) + ' <span>&mdash; ' + esc(y.date) + '</span></div>';
+    html += '<div class="yahr-sub">' + esc(y.family) + '</div>';
+    html += '</div>';
+  }
+  document.getElementById('yahr-list').innerHTML = html;
+}
+
+/* ══════════════════════════════════════════
+   TABS
+   ══════════════════════════════════════════ */
+function switchTab(name) {
+  var btns = document.querySelectorAll('.tab-btn');
+  var panels = document.querySelectorAll('.tab-content');
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].classList.toggle('active', btns[i].getAttribute('data-tab') === name);
+  }
+  for (var i = 0; i < panels.length; i++) {
+    panels[i].classList.toggle('active', panels[i].id === 'tab-' + name);
+  }
+  // lazy render expanded views
+  if (name === 'events') renderEvents('events-full');
+  if (name === 'newsletters') renderNewsFull();
+  if (name === 'dedications') renderDedications('ded-full');
+  // FAB only on Home tab
+  var fab = document.querySelector('.fab');
+  if (fab) fab.style.display = (name === 'home') ? '' : 'none';
+  window.scrollTo(0, 0);
+}
+
+var tabBtns = document.querySelectorAll('.tab-btn');
+for (var i = 0; i < tabBtns.length; i++) {
+  tabBtns[i].addEventListener('click', function() {
+    switchTab(this.getAttribute('data-tab'));
+  });
+}
+
+/* ══════════════════════════════════════════
+   CATEGORY FILTER
+   ══════════════════════════════════════════ */
+var catBtns = document.querySelectorAll('.cat-pill');
+for (var i = 0; i < catBtns.length; i++) {
+  catBtns[i].addEventListener('click', function() {
+    var cat = this.getAttribute('data-cat');
+    activeFilter = cat;
+    for (var j = 0; j < catBtns.length; j++) {
+      catBtns[j].classList.toggle('active', catBtns[j].getAttribute('data-cat') === cat);
+    }
+    renderDiscussions('disc-list', 4);
+  });
+}
+
+/* ══════════════════════════════════════════
+   RSVP
+   ══════════════════════════════════════════ */
+function toggleRsvp(id) {
+  for (var i = 0; i < events.length; i++) {
+    if (events[i].id === id) {
+      events[i].going = !events[i].going;
+      toast(events[i].going ? 'You\'re going!' : 'RSVP removed');
+      break;
+    }
+  }
+  renderEvents('events-preview', 3);
+  // re-render full if that tab is active
+  var ep = document.getElementById('tab-events');
+  if (ep.classList.contains('active')) renderEvents('events-full');
+}
+
+/* ══════════════════════════════════════════
+   MODALS
+   ══════════════════════════════════════════ */
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// close on overlay click
+var overlays = document.querySelectorAll('.modal-overlay');
+for (var i = 0; i < overlays.length; i++) {
+  overlays[i].addEventListener('click', function(e) {
+    if (e.target === this) closeModal(this.id);
+  });
+}
+
+/* ── Post Discussion ── */
+function openPostModal() {
+  document.getElementById('post-body').value = '';
+  document.getElementById('post-link').value = '';
+  openModal('post-modal');
+}
+function submitPost() {
+  var body = document.getElementById('post-body').value.trim();
+  if (!body) return;
+  var catEl = document.querySelector('#post-cat-pills .pill-opt.selected');
+  var cat = catEl ? catEl.getAttribute('data-val') : 'community';
+  var linkUrl = document.getElementById('post-link').value.trim();
+  var link = null;
+  if (linkUrl) {
+    var domain = linkUrl.replace(/^https?:\/\//, '').split('/')[0];
+    link = { title: linkUrl.split('/').pop() || domain, domain: domain };
+  }
+  discussions.unshift({
+    id: Date.now(),
+    author: 'Moshe K.',
+    initials: 'MK',
+    color: '#6B5CE7',
+    cat: cat,
+    time: 'Just now',
+    body: body,
+    link: link,
+    replies: 0
+  });
+  closeModal('post-modal');
+  renderDiscussions('disc-list', 4);
+  toast('Discussion posted!');
+}
+
+/* ── Reply ── */
+function openReply(id) {
+  replyTarget = id;
+  for (var i = 0; i < discussions.length; i++) {
+    if (discussions[i].id === id) {
+      document.getElementById('reply-original').innerHTML = '<b>' + esc(discussions[i].author) + '</b>' + esc(discussions[i].body);
+      break;
+    }
+  }
+  document.getElementById('reply-body').value = '';
+  openModal('reply-modal');
+}
+function submitReply() {
+  var body = document.getElementById('reply-body').value.trim();
+  if (!body || !replyTarget) return;
+  for (var i = 0; i < discussions.length; i++) {
+    if (discussions[i].id === replyTarget) {
+      discussions[i].replies++;
+      /* store last reply for inline display */
+      discussions[i].lastReply = { author: 'You', body: body };
+      break;
+    }
+  }
+  closeModal('reply-modal');
+  renderDiscussions('disc-list', 4);
+  toast('Reply posted!');
+}
+
+/* ── Newsletter ── */
+function openNewsletter(idx) {
+  var n = newsletters[idx];
+  var g = groupData[currentGroup];
+
+  /* header */
+  document.getElementById('nl-label').textContent = g.tabLabel.newsletters.toUpperCase();
+  document.getElementById('nl-name').textContent = n.title;
+  document.getElementById('nl-date').textContent = n.date + (n.parsha ? ' \u2014 ' + n.parsha : '');
+
+  /* at-a-glance reports */
+  var glanceEl = document.getElementById('nl-glance');
+  if (n.reports && n.reports.length) {
+    glanceEl.style.display = '';
+    glanceEl.innerHTML = '<div class="nl-glance-label">This week at a glance</div>' + buildReportsStrip(n.reports);
+  } else {
+    glanceEl.style.display = 'none';
+  }
+
+  /* body */
+  document.getElementById('nl-body').innerHTML = n.body;
+
+  /* footer */
+  document.getElementById('nl-footer').innerHTML = '<div class="nl-footer-name">' + esc(g.name) + '</div>' +
+    'Sent with Fyremantle<br>' +
+    '<a href="#">Unsubscribe</a> &middot; <a href="#">Manage preferences</a>';
+
+  openModal('news-modal');
+}
+
+/* ── Dedication ── */
+function openDedicationModal() {
+  var g = groupData[currentGroup];
+  var dm = g.dedModal;
+
+  /* update modal title */
+  var titleEl = document.querySelector('#ded-modal .modal-title');
+  if (titleEl) titleEl.textContent = dm.title;
+
+  /* rebuild type pills */
+  var pillContainer = document.getElementById('ded-type-pills');
+  var pillHtml = '';
+  for (var i = 0; i < dm.types.length; i++) {
+    pillHtml += '<button class="pill-opt' + (i === 0 ? ' selected' : '') + '" data-val="' + esc(dm.types[i]).toLowerCase().replace(/ /g, '-') + '">' + esc(dm.types[i]) + '</button>';
+  }
+  pillContainer.innerHTML = pillHtml;
+  initPillGroup('ded-type-pills');
+
+  /* update placeholder */
+  document.getElementById('ded-honoree').placeholder = dm.placeholder;
+
+  /* update payment info */
+  document.querySelector('.zelle-info').innerHTML = dm.payment;
+
+  /* rebuild amount chips */
+  var amtContainer = document.getElementById('ded-amt-chips');
+  var amtHtml = '';
+  for (var j = 0; j < dm.amounts.length; j++) {
+    amtHtml += '<button class="amt-chip' + (j === 1 ? ' selected' : '') + '" data-amt="' + dm.amounts[j] + '">$' + dm.amounts[j] + '</button>';
+  }
+  amtHtml += '<button class="amt-chip" data-amt="other">Other</button>';
+  amtContainer.innerHTML = amtHtml;
+  var newAmtChips = amtContainer.querySelectorAll('.amt-chip');
+  for (var j = 0; j < newAmtChips.length; j++) {
+    newAmtChips[j].addEventListener('click', function() {
+      for (var k = 0; k < newAmtChips.length; k++) newAmtChips[k].classList.remove('selected');
+      this.classList.add('selected');
+      document.getElementById('ded-custom-amt').style.display = this.getAttribute('data-amt') === 'other' ? 'block' : 'none';
+    });
+  }
+
+  /* update submit button */
+  var submitBtn = document.querySelector('#ded-modal .btn-submit');
+  if (submitBtn) submitBtn.textContent = dm.submit;
+
+  /* reset fields */
+  document.getElementById('ded-honoree').value = '';
+  document.getElementById('ded-message').value = '';
+  document.getElementById('ded-custom-amt').style.display = 'none';
+  openModal('ded-modal');
+}
+
+/* updateDedPreview removed — preview cards no longer exist */
+
+function submitDedication() {
+  var typeEl = document.querySelector('#ded-type-pills .pill-opt.selected');
+  var type = typeEl ? typeEl.textContent : 'Shabbat kiddush';
+  var honoree = document.getElementById('ded-honoree').value.trim();
+  if (!honoree) { toast('Please enter who this is for'); return; }
+  dedications.unshift({
+    id: Date.now(),
+    name: 'Moshe K.',
+    initials: 'MK',
+    color: '#6B5CE7',
+    type: type,
+    honor: honoree,
+    time: 'Just now'
+  });
+  closeModal('ded-modal');
+  renderDedications('ded-preview', 3);
+  renderDedications('ded-full');
+  toast('Dedication submitted!');
+}
+
+/* ══════════════════════════════════════════
+   PILL SELECTORS
+   ══════════════════════════════════════════ */
+function initPillGroup(containerId, onChange) {
+  var pills = document.querySelectorAll('#' + containerId + ' .pill-opt');
+  for (var i = 0; i < pills.length; i++) {
+    pills[i].addEventListener('click', function() {
+      var siblings = this.parentNode.querySelectorAll('.pill-opt');
+      for (var j = 0; j < siblings.length; j++) siblings[j].classList.remove('selected');
+      this.classList.add('selected');
+      if (onChange) onChange(this.getAttribute('data-val'));
+    });
+  }
+}
+initPillGroup('post-cat-pills');
+initPillGroup('ded-type-pills');
+
+/* amount chips */
+var amtChips = document.querySelectorAll('#ded-amt-chips .amt-chip');
+for (var i = 0; i < amtChips.length; i++) {
+  amtChips[i].addEventListener('click', function() {
+    for (var j = 0; j < amtChips.length; j++) amtChips[j].classList.remove('selected');
+    this.classList.add('selected');
+    var customInput = document.getElementById('ded-custom-amt');
+    customInput.style.display = this.getAttribute('data-amt') === 'other' ? 'block' : 'none';
+  });
+}
+
+/* ══════════════════════════════════════════
+   TOAST
+   ══════════════════════════════════════════ */
+function toast(msg) {
+  var el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(function() { el.classList.remove('show'); }, 2500);
+}
+
+function copyInviteLink() {
+  var url = window.location.href.replace('Fyremantle.html', 'FyremantleSignup.html');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(function() {
+      toast('Invite link copied!');
+    });
+  } else {
+    toast('Invite link copied!');
+  }
+}
+
+/* ══════════════════════════════════════════
+   INIT
+   ══════════════════════════════════════════ */
+/* init — set group name + greeting + colors from default group */
+var initG = groupData.shul;
+document.getElementById('groupName').textContent = initG.name;
+document.getElementById('groupGreeting').textContent = initG.greeting;
+if (initG.catColors) {
+  var root = document.documentElement;
+  root.style.setProperty('--cat1-bg', initG.catColors.cat1[0]); root.style.setProperty('--cat1-fg', initG.catColors.cat1[1]);
+  root.style.setProperty('--cat2-bg', initG.catColors.cat2[0]); root.style.setProperty('--cat2-fg', initG.catColors.cat2[1]);
+  root.style.setProperty('--cat3-bg', initG.catColors.cat3[0]); root.style.setProperty('--cat3-fg', initG.catColors.cat3[1]);
+  root.style.setProperty('--cat4-bg', initG.catColors.cat4[0]); root.style.setProperty('--cat4-fg', initG.catColors.cat4[1]);
+}
+renderDiscussions('disc-list', 4);
+renderEvents('events-preview', 3);
+renderNewsPreview();
+renderDedications('ded-preview', 3);
+renderYahrzeits();
+</script>
+</body>
+</html>

@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Join Fyremantle</title>
+
+<!-- Open Graph — WhatsApp / iMessage / Slack link preview -->
+<meta property="og:title" content="Join Kehilat Shalom on Fyremantle">
+<meta property="og:description" content="Rabbi Schwartz invited you to join the community. 84 members. Tap to join instantly.">
+<meta property="og:image" content="https://fyremantle.com/og-invite.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://fyremantle.com/join/kehilat-shalom">
+
+<!-- Twitter card (also used by some apps) -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Join Kehilat Shalom on Fyremantle">
+<meta name="twitter:description" content="Rabbi Schwartz invited you. Tap to join instantly.">
+<meta name="twitter:image" content="https://fyremantle.com/og-invite.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --purple:       #6B5CE7;
+  --purple-light: #EDE9FC;
+  --purple-dark:  #5548C4;
+  --green:        #4CAF7D;
+  --green-light:  #E8F5EE;
+  --green-dark:   #3D9268;
+  --amber:        #E5A84B;
+  --amber-light:  #FDF3E0;
+  --red:          #E05555;
+  --red-light:    #FDEAEA;
+  --bg:           #F8F7F5;
+  --white:        #FFFFFF;
+  --text:         #1A1A1A;
+  --text-sec:     #6B6B6B;
+  --text-muted:   #9B9B9B;
+  --border:       #EEECEC;
+  --shadow:       0 1px 3px rgba(0,0,0,.06);
+  --shadow-md:    0 4px 12px rgba(0,0,0,.08);
+  --shadow-lg:    0 8px 24px rgba(0,0,0,.10);
+  --radius:       12px;
+  --radius-sm:    8px;
+  --radius-lg:    20px;
+  --radius-full:  9999px;
+  --font-heading: 'Fraunces', serif;
+  --font-body:    'Inter', -apple-system, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.signup-container {
+  width: 100%;
+  max-width: 480px;
+  position: relative;
+}
+
+.signup-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  position: relative;
+  border: 1px solid var(--border);
+}
+
+/* View transitions */
+.view {
+  padding: 36px 32px 32px;
+  transition: opacity .4s, transform .4s;
+}
+.view.hidden {
+  display: none;
+}
+.view.slide-out {
+  opacity: 0;
+  transform: translateY(-30px);
+  pointer-events: none;
+}
+.view.slide-in {
+  animation: slideIn .5s .15s ease both;
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 520px) {
+  .signup-container { max-width: 100%; }
+  .view { padding: 28px 20px 24px; }
+}
+
+/* Header */
+.community-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+.avatar-circle {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--purple);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #fff;
+}
+.community-header .invited-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+.community-header h1 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1.55rem;
+  color: var(--text);
+  margin-bottom: 4px;
+  letter-spacing: -0.3px;
+}
+.community-header .invited-by {
+  font-size: 13px;
+  color: var(--text-sec);
+  margin-bottom: 4px;
+}
+.community-header .meta {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* Form */
+label {
+  display: block;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+label .optional-tag {
+  font-weight: 400;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+select {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text);
+  background: var(--white);
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+input:focus, select:focus {
+  border-color: var(--purple);
+  box-shadow: 0 0 0 3px rgba(107,92,231,.12);
+}
+input.error {
+  border-color: var(--red);
+}
+input::placeholder {
+  color: var(--text-muted);
+}
+input.prefilled {
+  color: var(--text-sec);
+  background: var(--bg);
+}
+
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239B9B9B' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+
+.field-group {
+  margin-bottom: 18px;
+}
+
+.name-row {
+  display: flex;
+  gap: 10px;
+}
+.name-row .field-group { flex: 1; }
+
+.error-msg {
+  color: var(--red);
+  font-size: 12px;
+  margin-top: 4px;
+  min-height: 0;
+}
+.error-msg:empty { margin-top: 0; }
+
+/* Interest tags */
+.interests-section {
+  margin-bottom: 24px;
+}
+.interests-label {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.interests-optional {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+.tags-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.tag-pill {
+  padding: 7px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-sec);
+  background: var(--white);
+  cursor: pointer;
+  transition: all .2s;
+  user-select: none;
+}
+.tag-pill:hover {
+  border-color: var(--purple);
+  color: var(--purple);
+  background: var(--purple-light);
+}
+.tag-pill.selected {
+  border-color: var(--purple);
+  background: var(--purple);
+  color: #fff;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all .2s;
+  text-decoration: none;
+  width: 100%;
+  position: relative;
+}
+.btn-primary {
+  background: var(--purple);
+  color: #fff;
+}
+.btn-primary:hover { background: var(--purple-dark); }
+.btn-primary:active { transform: scale(.985); }
+.btn-primary:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+#googleBtn:hover { box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-sec);
+}
+.btn-outline:hover { background: var(--bg); border-color: var(--purple); color: var(--purple); }
+
+.terms {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 12px;
+}
+
+/* Loading spinner */
+.spinner {
+  display: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  margin-left: 8px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.btn.loading .btn-text { opacity: .7; }
+.btn.loading .spinner { display: inline-block; }
+
+/* Divider */
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 24px 0;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+.section-divider::before, .section-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* Magic link section */
+.magic-link-section {
+  text-align: center;
+}
+.magic-link-section .magic-btn {
+  margin-bottom: 0;
+}
+.magic-input-row {
+  display: none;
+  margin-top: 14px;
+}
+.magic-input-row.visible { display: block; }
+.magic-input-row input {
+  margin-bottom: 10px;
+}
+.magic-sent {
+  display: none;
+  text-align: center;
+  padding: 16px 0 4px;
+  color: var(--purple);
+  font-size: 14px;
+}
+.magic-sent .magic-icon {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 8px;
+}
+.magic-sent.visible { display: block; }
+
+/* Success view */
+.success-view {
+  text-align: center;
+}
+.success-view h2 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1.6rem;
+  color: var(--text);
+  margin-bottom: 4px;
+  letter-spacing: -0.3px;
+}
+.success-view .success-subtitle {
+  color: var(--text-sec);
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+/* Animated checkmark */
+.checkmark-wrap {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 20px;
+}
+.checkmark-wrap svg {
+  width: 72px;
+  height: 72px;
+}
+.checkmark-wrap .circle {
+  fill: none;
+  stroke: var(--green);
+  stroke-width: 3;
+  stroke-dasharray: 204;
+  stroke-dashoffset: 204;
+  stroke-linecap: round;
+  animation: drawCircle .6s ease forwards;
+}
+.checkmark-wrap .check {
+  fill: none;
+  stroke: var(--green);
+  stroke-width: 3.5;
+  stroke-dasharray: 46;
+  stroke-dashoffset: 46;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  animation: drawCheck .4s .5s ease forwards;
+}
+@keyframes drawCircle { to { stroke-dashoffset: 0; } }
+@keyframes drawCheck { to { stroke-dashoffset: 0; } }
+
+.next-steps-card {
+  background: var(--bg);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  margin-bottom: 24px;
+  text-align: left;
+  border: 1px solid var(--border);
+}
+.next-steps-card .ns-heading {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+.next-steps-card .ns-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  font-size: 13px;
+  color: var(--text-sec);
+}
+.next-steps-card .ns-check {
+  color: var(--green);
+  font-weight: 700;
+  flex-shrink: 0;
+  font-size: 14px;
+}
+
+.magic-note {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 16px;
+  line-height: 1.5;
+}
+
+.btn-group-vert {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--text);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  transition: all .35s cubic-bezier(.4, 0, .2, 1);
+  pointer-events: none;
+  z-index: 100;
+  white-space: nowrap;
+}
+.toast.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+</style>
+</head>
+<body>
+
+<div class="signup-container">
+  <div class="signup-card">
+
+    <!-- Main View -->
+    <div class="view" id="formView">
+      <div class="community-header">
+        <div class="avatar-circle">KS</div>
+        <h1>Fyremantle</h1>
+        <p class="invited-by">Rabbi Schwartz invited you</p>
+        <p class="meta">84 members &middot; Est. 2019</p>
+      </div>
+
+      <p style="font-size:15px; color:var(--text); text-align:center; margin-bottom:20px; line-height:1.5;">Join or sign in to your community</p>
+
+      <!-- Google Sign-In -->
+      <button onclick="googleSignIn()" id="googleBtn" style="width:100%; padding:12px; font-size:15px; font-weight:500; font-family:inherit; background:#fff; border:1px solid #dadce0; border-radius:8px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px; transition:box-shadow .2s;">
+        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        <span>Continue with Google</span>
+      </button>
+
+      <!-- Divider -->
+      <div style="display:flex; align-items:center; gap:12px; margin:18px 0;">
+        <div style="flex:1; height:1px; background:var(--border);"></div>
+        <span style="font-size:12px; color:var(--text-muted);">or use your email</span>
+        <div style="flex:1; height:1px; background:var(--border);"></div>
+      </div>
+
+      <!-- Magic link email -->
+      <div class="field-group">
+        <input type="email" id="magicEmail" placeholder="your@email.com" style="text-align:center; font-size:15px; padding:12px;">
+        <div class="error-msg" id="errEmail" style="text-align:center;"></div>
+      </div>
+
+      <button class="btn btn-primary" onclick="sendLink()" id="sendBtn" style="width:100%; margin-top:8px; padding:12px; font-size:14px; background:var(--text); border-color:var(--text);">
+        <span class="btn-text">Send me a link</span>
+        <span class="spinner"></span>
+      </button>
+
+      <p style="font-size:11px; color:var(--text-muted); text-align:center; margin-top:10px;">No password needed</p>
+    </div>
+
+    <!-- Success View -->
+    <div class="view hidden" id="successView">
+      <div class="success-view">
+        <div class="checkmark-wrap" id="successCheck">
+          <svg viewBox="0 0 72 72">
+            <circle class="circle" cx="36" cy="36" r="32"/>
+            <polyline class="check" points="21,38 31,48 51,27"/>
+          </svg>
+        </div>
+        <h2>You're in!</h2>
+        <p class="magic-note" id="magicNoteText"></p>
+
+        <div class="btn-group-vert" style="margin-top:24px;">
+          <button class="btn btn-primary" onclick="window.location.href='Fyremantle.html'" style="width:100%; padding:14px; font-size:15px;">Open Fyremantle</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+function googleSignIn() {
+  var btn = document.getElementById('googleBtn');
+  btn.style.opacity = '0.7';
+  btn.style.pointerEvents = 'none';
+  btn.innerHTML = '<span class="spinner" style="display:inline-block;width:18px;height:18px;border:2px solid #dadce0;border-top-color:#4285F4;border-radius:50%;animation:spin .6s linear infinite;"></span> <span>Signing in...</span>';
+
+  setTimeout(function() {
+    var formView = document.getElementById('formView');
+    var successView = document.getElementById('successView');
+    formView.classList.add('slide-out');
+    setTimeout(function() {
+      formView.classList.add('hidden');
+      successView.classList.remove('hidden');
+      successView.classList.add('slide-in');
+      var wrap = document.getElementById('successCheck');
+      var svg = wrap.innerHTML;
+      wrap.innerHTML = '';
+      void wrap.offsetWidth;
+      wrap.innerHTML = svg;
+      document.getElementById('magicNoteText').innerHTML = 'Signed in with Google';
+    }, 400);
+  }, 1500);
+}
+
+function sendLink() {
+  var email = document.getElementById('magicEmail').value.trim();
+  var errEl = document.getElementById('errEmail');
+
+  if (!email) {
+    errEl.textContent = 'Enter your email';
+    document.getElementById('magicEmail').classList.add('error');
+    return;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    errEl.textContent = 'Please enter a valid email';
+    document.getElementById('magicEmail').classList.add('error');
+    return;
+  }
+  errEl.textContent = '';
+  document.getElementById('magicEmail').classList.remove('error');
+
+  var btn = document.getElementById('sendBtn');
+  btn.classList.add('loading');
+  btn.disabled = true;
+
+  setTimeout(function() {
+    /* show success — transition to success view */
+    var formView = document.getElementById('formView');
+    var successView = document.getElementById('successView');
+
+    formView.classList.add('slide-out');
+
+    setTimeout(function() {
+      formView.classList.add('hidden');
+      successView.classList.remove('hidden');
+      successView.classList.add('slide-in');
+
+      var wrap = document.getElementById('successCheck');
+      var svg = wrap.innerHTML;
+      wrap.innerHTML = '';
+      void wrap.offsetWidth;
+      wrap.innerHTML = svg;
+
+      document.getElementById('magicNoteText').innerHTML =
+        'We sent a link to <strong>' + escHtml(email) + '</strong>';
+    }, 400);
+  }, 1200);
+}
+
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('visible');
+  setTimeout(function() { t.classList.remove('visible'); }, 3000);
+}
+
+function escHtml(str) {
+  return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+</script>
+</body>
+</html>
