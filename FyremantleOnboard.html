@@ -136,10 +136,16 @@ body {
 }
 
 @media (max-width: 480px) {
-  .step-panel { padding: 28px 20px 24px; }
+  body { padding: 24px 12px; }
+  .step-panel { padding: 24px 16px 20px; }
   .step-tabs { gap: 0; }
-  .step-tab-label { font-size: .72rem; padding: 5px 10px; }
-  .step-tab-line { width: 16px; }
+  .step-tab-label { font-size: .7rem; padding: 5px 8px; }
+  .step-tab-line { width: 12px; }
+  h2 { font-size: 1.3rem; }
+  .subtitle { font-size: .82rem; margin-bottom: 20px; }
+  .field-row { flex-direction: column; gap: 0; }
+  .btn-row { flex-direction: column; gap: 8px; }
+  .toggle-row { font-size: .85rem; }
 }
 
 /* ---- Typography ---- */
@@ -595,7 +601,6 @@ input::placeholder, textarea::placeholder {
 </head>
 <body>
 
-<a href="index.html" style="position:fixed;top:8px;left:8px;z-index:300;font-size:11px;color:#9B9B9B;text-decoration:none;background:rgba(255,255,255,.9);padding:4px 10px;border-radius:20px;border:1px solid #EEECEC;">&larr; Prototypes</a>
 <div class="wizard-container">
   <!-- Step tabs — 3 real steps -->
   <div class="step-tabs" id="stepTabs">
