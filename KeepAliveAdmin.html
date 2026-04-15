@@ -1062,6 +1062,7 @@ body {
       <label>Description</label>
       <textarea id="eventDesc" rows="3" placeholder="Details about the event..."></textarea>
     </div>
+    <div id="eventInfo" style="display:none;font-size:12px;color:#534AB7;font-weight:500;padding:4px 0 8px;"></div>
     <button class="modal-submit" onclick="submitEvent()">Create event</button>
   </div>
 </div>
@@ -1743,7 +1744,12 @@ function manageEvent(idx) {
   var e = g().events[idx];
   document.getElementById('eventName').value = e.name;
   document.getElementById('eventDate').value = '2025-12-' + (e.day.length === 1 ? '0' + e.day : e.day);
-  document.getElementById('eventDesc').value = e.confirmed ? e.confirmed + ' confirmed' : (e.noSponsor ? 'Needs a sponsor' : '');
+  document.getElementById('eventDesc').value = '';
+  var info = '';
+  if (e.confirmed) info = e.confirmed + ' confirmed RSVPs';
+  if (e.noSponsor) info += (info ? ' · ' : '') + 'No sponsor yet';
+  var el = document.getElementById('eventInfo');
+  if (el) { el.textContent = info; el.style.display = info ? '' : 'none'; }
   document.querySelector('#eventModal .modal-title').innerHTML = 'Manage event<button class="modal-close" onclick="closeModal(\'eventModal\')">&times;</button>';
   document.querySelector('#eventModal .modal-submit').textContent = 'Save changes';
   openModal('eventModal');
