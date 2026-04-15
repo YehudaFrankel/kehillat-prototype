@@ -327,18 +327,29 @@ input,textarea{font-family:inherit;border:none;outline:none}
 .custom-amount.show{display:block}
 
 /* ── newsletter modal ── */
-.nl-modal-label{font-size:10px;color:#534AB7;font-weight:600;margin-bottom:2px}
-.nl-modal-title{font-size:18px;font-weight:800;margin-bottom:2px}
-.nl-modal-date{font-size:10px;color:#b4b2a9;margin-bottom:14px}
-.nl-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
-.nl-chip{
-  font-size:9px;font-weight:700;padding:4px 10px;border-radius:12px;
-}
-.nl-modal-body{font-size:11px;color:#1a1a18;line-height:1.6;margin-bottom:14px}
-.nl-modal-body p{margin-bottom:8px}
-.nl-modal-footer{
-  font-size:10px;color:#b4b2a9;text-align:center;
-  padding-top:10px;border-top:1px solid #f0eeea;
+.nl-modal-wrap{border-radius:12px;overflow:hidden;max-width:620px;width:90vw}
+.nl-modal-header{background:linear-gradient(135deg,#534AB7 0%,#7F77DD 100%);padding:28px 28px 20px;color:#fff;position:relative}
+.nl-modal-header-close{position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:50%;border:none;background:rgba(255,255,255,.2);color:#fff;font-size:18px;cursor:pointer}
+.nl-modal-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;opacity:.7;margin-bottom:6px}
+.nl-modal-title{font-size:22px;font-weight:700;margin-bottom:2px}
+.nl-modal-date{font-size:13px;opacity:.8}
+.nl-modal-glance{padding:14px 28px;background:#faf9f6;border-bottom:1px solid #ebebeb}
+.nl-modal-glance-label{font-size:11px;font-weight:600;color:#888780;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.nl-chips{display:flex;gap:6px;flex-wrap:wrap}
+.nl-chip{font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px}
+.nl-modal-body{padding:24px 28px;font-size:15px;line-height:1.8;color:#1a1a18;max-height:40vh;overflow-y:auto}
+.nl-modal-body h3{font-size:16px;font-weight:700;color:#534AB7;margin:20px 0 6px;padding-bottom:4px;border-bottom:2px solid #EEEDFE}
+.nl-modal-body h3:first-child{margin-top:0}
+.nl-modal-body p{margin-bottom:12px}
+.nl-modal-body hr{border:none;border-top:1px solid #ebebeb;margin:16px 0}
+.nl-modal-footer{background:#faf9f6;padding:14px 28px;border-top:1px solid #ebebeb;text-align:center;font-size:12px;color:#b4b2a9}
+.nl-modal-footer-name{font-weight:600;color:#1a1a18}
+@media(max-width:520px){
+  .nl-modal-header{padding:20px 16px 16px}
+  .nl-modal-title{font-size:18px}
+  .nl-modal-glance{padding:12px 16px}
+  .nl-modal-body{padding:16px;font-size:14px}
+  .nl-modal-footer{padding:12px 16px}
 }
 
 /* ── reply modal ── */
@@ -604,12 +615,19 @@ input,textarea{font-family:inherit;border:none;outline:none}
 
 <!-- Newsletter Modal -->
 <div class="modal-overlay" id="nlModal" onclick="closeModalOverlay(event,'nlModal')">
-  <div class="modal-card" onclick="event.stopPropagation()">
-    <div class="modal-header">
-      <h3>Newsletter</h3>
-      <button class="modal-close" onclick="closeModal('nlModal')">&times;</button>
+  <div class="nl-modal-wrap" onclick="event.stopPropagation()">
+    <div class="nl-modal-header">
+      <button class="nl-modal-header-close" onclick="closeModal('nlModal')">&times;</button>
+      <div class="nl-modal-label" id="nlModalLabel"></div>
+      <div class="nl-modal-title" id="nlModalTitle"></div>
+      <div class="nl-modal-date" id="nlModalDate"></div>
     </div>
-    <div class="modal-body" id="nlModalBody"></div>
+    <div class="nl-modal-glance" id="nlModalGlance">
+      <div class="nl-modal-glance-label">This week at a glance</div>
+      <div class="nl-chips" id="nlModalChips"></div>
+    </div>
+    <div class="nl-modal-body" id="nlModalBody"></div>
+    <div class="nl-modal-footer"><span class="nl-modal-footer-name" id="nlModalFooter"></span><br>Sent with Keep Alive</div>
   </div>
 </div>
 
@@ -1072,20 +1090,21 @@ function openNewsletterModal(idx){
   var nls=G().newsletters;
   if(idx>=nls.length)return;
   var n=nls[idx];
-  var h='';
-  h+='<div class="nl-modal-label">'+esc(n.label)+'</div>';
-  h+='<div class="nl-modal-title">'+esc(n.title)+'</div>';
-  h+='<div class="nl-modal-date">'+esc(n.date)+'</div>';
+  document.getElementById('nlModalLabel').textContent='WEEKLY NEWSLETTER';
+  document.getElementById('nlModalTitle').textContent=n.title;
+  document.getElementById('nlModalDate').textContent=n.date;
+  document.getElementById('nlModalFooter').textContent=G().name;
+  var ch='';
   if(n.chips&&n.chips.length){
-    h+='<div class="nl-chips">';
     for(var i=0;i<n.chips.length;i++){
-      h+='<span class="nl-chip" style="background:'+n.chips[i].bg+';color:'+n.chips[i].color+'">'+esc(n.chips[i].text)+'</span>';
+      ch+='<span class="nl-chip" style="background:'+n.chips[i].bg+';color:'+n.chips[i].color+'">'+esc(n.chips[i].text)+'</span>';
     }
-    h+='</div>';
+    document.getElementById('nlModalGlance').style.display='';
+  } else {
+    document.getElementById('nlModalGlance').style.display='none';
   }
-  h+='<div class="nl-modal-body">'+n.body+'</div>';
-  h+='<div class="nl-modal-footer">'+esc(G().name)+'</div>';
-  document.getElementById('nlModalBody').innerHTML=h;
+  document.getElementById('nlModalChips').innerHTML=ch;
+  document.getElementById('nlModalBody').innerHTML=n.body;
   openModal('nlModal');
 }
 
