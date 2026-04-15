@@ -1251,6 +1251,17 @@ table.aliyah-table {
 </div>
 </div>
 
+<!-- ═══ NEWSLETTER VIEW ═══ -->
+<div class="view" id="viewNewsletter">
+<div class="card" style="margin-bottom:12px;">
+  <div class="card-header">
+    <span class="card-title">Newsletters</span>
+    <a class="card-link" onclick="openModal('newsletterModal');populateNewsletter();">+ Create new</a>
+  </div>
+  <div id="newsletterListPanel"></div>
+</div>
+</div>
+
 <!-- ═══ MANAGE VIEW ═══ -->
 <div class="view" id="viewManage">
 <div class="two-col">
@@ -1916,11 +1927,40 @@ function switchTab(tab) {
   } else if (tab === 'events') {
     document.getElementById('viewEvents').classList.add('active');
     renderEventsPanel();
+  } else if (tab === 'newsletter') {
+    document.getElementById('viewNewsletter').classList.add('active');
+    renderNewsletterList();
   } else if (tab === 'manage') {
     tabs[3].classList.add('active');
     document.getElementById('viewManage').classList.add('active');
     renderRequests('memberRequests');
   }
+}
+
+function renderNewsletterList() {
+  var gd = adminGroups[currentAdminGroup];
+  var nl = gd.newsletter;
+  var html = '';
+  // Current/draft newsletter
+  html += '<div style="border-bottom:1px solid #f0eeea;padding:14px 20px;cursor:pointer;" onclick="openModal(\'newsletterModal\');populateNewsletter();">';
+  html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">';
+  html += '<span style="font-size:15px;font-weight:600;">' + esc(nl.title || 'This week\'s newsletter') + '</span>';
+  html += '<span style="font-size:10px;padding:2px 8px;border-radius:10px;background:#EDE9FC;color:#6B5CE7;font-weight:600;">' + (nlGenerated[currentAdminGroup] ? 'Ready to send' : 'Draft') + '</span>';
+  html += '</div>';
+  html += '<div style="font-size:12px;color:#9B9B9B;">' + esc(nl.label || nl.date) + '</div>';
+  html += '</div>';
+  // Past newsletters (static samples)
+  var past = [{title:'Community spotlight',date:'Dec 3, 2025',status:'Sent'},{title:'Chanukah preview',date:'Nov 26, 2025',status:'Sent'},{title:'Thanksgiving gratitude',date:'Nov 19, 2025',status:'Sent'}];
+  for (var i = 0; i < past.length; i++) {
+    html += '<div style="border-bottom:1px solid #f0eeea;padding:14px 20px;">';
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">';
+    html += '<span style="font-size:15px;font-weight:600;">' + esc(past[i].title) + '</span>';
+    html += '<span style="font-size:10px;padding:2px 8px;border-radius:10px;background:#E8F5EE;color:#4CAF7D;font-weight:600;">' + past[i].status + '</span>';
+    html += '</div>';
+    html += '<div style="font-size:12px;color:#9B9B9B;">' + esc(past[i].date) + '</div>';
+    html += '</div>';
+  }
+  document.getElementById('newsletterListPanel').innerHTML = html;
 }
 
 function switchBottomTab(tab) {
@@ -1930,7 +1970,7 @@ function switchBottomTab(tab) {
     btns[i].classList.toggle('active', tabKeys[i] === tab);
   }
 
-  if (tab === 'newsletter') { openModal('newsletterModal'); populateNewsletter(); return; }
+  if (tab === 'newsletter') { switchTab('newsletter'); return; }
 
   if (tab === 'feed') switchTab('discussions');
   else if (tab === 'events') switchTab('events');
