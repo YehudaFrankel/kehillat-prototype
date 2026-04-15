@@ -800,11 +800,11 @@ body {
     </div>
   </div>
   <div class="topbar-nav" id="desktopNav">
-    <button class="topbar-nav-btn active" onclick="switchBottomTab('feed')">Feed</button>
-    <button class="topbar-nav-btn" onclick="switchBottomTab('events')">Events</button>
-    <button class="topbar-nav-btn" onclick="switchBottomTab('sponsors')">Sponsors</button>
-    <button class="topbar-nav-btn" onclick="switchBottomTab('aliyos')">Aliyos</button>
-    <button class="topbar-nav-btn" onclick="switchBottomTab('members')">Members<span class="topbar-nav-dot"></span></button>
+    <button class="topbar-nav-btn nav-tab-btn active" onclick="switchBottomTab('feed')">Feed</button>
+    <button class="topbar-nav-btn nav-tab-btn" onclick="switchBottomTab('events')">Events</button>
+    <button class="topbar-nav-btn nav-tab-btn" onclick="switchBottomTab('sponsors')">Sponsors</button>
+    <button class="topbar-nav-btn nav-tab-btn" onclick="switchBottomTab('aliyos')">Aliyos</button>
+    <button class="topbar-nav-btn nav-tab-btn" onclick="switchBottomTab('members')">Members<span class="topbar-nav-dot"></span></button>
     <button class="topbar-nav-btn" onclick="openModal('groupSwitcherModal')" style="margin-left:4px;font-size:12px;">Switch group</button>
     <div class="topbar-avatar" style="margin-left:8px;">DL</div>
   </div>
@@ -1487,7 +1487,7 @@ function switchAdminGroup(type) {
 
   // Update nav tab labels
   var labels = gd.tabLabels || ['Feed','Events','Sponsors','Aliyos','Members'];
-  var dbtns = document.querySelectorAll('.topbar-nav-btn');
+  var dbtns = document.querySelectorAll('.nav-tab-btn');
   for (var i = 0; i < 5 && i < dbtns.length; i++) {
     var hasDot = dbtns[i].querySelector('.topbar-nav-dot');
     dbtns[i].textContent = labels[i];
@@ -1532,7 +1532,7 @@ function switchBottomTab(tab) {
     btns[i].classList.toggle('active', labels[i] === tab);
   }
   // Update desktop nav
-  var dbtns = document.querySelectorAll('.topbar-nav-btn');
+  var dbtns = document.querySelectorAll('.nav-tab-btn');
   var dlabels = ['feed','events','sponsors','aliyos','members'];
   for (var i = 0; i < dbtns.length; i++) {
     dbtns[i].classList.toggle('active', dlabels[i] === tab);
