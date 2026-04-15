@@ -878,6 +878,21 @@ body {
         <div class="feed-list" id="feedList"></div>
       </div>
 
+      <!-- EVENTS TAB -->
+      <div class="tab-panel" id="panel-events">
+        <div style="padding:16px;display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-size:14px;font-weight:700;">Upcoming Events</div>
+          <button class="form-submit-btn" onclick="openModal('newEventModal')" style="width:auto;padding:8px 16px;">+ New event</button>
+        </div>
+        <div id="eventsList" style="padding:0 16px;"></div>
+      </div>
+
+      <!-- SPONSORS TAB -->
+      <div class="tab-panel" id="panel-sponsors">
+        <div style="padding:16px;font-size:14px;font-weight:700;">Sponsorships &amp; Dedications</div>
+        <div id="sponsorsList" style="padding:0 16px;"></div>
+      </div>
+
       <!-- ALIYAH TAB -->
       <div class="tab-panel" id="panel-aliyah">
         <button class="aliyah-add-toggle" onclick="toggleAliyahForm()">+ Add aliyah</button>
@@ -1298,6 +1313,8 @@ function switchAdminGroup(type) {
   renderSidebarAttention();
   renderSidebarComing();
   renderDiscussions();
+  renderEvents();
+  renderSponsors();
   renderAliyah();
   renderDedications();
   renderRequests('manageRequests');
@@ -1335,10 +1352,10 @@ function switchBottomTab(tab) {
 
   // Map bottom tabs to content tabs
   if (tab === 'feed') switchTab('discussions');
+  else if (tab === 'events') switchTab('events');
+  else if (tab === 'sponsors') switchTab('sponsors');
   else if (tab === 'aliyos') switchTab('aliyah');
   else if (tab === 'members') switchTab('manage');
-  else if (tab === 'events') switchTab('discussions'); // show events context
-  else if (tab === 'sponsors') switchTab('dedications');
 }
 
 /* ======================================================
@@ -1502,6 +1519,35 @@ function renderAliyah() {
     html += '</tr>';
   }
   document.getElementById('aliyahBody').innerHTML = html;
+}
+
+function renderEvents() {
+  var evts = g().events;
+  var html = '';
+  for (var i = 0; i < evts.length; i++) {
+    var e = evts[i];
+    html += '<div style="background:#fff;border:1px solid #ebebeb;border-radius:10px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:12px;">';
+    html += '<div style="text-align:center;min-width:36px;"><div style="font-size:18px;font-weight:700;line-height:1;">' + esc(e.day) + '</div><div style="font-size:9px;color:#888780;text-transform:uppercase;font-weight:600;">' + esc(e.month) + '</div></div>';
+    html += '<div style="flex:1;"><div style="font-size:13px;font-weight:600;">' + esc(e.name) + '</div><div style="font-size:11px;color:#888780;">' + (e.confirmed ? e.confirmed + ' confirmed' : 'No sponsor yet') + '</div></div>';
+    html += '<button style="font-size:10px;font-weight:600;padding:6px 14px;border-radius:6px;border:1px solid #d3d1c7;background:#fff;color:#1a1a18;cursor:pointer;font-family:inherit;" onclick="showToast(\'Event management coming soon\')">Manage</button>';
+    html += '</div>';
+  }
+  document.getElementById('eventsList').innerHTML = html;
+}
+
+function renderSponsors() {
+  var deds = g().dedications;
+  var html = '';
+  for (var i = 0; i < deds.length; i++) {
+    var d = deds[i];
+    html += '<div style="background:#fff;border:1px solid #ebebeb;border-radius:10px;padding:14px 16px;margin-bottom:10px;">';
+    html += '<div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:11px;font-weight:600;color:#534AB7;">' + esc(d.type) + '</span><span style="font-size:11px;color:#888780;">' + esc(d.date) + '</span></div>';
+    html += '<div style="font-size:13px;font-weight:600;margin-bottom:4px;">' + esc(d.from) + '</div>';
+    html += '<div style="font-size:12px;color:#555;line-height:1.5;margin-bottom:6px;">' + esc(d.text) + '</div>';
+    html += '<div style="font-size:11px;font-weight:700;color:#27500A;">' + esc(d.amount) + '</div>';
+    html += '</div>';
+  }
+  document.getElementById('sponsorsList').innerHTML = html;
 }
 
 function markAliyahPaid(id) {
@@ -1896,6 +1942,8 @@ function handleResize() {
 function init() {
   renderCatPills();
   renderDiscussions();
+  renderEvents();
+  renderSponsors();
   renderAliyah();
   renderDedications();
   renderRequests('manageRequests');
