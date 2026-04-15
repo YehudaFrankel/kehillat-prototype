@@ -679,7 +679,7 @@ body {
 .modal-submit.amber { background: #BA7517; }
 
 /* Newsletter modal */
-.nl-modal { border-radius: 12px; overflow: hidden; max-width: 620px; width: 90vw; }
+.nl-modal { border-radius: 12px; overflow: hidden; overflow-y: auto; max-width: 620px; width: 90vw; max-height: 85vh; background: #fff; box-shadow: 0 8px 30px rgba(0,0,0,.18); }
 .nl-header {
   background: linear-gradient(135deg, #534AB7 0%, #7F77DD 100%);
   padding: 28px 28px 20px; color: #fff; position: relative;
@@ -2084,6 +2084,16 @@ function generateNewsletter() {
       }, 800 + idx * 300);
     })(i);
   }
+
+  // Add "+" button after last chip
+  setTimeout(function() {
+    var area = document.getElementById('nlChipsArea');
+    var addBtn = document.createElement('span');
+    addBtn.className = 'nl-chip-add';
+    addBtn.textContent = '+ Add';
+    addBtn.onclick = addNlChip;
+    area.appendChild(addBtn);
+  }, 800 + chips.length * 300 + 100);
 
   // Body sections appear
   var bodyParts = nl.body.split('<hr>');
