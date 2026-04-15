@@ -78,32 +78,45 @@ input,textarea{font-family:inherit;border:none;outline:none}
   font-size:12px;font-weight:600;color:#fff;flex-shrink:0;
 }
 .feed-meta{flex:1}
-.feed-author{font-size:13px;font-weight:600;color:#1a1a18}
-.feed-time{font-size:11px;color:#b4b2a9}
+.feed-author{font-size:15px;font-weight:600;color:#1a1a18}
+.feed-time{font-size:12px;color:#b4b2a9}
 .feed-badge{
-  font-size:9px;font-weight:600;padding:2px 7px;border-radius:4px;
+  font-size:10px;font-weight:600;padding:3px 8px;border-radius:4px;
   text-transform:uppercase;letter-spacing:.5px;
 }
-.feed-body{font-size:14px;color:#1a1a18;margin-bottom:8px;line-height:1.5}
+.feed-body{font-size:15px;color:#1a1a18;margin-bottom:8px;line-height:1.5}
 .feed-footer{display:flex;align-items:center;justify-content:space-between;padding-top:8px;border-top:1px solid #f0eeea}
-.feed-reply-count{font-size:11px;color:#888780;cursor:pointer;background:none;border:none;font-family:inherit}
+.feed-reply-count{font-size:12px;color:#888780;cursor:pointer;background:none;border:none;font-family:inherit}
 .feed-reply-count:hover{color:#534AB7}
+
+/* ── reply thread ── */
+.reply-thread{display:none;margin-top:10px;padding-top:10px;border-top:1px solid #f0eeea}
+.reply-thread.open{display:block}
+.reply-item{display:flex;gap:8px;margin-bottom:8px}
+.reply-avatar{width:24px;height:24px;border-radius:50%;font-size:9px;font-weight:600;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.reply-content{flex:1}
+.reply-author{font-size:13px;font-weight:600}
+.reply-text{font-size:14px;color:#555}
+.reply-input-row{display:flex;gap:8px;margin-top:8px}
+.reply-input{flex:1;border:1px solid #d3d1c7;border-radius:20px;padding:6px 14px;font-size:14px;outline:none;font-family:inherit}
+.reply-input:focus{border-color:#534AB7}
+.reply-send-btn{background:#534AB7;color:#fff;border:none;border-radius:50%;width:30px;height:30px;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 
 /* ── link preview ── */
 .link-preview{
   background:#f5f4f0;border-left:2px solid #534AB7;
   padding:8px 10px;border-radius:0 6px 6px 0;margin-bottom:6px;
 }
-.link-title{font-size:10px;font-weight:700;color:#1a1a18}
-.link-url{font-size:9px;color:#b4b2a9}
+.link-title{font-size:13px;font-weight:700;color:#1a1a18}
+.link-url{font-size:11px;color:#b4b2a9}
 
 /* ── newsletter card ── */
 .news-card{
   background:#EEEDFE;border-radius:10px;padding:12px;margin-bottom:6px;cursor:pointer;
 }
-.news-label{font-size:9px;color:#3C3489;font-weight:600;margin-bottom:2px}
-.news-title{font-size:12px;font-weight:700;color:#1a1a18;margin-bottom:4px}
-.news-preview{font-size:10px;color:#888780;margin-bottom:6px;line-height:1.4}
+.news-label{font-size:11px;color:#3C3489;font-weight:600;margin-bottom:2px}
+.news-title{font-size:14px;font-weight:700;color:#1a1a18;margin-bottom:4px}
+.news-preview{font-size:12px;color:#888780;margin-bottom:6px;line-height:1.4}
 .news-badge{
   display:inline-block;font-size:8px;font-weight:700;
   background:#EAF3DE;color:#27500A;padding:3px 8px;border-radius:10px;
@@ -113,8 +126,8 @@ input,textarea{font-family:inherit;border:none;outline:none}
 .event-card{
   background:#E6F1FB;border-radius:10px;padding:12px;margin-bottom:6px;
 }
-.event-title{font-size:12px;font-weight:700;color:#1a1a18;margin-bottom:2px}
-.event-sub{font-size:10px;color:#888780;margin-bottom:8px}
+.event-title{font-size:14px;font-weight:700;color:#1a1a18;margin-bottom:2px}
+.event-sub{font-size:12px;color:#888780;margin-bottom:8px}
 .btn-rsvp{
   font-size:10px;font-weight:700;color:#fff;background:#185FA5;
   padding:6px 16px;border-radius:6px;transition:all .15s;
@@ -667,11 +680,11 @@ var groupData = {
     pin:'Annual campaign open through Jan 15',
     categories:['All','Torah','Current events','Community','Politics'],
     discussions:[
-      {id:1,author:'Yosef G.',initials:'YG',avBg:'#FAEEDA',avColor:'#633806',cat:'Torah',catBg:'#E1F5EE',catColor:'#085041',time:'2h',body:'Interesting piece on the Rambam\'s approach to tefillah. He frames kavanah not as a feeling but as a cognitive act \u2014 directing the mind toward meaning, not mood.',link:{title:'The Rambam on daily prayer',url:'torahmusings.com'},replies:4},
-      {id:2,author:'David R.',initials:'DR',avBg:'#E1F5EE',avColor:'#085041',cat:'Sponsored',catBg:'#EAF3DE',catColor:'#27500A',time:'5h',body:'Sponsored this Shabbat\'s kiddush in honor of his anniversary. Mazal tov to David and Sarah!',link:null,replies:6},
-      {id:3,author:'Shimon L.',initials:'SL',avBg:'#E6F1FB',avColor:'#0C447C',cat:'Current events',catBg:'#FAEEDA',catColor:'#633806',time:'8h',body:'Anyone following the situation in the north? Heard conflicting reports this morning.',link:null,replies:11},
-      {id:4,author:'Keep Alive',initials:'KA',avBg:'#EAF3DE',avColor:'#27500A',cat:'Newsletter',catBg:'#EEEDFE',catColor:'#3C3489',time:'1d',body:'',link:null,replies:0,newsletter:{label:'Dec 10 \u2014 Parshat Vayechi',title:'Week in review',preview:'Shabbat times, upcoming events, parsha insights, and community updates.',badge:'You gave this week'}},
-      {id:5,author:'Rachel B.',initials:'RB',avBg:'#FAECE7',avColor:'#712B13',cat:'Event',catBg:'#E6F1FB',catColor:'#0C447C',time:'1d',body:'',link:null,replies:0,event:{title:'Chanukah party \u2014 Dec 28',sub:'Needs a sponsor',going:false,eventId:'e-feed-1'}}
+      {id:1,author:'Yosef G.',initials:'YG',avBg:'#FAEEDA',avColor:'#633806',cat:'Torah',catBg:'#E1F5EE',catColor:'#085041',time:'2h',body:'Interesting piece on the Rambam\'s approach to tefillah. He frames kavanah not as a feeling but as a cognitive act \u2014 directing the mind toward meaning, not mood.',link:{title:'The Rambam on daily prayer',url:'torahmusings.com'},replies:[{author:'Sarah K.',text:'Such a meaningful perspective, thank you for sharing.'},{author:'Michael R.',text:'Would love to discuss this further at the Thursday shiur.'},{author:'Leah P.',text:'This connects beautifully to what we learned last week.'},{author:'Avi T.',text:'Shared this with my chavrusa \u2014 great find.'}]},
+      {id:2,author:'David R.',initials:'DR',avBg:'#E1F5EE',avColor:'#085041',cat:'Sponsored',catBg:'#EAF3DE',catColor:'#27500A',time:'5h',body:'Sponsored this Shabbat\'s kiddush in honor of his anniversary. Mazal tov to David and Sarah!',link:null,replies:[{author:'Moshe K.',text:'Mazal tov! Looking forward to the kiddush.'},{author:'Rachel B.',text:'Such a beautiful way to celebrate. Mazal tov!'},{author:'Shimon L.',text:'Ad meah v\'esrim!'},{author:'Yosef G.',text:'Mazel tov to the whole family!'},{author:'Leah P.',text:'Can\'t wait!'},{author:'Avi T.',text:'Mazal tov David!'}]},
+      {id:3,author:'Shimon L.',initials:'SL',avBg:'#E6F1FB',avColor:'#0C447C',cat:'Current events',catBg:'#FAEEDA',catColor:'#633806',time:'8h',body:'Anyone following the situation in the north? Heard conflicting reports this morning.',link:null,replies:[{author:'Michael R.',text:'Yes, staying updated. Let\'s daven for everyone\'s safety.'},{author:'Avi T.',text:'My cousin lives up there \u2014 says things have calmed down.'}]},
+      {id:4,author:'Keep Alive',initials:'KA',avBg:'#EAF3DE',avColor:'#27500A',cat:'Newsletter',catBg:'#EEEDFE',catColor:'#3C3489',time:'1d',body:'',link:null,replies:[],newsletter:{label:'Dec 10 \u2014 Parshat Vayechi',title:'Week in review',preview:'Shabbat times, upcoming events, parsha insights, and community updates.',badge:'You gave this week'}},
+      {id:5,author:'Rachel B.',initials:'RB',avBg:'#FAECE7',avColor:'#712B13',cat:'Event',catBg:'#E6F1FB',catColor:'#0C447C',time:'1d',body:'',link:null,replies:[],event:{title:'Chanukah party \u2014 Dec 28',sub:'Needs a sponsor',going:false,eventId:'e-feed-1'}}
     ],
     events:[
       {id:'e1',day:'28',mon:'Dec',name:'Chanukah Party',sub:'7:00 PM \u00b7 Main hall',going:false},
@@ -701,11 +714,11 @@ var groupData = {
     pin:'Season opener Jan 20 \u2014 sign up now',
     categories:['All','Game day','Training','Off-field','Highlights'],
     discussions:[
-      {id:101,author:'Avi T.',initials:'AT',avBg:'#E6F1FB',avColor:'#0C447C',cat:'Game day',catBg:'#FAEEDA',catColor:'#633806',time:'3h',body:'Great game yesterday. Defense was solid in the second half. Let\'s keep that energy for next week.',link:null,replies:7},
-      {id:102,author:'Danny F.',initials:'DF',avBg:'#EAF3DE',avColor:'#27500A',cat:'Training',catBg:'#E1F5EE',catColor:'#085041',time:'6h',body:'Practice moved to Thursday this week \u2014 the field is booked Tuesday. Same time 7 PM.',link:null,replies:3},
-      {id:103,author:'Moshe K.',initials:'MK',avBg:'#EEEDFE',avColor:'#3C3489',cat:'Off-field',catBg:'#EEEDFE',catColor:'#3C3489',time:'1d',body:'Anyone have an extra pair of cleats size 10? Mine finally gave out.',link:null,replies:5},
-      {id:104,author:'Keep Alive',initials:'KA',avBg:'#EAF3DE',avColor:'#27500A',cat:'Highlights',catBg:'#E6F1FB',catColor:'#0C447C',time:'2d',body:'',link:null,replies:0,newsletter:{label:'Week 12 Recap',title:'Mets win 3-1',preview:'Match highlights, player of the week, and upcoming fixtures.',badge:'MVP: Avi T.'}},
-      {id:105,author:'Yoni B.',initials:'YB',avBg:'#FAECE7',avColor:'#712B13',cat:'Game day',catBg:'#FAEEDA',catColor:'#633806',time:'3d',body:'Bring your families to the next home game! We\'re setting up a BBQ on the sideline.',link:null,replies:9}
+      {id:101,author:'Avi T.',initials:'AT',avBg:'#E6F1FB',avColor:'#0C447C',cat:'Game day',catBg:'#FAEEDA',catColor:'#633806',time:'3h',body:'Great game yesterday. Defense was solid in the second half. Let\'s keep that energy for next week.',link:null,replies:[{author:'Danny F.',text:'Agreed! The second half was our best yet.'},{author:'Yoni B.',text:'Let\'s run that same formation next game.'}]},
+      {id:102,author:'Danny F.',initials:'DF',avBg:'#EAF3DE',avColor:'#27500A',cat:'Training',catBg:'#E1F5EE',catColor:'#085041',time:'6h',body:'Practice moved to Thursday this week \u2014 the field is booked Tuesday. Same time 7 PM.',link:null,replies:[{author:'Moshe K.',text:'Got it, thanks for the heads up.'}]},
+      {id:103,author:'Moshe K.',initials:'MK',avBg:'#EEEDFE',avColor:'#3C3489',cat:'Off-field',catBg:'#EEEDFE',catColor:'#3C3489',time:'1d',body:'Anyone have an extra pair of cleats size 10? Mine finally gave out.',link:null,replies:[{author:'Avi T.',text:'I have a pair! DM me.'},{author:'Yoni B.',text:'Check the lost and found at the field.'}]},
+      {id:104,author:'Keep Alive',initials:'KA',avBg:'#EAF3DE',avColor:'#27500A',cat:'Highlights',catBg:'#E6F1FB',catColor:'#0C447C',time:'2d',body:'',link:null,replies:[],newsletter:{label:'Week 12 Recap',title:'Mets win 3-1',preview:'Match highlights, player of the week, and upcoming fixtures.',badge:'MVP: Avi T.'}},
+      {id:105,author:'Yoni B.',initials:'YB',avBg:'#FAECE7',avColor:'#712B13',cat:'Game day',catBg:'#FAEEDA',catColor:'#633806',time:'3d',body:'Bring your families to the next home game! We\'re setting up a BBQ on the sideline.',link:null,replies:[{author:'Danny F.',text:'Love it! Count us in.'},{author:'Avi T.',text:'I\'ll bring the grill.'}]}
     ],
     events:[
       {id:'se1',day:'20',mon:'Jan',name:'Season Opener vs. Lions',sub:'4:00 PM \u00b7 Central Field',going:true},
@@ -765,8 +778,9 @@ function switchTab(name){
     else topBtns[i].classList.remove('active');
   }
 
-  // FAB
+  // FAB + banners (only on feed)
   document.getElementById('fab').classList.toggle('hidden',name!=='feed');
+  document.getElementById('pinBanner').style.display=name==='feed'?'':'none';
 
   // lazy render
   if(!renderedTabs[name]){
@@ -868,10 +882,21 @@ function renderDiscussions(containerId,limit){
       h+='</div>';
     }
 
-    if(d.replies>0){
-      h+='<div class="feed-footer"><button class="feed-reply-count" onclick="openReply('+i+')">';
-      h+=d.replies+' replies</button></div>';
+    h+='<div class="feed-footer"><button class="feed-reply-count" onclick="toggleReply('+d.id+')">';
+    h+=(d.replies.length>0?d.replies.length+' repl'+(d.replies.length===1?'y':'ies'):'Reply')+'</button></div>';
+
+    h+='<div class="reply-thread" id="replies-'+d.id+'">';
+    for(var r=0;r<d.replies.length;r++){
+      var rep=d.replies[r];
+      var rc=avatarColorFromName(rep.author);
+      h+='<div class="reply-item"><div class="reply-avatar" style="background:'+rc+'">'+nameInitials(rep.author)+'</div>';
+      h+='<div class="reply-content"><div class="reply-author">'+esc(rep.author)+'</div>';
+      h+='<div class="reply-text">'+esc(rep.text)+'</div></div></div>';
     }
+    h+='<div class="reply-input-row"><input class="reply-input" id="reply-input-'+d.id+'" placeholder="Write a reply...">';
+    h+='<button class="reply-send-btn" onclick="submitReply('+d.id+')">&#9650;</button></div>';
+    h+='</div>';
+
     h+='</div>';
   }
   document.getElementById(containerId).innerHTML=h;
@@ -1036,7 +1061,7 @@ function submitPost(){
   G().discussions.unshift({
     id:Date.now(),author:'Moshe K.',initials:'MK',avBg:'#EEEDFE',avColor:'#3C3489',
     cat:selectedPostCat,catBg:cc.bg,catColor:cc.c,
-    time:'now',body:body,link:linkObj,replies:0
+    time:'now',body:body,link:linkObj,replies:[]
   });
   document.getElementById('postBody').value='';
   document.getElementById('postLink').value='';
@@ -1045,35 +1070,29 @@ function submitPost(){
   toast('Posted!');
 }
 
-/* ── reply modal ── */
-function openReply(idx){
-  var filtered=[];
-  var items=G().discussions;
-  for(var i=0;i<items.length;i++){
-    if(currentFilter==='All'||items[i].cat===currentFilter)filtered.push(items[i]);
-  }
-  if(idx>=filtered.length)return;
-  replyTargetIdx=idx;
-  var d=filtered[idx];
-  document.getElementById('replyOriginal').innerHTML='<strong>'+esc(d.author)+'</strong> '+esc(d.body);
-  document.getElementById('replyBody').value='';
-  openModal('replyModal');
+/* ── inline reply threads ── */
+var avColors=['#FAEEDA','#E1F5EE','#E6F1FB','#EEEDFE','#FAECE7','#EAF3DE'];
+function avatarColorFromName(name){var h=0;for(var i=0;i<name.length;i++)h=name.charCodeAt(i)+((h<<5)-h);return avColors[Math.abs(h)%avColors.length]}
+function nameInitials(name){var p=name.split(' ');return(p[0][0]+(p.length>1?p[p.length-1][0]:'')).toUpperCase()}
+
+function toggleReply(id){
+  var el=document.getElementById('replies-'+id);
+  if(el)el.classList.toggle('open');
 }
 
-function submitReply(){
-  var body=document.getElementById('replyBody').value.trim();
-  if(!body){toast('Please write a reply');return}
-  // find the original discussion and increment replies
-  var filtered=[];
+function submitReply(id){
+  var input=document.getElementById('reply-input-'+id);
+  if(!input||!input.value.trim())return;
   var items=G().discussions;
   for(var i=0;i<items.length;i++){
-    if(currentFilter==='All'||items[i].cat===currentFilter)filtered.push(items[i]);
-  }
-  if(replyTargetIdx>=0&&replyTargetIdx<filtered.length){
-    filtered[replyTargetIdx].replies++;
+    if(items[i].id===id){
+      items[i].replies.push({author:'Moshe K.',text:input.value.trim()});
+      break;
+    }
   }
   renderDiscussions('feedList');
-  closeModal('replyModal');
+  var el=document.getElementById('replies-'+id);
+  if(el)el.classList.add('open');
   toast('Reply sent!');
 }
 
