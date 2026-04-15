@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Keep Alive &mdash; Create Your Group</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f5f4f0;--surface:#fff;--text:#1a1a18;--text-sec:#888780;--text-muted:#b4b2a9;
+  --border:#d3d1c7;--border-light:#ebebeb;
+  --purple:#534AB7;--purple-light:#EEEDFE;--purple-dark:#26215C;--purple-mid:#3C3489;
+  --green:#27500A;--green-bg:#EAF3DE;
+  --red:#E24B4A;--amber:#633806;--amber-bg:#FAEEDA;
+  --blue:#0C447C;--blue-bg:#E6F1FB;
+  --radius-card:10px;--radius-btn:8px;--radius-pill:20px;
+}
+html{background:var(--bg)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);background:var(--bg);min-height:100vh;padding:24px 16px 48px}
+
+/* ===== WIZARD SHELL ===== */
+.wizard{max-width:640px;margin:0 auto}
+
+/* ===== STEP INDICATOR ===== */
+.step-bar{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:28px;flex-wrap:nowrap}
+.step-label{font-size:11px;font-weight:500;padding:5px 14px;border-radius:var(--radius-pill);cursor:default;white-space:nowrap;transition:background .25s,color .25s}
+.step-label.active{background:var(--purple);color:var(--purple-light)}
+.step-label.completed{background:var(--green-bg);color:var(--green);cursor:pointer}
+.step-label.future{background:var(--bg);color:var(--text-muted)}
+.step-connector{width:10px;height:1px;background:var(--border);flex-shrink:0}
+
+/* ===== TRACK / PANELS ===== */
+.track-wrapper{overflow:hidden;border-radius:var(--radius-card)}
+.track{display:flex;transition:transform .4s ease}
+.panel{min-width:100%;background:var(--surface);border-radius:var(--radius-card);padding:32px 28px;border:1px solid var(--border-light)}
+
+/* ===== TYPOGRAPHY ===== */
+.panel h2{font-size:14px;font-weight:700;margin-bottom:4px}
+.panel .subtitle{font-size:11px;color:var(--text-muted);margin-bottom:20px;line-height:1.5}
+
+/* ===== FORM ELEMENTS ===== */
+label.field-label{display:block;font-size:11px;font-weight:600;margin-bottom:4px;color:var(--text)}
+input.field{width:100%;padding:9px 12px;font-size:13px;border:1px solid var(--border);border-radius:var(--radius-btn);outline:none;font-family:inherit;color:var(--text);background:var(--surface);transition:border .2s}
+input.field:focus{border-color:var(--purple)}
+input.field::placeholder{color:var(--text-muted)}
+.field-group{margin-bottom:16px}
+.field-error{font-size:10px;color:var(--red);margin-top:3px;min-height:14px}
+
+/* ===== BUTTONS ===== */
+.btn-primary{width:100%;padding:11px 0;font-size:13px;font-weight:600;background:var(--purple);color:#fff;border:none;border-radius:var(--radius-btn);cursor:pointer;font-family:inherit;transition:opacity .2s}
+.btn-primary:hover{opacity:.92}
+.btn-ghost{width:100%;padding:10px 0;font-size:12px;font-weight:500;background:transparent;color:var(--purple);border:1.5px solid var(--purple);border-radius:var(--radius-btn);cursor:pointer;font-family:inherit;margin-top:10px;transition:background .2s}
+.btn-ghost:hover{background:var(--purple-light)}
+
+/* ===== STEP 1 — TYPE GRID ===== */
+.type-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.type-card{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 8px;border:1.5px solid var(--border-light);border-radius:var(--radius-card);cursor:pointer;transition:border .2s,background .2s}
+.type-card:hover{border-color:var(--purple)}
+.type-card.selected{border:2px solid var(--purple);background:var(--purple-light)}
+.type-icon{width:24px;height:24px;border-radius:50%}
+.type-card span{font-size:10px;font-weight:700;color:var(--text)}
+
+/* ===== STEP 2 — NAV TABS ===== */
+.fixed-tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.fixed-pill{display:inline-flex;align-items:center;gap:4px;padding:5px 12px;font-size:11px;font-weight:500;background:var(--purple-light);color:var(--purple);border-radius:var(--radius-pill)}
+.fixed-pill .badge{font-size:8px;color:var(--text-muted);font-weight:400}
+.editable-tab{margin-bottom:12px}
+.editable-tab input{width:100%;padding:9px 12px;font-size:13px;border:1.5px dashed var(--purple);border-radius:var(--radius-btn);outline:none;font-family:inherit;color:var(--purple-dark);background:var(--surface)}
+.editable-tab input:focus{border-style:solid}
+.nav-note{font-size:10px;color:var(--text-muted);margin-top:8px;margin-bottom:20px}
+
+/* ===== STEP 3 — INVITES ===== */
+.invite-preview{background:var(--bg);border-radius:var(--radius-card);padding:14px 16px;margin-bottom:16px}
+.invite-preview-label{font-size:9px;text-transform:uppercase;letter-spacing:.6px;color:var(--text-muted);margin-bottom:10px;font-weight:600}
+.invite-row-preview{display:flex;align-items:center;gap:10px;padding:6px 0}
+.invite-avatar{width:28px;height:28px;border-radius:50%;background:var(--purple-light);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--purple)}
+.invite-info{flex:1;min-width:0}
+.invite-info .name{font-size:12px;font-weight:600}
+.invite-info .email{font-size:10px;color:var(--text-sec)}
+.status-badge{font-size:9px;font-weight:600;padding:3px 8px;border-radius:var(--radius-pill)}
+.status-joined{background:var(--green-bg);color:var(--green)}
+.status-invited{background:var(--blue-bg);color:var(--blue)}
+.status-pending{background:var(--amber-bg);color:var(--amber)}
+
+.invite-inputs{margin-bottom:12px}
+.invite-input-row{display:flex;gap:8px;margin-bottom:8px;align-items:center}
+.invite-input-row input{flex:1;padding:9px 12px;font-size:12px;border:1px solid var(--border);border-radius:var(--radius-btn);outline:none;font-family:inherit;color:var(--text)}
+.invite-input-row input:focus{border-color:var(--purple)}
+.invite-input-row input::placeholder{color:var(--text-muted)}
+.btn-remove-row{width:28px;height:28px;border:none;background:transparent;color:var(--text-muted);font-size:16px;cursor:pointer;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s,color .2s}
+.btn-remove-row:hover{background:#fde8e8;color:var(--red)}
+.btn-add-row{background:none;border:none;color:var(--purple);font-size:12px;font-weight:600;cursor:pointer;padding:4px 0;font-family:inherit}
+.btn-add-row:hover{text-decoration:underline}
+.invite-count{font-size:11px;color:var(--green);font-weight:500;margin:8px 0 16px}
+
+/* ===== STEP 4 — SUCCESS ===== */
+.success-center{text-align:center;padding:12px 0 0}
+.check-circle{width:56px;height:56px;border-radius:50%;background:var(--green-bg);margin:0 auto 16px;display:flex;align-items:center;justify-content:center}
+.check-circle .checkmark{width:22px;height:12px;border-left:3px solid var(--green);border-bottom:3px solid var(--green);transform:rotate(-45deg);animation:checkPop .4s ease-out}
+@keyframes checkPop{0%{opacity:0;transform:rotate(-45deg) scale(.5)}100%{opacity:1;transform:rotate(-45deg) scale(1)}}
+.success-center h2{font-size:14px;font-weight:700;margin-bottom:4px}
+.success-center .subtitle{font-size:11px;color:var(--text-muted);margin-bottom:20px}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.stat-card{background:var(--bg);border-radius:var(--radius-card);padding:14px;text-align:center}
+.stat-card .num{font-size:20px;font-weight:700;color:var(--purple)}
+.stat-card .label{font-size:10px;color:var(--text-sec);margin-top:2px}
+.first-step-card{background:var(--purple-light);border-radius:var(--radius-card);padding:16px;text-align:left;margin-bottom:20px}
+.first-step-card .title{font-size:12px;font-weight:700;color:var(--purple);margin-bottom:4px}
+.first-step-card .body{font-size:11px;color:var(--purple-dark);line-height:1.5}
+
+/* ===== CONFETTI ===== */
+.confetti-piece{position:fixed;width:8px;height:8px;border-radius:2px;top:-12px;z-index:9999;pointer-events:none;animation:confettiFall linear forwards}
+@keyframes confettiFall{
+  0%{opacity:1;transform:translateY(0) rotate(0deg)}
+  100%{opacity:0;transform:translateY(100vh) rotate(720deg)}
+}
+
+/* ===== TOAST ===== */
+.toast{position:fixed;bottom:-60px;left:50%;transform:translateX(-50%);background:#1a1a18;color:#fff;padding:10px 20px;border-radius:var(--radius-btn);font-size:12px;font-weight:500;z-index:10000;transition:bottom .35s ease;white-space:nowrap;font-family:inherit}
+.toast.show{bottom:28px}
+
+/* ===== MOBILE ===== */
+@media(max-width:520px){
+  body{padding:16px 10px 40px}
+  .step-label{font-size:9px;padding:4px 10px}
+  .step-connector{width:6px}
+  .panel{padding:22px 18px}
+  .type-grid{grid-template-columns:repeat(2,1fr)}
+  /* disable slide — show/hide */
+  .track{display:block;transform:none !important;transition:none}
+  .panel{display:none;min-width:0}
+  .panel.mobile-active{display:block}
+}
+</style>
+</head>
+<body>
+
+<div class="wizard">
+  <!-- Step indicator -->
+  <div class="step-bar" id="stepBar">
+    <span class="step-label active" data-step="0" onclick="stepClick(0)">Group</span>
+    <span class="step-connector"></span>
+    <span class="step-label future" data-step="1" onclick="stepClick(1)">Nav</span>
+    <span class="step-connector"></span>
+    <span class="step-label future" data-step="2" onclick="stepClick(2)">Invite</span>
+    <span class="step-connector"></span>
+    <span class="step-label future" data-step="3" onclick="stepClick(3)">Go live</span>
+  </div>
+
+  <!-- Panels -->
+  <div class="track-wrapper">
+    <div class="track" id="track">
+
+      <!-- STEP 1: Group -->
+      <div class="panel mobile-active" id="panel0">
+        <h2>What kind of group?</h2>
+        <p class="subtitle">Shapes the language throughout. Change any time.</p>
+
+        <div class="type-grid" id="typeGrid">
+          <div class="type-card" data-type="shul" onclick="selectType(this)">
+            <div class="type-icon" style="background:#EEEDFE"></div>
+            <span>Shul / minyan</span>
+          </div>
+          <div class="type-card" data-type="learning" onclick="selectType(this)">
+            <div class="type-icon" style="background:#E1F5EE"></div>
+            <span>Learning</span>
+          </div>
+          <div class="type-card" data-type="sports" onclick="selectType(this)">
+            <div class="type-icon" style="background:#FAEEDA"></div>
+            <span>Sports</span>
+          </div>
+          <div class="type-card" data-type="professional" onclick="selectType(this)">
+            <div class="type-icon" style="background:#FAECE7"></div>
+            <span>Professional</span>
+          </div>
+          <div class="type-card" data-type="friends" onclick="selectType(this)">
+            <div class="type-icon" style="background:#E6F1FB"></div>
+            <span>Friends</span>
+          </div>
+          <div class="type-card" data-type="other" onclick="selectType(this)">
+            <div class="type-icon" style="background:#EAF3DE"></div>
+            <span>Other</span>
+          </div>
+        </div>
+        <div class="field-error" id="typeError"></div>
+
+        <div class="field-group">
+          <label class="field-label" for="groupName">Group name</label>
+          <input class="field" id="groupName" type="text" placeholder="e.g. Kehilas Beis Yisroel" oninput="clearError('nameError')">
+          <div class="field-error" id="nameError"></div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="annualDues">Annual dues (optional)</label>
+          <input class="field" id="annualDues" type="text" placeholder="e.g. $360">
+        </div>
+
+        <button class="btn-primary" onclick="goToStep(1)">Continue</button>
+      </div>
+
+      <!-- STEP 2: Nav -->
+      <div class="panel" id="panel1">
+        <h2>Name your tabs</h2>
+        <p class="subtitle">Three are fixed. The last two are yours to name.</p>
+
+        <div class="fixed-tabs">
+          <span class="fixed-pill">Feed <span class="badge">fixed</span></span>
+          <span class="fixed-pill">Events <span class="badge">fixed</span></span>
+          <span class="fixed-pill">Sponsors <span class="badge">fixed</span></span>
+        </div>
+
+        <div class="editable-tab">
+          <input type="text" id="customTab1" placeholder="Custom tab 1">
+        </div>
+        <div class="editable-tab">
+          <input type="text" id="customTab2" placeholder="Custom tab 2">
+        </div>
+
+        <p class="nav-note">Members always see Feed, Events, Sponsors, Newsletter, Me.</p>
+
+        <button class="btn-primary" onclick="goToStep(2)">Continue</button>
+      </div>
+
+      <!-- STEP 3: Invite -->
+      <div class="panel" id="panel2">
+        <h2>Invite your members</h2>
+        <p class="subtitle">Add names and emails or phone numbers. Or import from a spreadsheet.</p>
+
+        <div class="invite-preview">
+          <div class="invite-preview-label">Members added</div>
+          <div class="invite-row-preview">
+            <div class="invite-avatar">YF</div>
+            <div class="invite-info"><div class="name">You (organizer)</div><div class="email">you@example.com</div></div>
+            <span class="status-badge status-joined">Joined</span>
+          </div>
+        </div>
+
+        <div class="invite-inputs" id="inviteInputs">
+          <div class="invite-input-row">
+            <input type="text" placeholder="Name" class="inv-name">
+            <input type="text" placeholder="Email or phone" class="inv-contact">
+            <button class="btn-remove-row" onclick="removeInviteRow(this)" title="Remove">&times;</button>
+          </div>
+        </div>
+
+        <button class="btn-add-row" onclick="addInviteRow()">+ Add another</button>
+        <div class="invite-count" id="inviteCount"></div>
+
+        <button class="btn-primary" onclick="goToStep(3)">Continue</button>
+        <button class="btn-ghost" onclick="showToast('Import coming soon')">Import from spreadsheet</button>
+      </div>
+
+      <!-- STEP 4: Go live -->
+      <div class="panel" id="panel3">
+        <div class="success-center">
+          <div class="check-circle" id="checkCircle"><div class="checkmark"></div></div>
+          <h2 id="liveHeading">Your group is live.</h2>
+          <p class="subtitle" id="liveSub">0 members invited. Your first newsletter goes out this Friday.</p>
+
+          <div class="stats-grid">
+            <div class="stat-card"><div class="num" id="statMembers">0</div><div class="label">members invited</div></div>
+            <div class="stat-card"><div class="num">30</div><div class="label">days free trial</div></div>
+          </div>
+
+          <div class="first-step-card">
+            <div class="title">Your first step</div>
+            <div class="body">Post a welcome message in the Feed. Members get a push notification and see it right away.</div>
+          </div>
+
+          <button class="btn-primary" onclick="goDashboard()">Go to my group</button>
+        </div>
+      </div>
+
+    </div><!-- /track -->
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ===== STATE ===== */
+var currentStep = 0;
+var maxReached  = 0;
+var selectedType = '';
+
+var tabSuggestions = {
+  shul:         ['Aliyos',    'Members'],
+  learning:     ['Resources', 'Members'],
+  sports:       ['Stats',     'Roster'],
+  professional: ['Directory', 'Resources'],
+  friends:      ['Photos',    'Members'],
+  other:        ['Custom 1',  'Custom 2']
+};
+
+/* ===== TYPE SELECTION ===== */
+function selectType(el) {
+  var cards = document.querySelectorAll('.type-card');
+  for (var i = 0; i < cards.length; i++) cards[i].classList.remove('selected');
+  el.classList.add('selected');
+  selectedType = el.getAttribute('data-type');
+  clearError('typeError');
+
+  var sug = tabSuggestions[selectedType] || tabSuggestions.other;
+  document.getElementById('customTab1').value = sug[0];
+  document.getElementById('customTab2').value = sug[1];
+}
+
+/* ===== STEP NAVIGATION ===== */
+function goToStep(idx) {
+  // validate current step before advancing
+  if (idx > currentStep) {
+    if (!validateStep(currentStep)) return;
+  }
+
+  currentStep = idx;
+  if (idx > maxReached) maxReached = idx;
+  updateStepBar();
+  slideTo(idx);
+
+  if (idx === 3) {
+    buildSummary();
+    spawnConfetti();
+    // restart checkmark animation
+    var cc = document.getElementById('checkCircle');
+    cc.innerHTML = '';
+    setTimeout(function(){ cc.innerHTML = '<div class="checkmark"></div>'; }, 50);
+  }
+}
+
+function stepClick(idx) {
+  if (idx <= maxReached) goToStep(idx);
+}
+
+function updateStepBar() {
+  var labels = document.querySelectorAll('.step-label');
+  for (var i = 0; i < labels.length; i++) {
+    labels[i].className = 'step-label';
+    if (i === currentStep) labels[i].classList.add('active');
+    else if (i < maxReached || (i <= maxReached && i < currentStep)) labels[i].classList.add('completed');
+    else labels[i].classList.add('future');
+  }
+}
+
+function slideTo(idx) {
+  var isMobile = window.innerWidth <= 520;
+  if (isMobile) {
+    var panels = document.querySelectorAll('.panel');
+    for (var i = 0; i < panels.length; i++) panels[i].classList.remove('mobile-active');
+    document.getElementById('panel' + idx).classList.add('mobile-active');
+  } else {
+    document.getElementById('track').style.transform = 'translateX(-' + (idx * 100) + '%)';
+  }
+}
+
+/* ===== VALIDATION ===== */
+function validateStep(step) {
+  if (step === 0) {
+    var valid = true;
+    if (!selectedType) {
+      document.getElementById('typeError').textContent = 'Please select a group type.';
+      valid = false;
+    }
+    var name = document.getElementById('groupName').value.trim();
+    if (!name) {
+      document.getElementById('nameError').textContent = 'Group name is required.';
+      valid = false;
+    }
+    return valid;
+  }
+  return true;
+}
+
+function clearError(id) {
+  document.getElementById(id).textContent = '';
+}
+
+/* ===== INVITE ROWS ===== */
+function addInviteRow() {
+  var container = document.getElementById('inviteInputs');
+  var row = document.createElement('div');
+  row.className = 'invite-input-row';
+  row.innerHTML = '<input type="text" placeholder="Name" class="inv-name">' +
+    '<input type="text" placeholder="Email or phone" class="inv-contact">' +
+    '<button class="btn-remove-row" onclick="removeInviteRow(this)" title="Remove">&times;</button>';
+  container.appendChild(row);
+  row.querySelector('.inv-name').focus();
+  updateInviteCount();
+}
+
+function removeInviteRow(btn) {
+  var row = btn.parentElement;
+  var container = document.getElementById('inviteInputs');
+  var rows = container.querySelectorAll('.invite-input-row');
+  if (rows.length <= 1) {
+    // clear instead of remove
+    row.querySelector('.inv-name').value = '';
+    row.querySelector('.inv-contact').value = '';
+  } else {
+    container.removeChild(row);
+  }
+  updateInviteCount();
+}
+
+function updateInviteCount() {
+  var contacts = document.querySelectorAll('.inv-contact');
+  var count = 0;
+  for (var i = 0; i < contacts.length; i++) {
+    if (contacts[i].value.trim()) count++;
+  }
+  var el = document.getElementById('inviteCount');
+  el.textContent = count > 0 ? count + ' people will be invited' : '';
+}
+
+// live update count on typing
+document.addEventListener('input', function(e) {
+  if (e.target.classList.contains('inv-contact') || e.target.classList.contains('inv-name')) {
+    updateInviteCount();
+  }
+});
+
+/* ===== SUMMARY (step 4) ===== */
+function buildSummary() {
+  var name = document.getElementById('groupName').value.trim() || 'Your group';
+  var contacts = document.querySelectorAll('.inv-contact');
+  var count = 0;
+  for (var i = 0; i < contacts.length; i++) {
+    if (contacts[i].value.trim()) count++;
+  }
+  document.getElementById('liveHeading').textContent = name + ' is live.';
+  document.getElementById('liveSub').textContent = count + ' member' + (count !== 1 ? 's' : '') + ' invited. Your first newsletter goes out this Friday.';
+  document.getElementById('statMembers').textContent = count;
+}
+
+/* ===== CONFETTI ===== */
+function spawnConfetti() {
+  var colors = ['#534AB7','#EEEDFE','#E1F5EE','#FAEEDA','#E6F1FB','#EAF3DE','#27500A'];
+  for (var i = 0; i < 18; i++) {
+    var piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.background = colors[i % colors.length];
+    piece.style.left = (Math.random() * 100) + 'vw';
+    var dur = 0.8 + Math.random() * 0.6;
+    piece.style.animationDuration = dur + 's';
+    piece.style.width = (6 + Math.random() * 6) + 'px';
+    piece.style.height = (6 + Math.random() * 6) + 'px';
+    piece.style.animationDelay = (Math.random() * 0.3) + 's';
+    document.body.appendChild(piece);
+    (function(p, d) {
+      setTimeout(function(){ if (p.parentNode) p.parentNode.removeChild(p); }, (d + 0.3) * 1000 + 400);
+    })(piece, dur);
+  }
+}
+
+/* ===== TOAST ===== */
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 3000);
+}
+
+/* ===== ACTIONS ===== */
+function copyOnboardInviteLink() {
+  var url = window.location.href;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(function(){ showToast('Link copied to clipboard'); });
+  } else {
+    showToast('Could not copy link');
+  }
+}
+
+function goDashboard() {
+  showToast('Taking you to your group...');
+  setTimeout(function(){ window.location.href = 'KeepAliveAdmin.html'; }, 1800);
+}
+
+/* ===== RESIZE HANDLER ===== */
+window.addEventListener('resize', function() {
+  slideTo(currentStep);
+});
+</script>
+</body>
+</html>

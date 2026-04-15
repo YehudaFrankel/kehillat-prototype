@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Keep Alive — Member</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:#f5f4f0;color:#1a1a18;line-height:1.45;
+  min-height:100vh;
+}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+input,textarea{font-family:inherit;border:none;outline:none}
+
+/* ── shell ── */
+.shell{max-width:680px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
+
+/* ── topbar ── */
+.topbar{
+  background:#fff;border-bottom:1px solid #ebebeb;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 16px;position:sticky;top:0;z-index:100;
+}
+.topbar-left{display:flex;flex-direction:column;gap:1px}
+.topbar-name{font-size:15px;font-weight:700;color:#1a1a18}
+.topbar-sub{font-size:10px;color:#b4b2a9}
+.topbar-avatar{
+  width:32px;height:32px;border-radius:50%;
+  background:#EEEDFE;color:#3C3489;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;flex-shrink:0;
+}
+
+/* ── desktop nav (in topbar) ── */
+.topbar-nav{display:none;gap:4px;align-items:center}
+.topbar-nav button{
+  font-size:12px;font-weight:600;padding:6px 14px;border-radius:8px;
+  color:#888780;transition:all .15s;
+}
+.topbar-nav button.active{background:#EEEDFE;color:#534AB7}
+.topbar-nav button:hover:not(.active){background:#f5f4f0}
+
+/* ── pin banner ── */
+.pin-banner{
+  background:#EEEDFE;display:flex;align-items:center;gap:8px;
+  padding:10px 16px;
+}
+.pin-dot{width:6px;height:6px;border-radius:50%;background:#534AB7;flex-shrink:0}
+.pin-text{font-size:10px;font-weight:700;color:#3C3489}
+
+/* ── content area ── */
+.content{flex:1;overflow-y:auto;padding-bottom:72px}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* ── category pills ── */
+.cat-pills{
+  display:flex;gap:6px;padding:10px 16px;overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+}
+.cat-pills::-webkit-scrollbar{display:none}
+.cat-pill{
+  font-size:10px;font-weight:600;padding:5px 12px;border-radius:20px;
+  background:#fff;color:#888780;border:1px solid #d3d1c7;
+  white-space:nowrap;transition:all .15s;flex-shrink:0;
+}
+.cat-pill.active{background:#534AB7;color:#fff;border-color:#534AB7}
+
+/* ── feed item ── */
+.feed-item{padding:14px 16px;border-bottom:1px solid #f0eeea}
+.feed-header{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.feed-av{
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;font-weight:700;flex-shrink:0;
+}
+.feed-author{font-size:11px;font-weight:700;color:#1a1a18}
+.feed-badge{
+  font-size:8px;font-weight:700;padding:2px 7px;border-radius:10px;
+  text-transform:uppercase;letter-spacing:.3px;
+}
+.feed-time{font-size:9px;color:#b4b2a9;margin-left:auto;flex-shrink:0}
+.feed-body{font-size:11px;color:#1a1a18;margin-bottom:6px;line-height:1.5}
+.feed-footer{font-size:9px;color:#b4b2a9;display:flex;align-items:center;gap:4px;cursor:pointer}
+.feed-footer:hover{color:#534AB7}
+
+/* ── link preview ── */
+.link-preview{
+  background:#f5f4f0;border-left:2px solid #534AB7;
+  padding:8px 10px;border-radius:0 6px 6px 0;margin-bottom:6px;
+}
+.link-title{font-size:10px;font-weight:700;color:#1a1a18}
+.link-url{font-size:9px;color:#b4b2a9}
+
+/* ── newsletter card ── */
+.news-card{
+  background:#EEEDFE;border-radius:10px;padding:12px;margin-bottom:6px;cursor:pointer;
+}
+.news-label{font-size:9px;color:#3C3489;font-weight:600;margin-bottom:2px}
+.news-title{font-size:12px;font-weight:700;color:#1a1a18;margin-bottom:4px}
+.news-preview{font-size:10px;color:#888780;margin-bottom:6px;line-height:1.4}
+.news-badge{
+  display:inline-block;font-size:8px;font-weight:700;
+  background:#EAF3DE;color:#27500A;padding:3px 8px;border-radius:10px;
+}
+
+/* ── event card ── */
+.event-card{
+  background:#E6F1FB;border-radius:10px;padding:12px;margin-bottom:6px;
+}
+.event-title{font-size:12px;font-weight:700;color:#1a1a18;margin-bottom:2px}
+.event-sub{font-size:10px;color:#888780;margin-bottom:8px}
+.btn-rsvp{
+  font-size:10px;font-weight:700;color:#fff;background:#185FA5;
+  padding:6px 16px;border-radius:6px;transition:all .15s;
+}
+.btn-rsvp.going{background:#27500A}
+.btn-rsvp:hover{opacity:.85}
+
+/* ── compose bar ── */
+.compose-bar{
+  display:flex;align-items:center;gap:8px;padding:10px 16px;
+  background:#fff;border-top:1px solid #ebebeb;
+}
+.compose-input{
+  flex:1;background:#f5f4f0;border-radius:20px;padding:8px 14px;
+  font-size:11px;color:#1a1a18;
+}
+.compose-input::placeholder{color:#b4b2a9}
+.compose-send{
+  width:32px;height:32px;border-radius:50%;background:#534AB7;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.compose-send svg{width:14px;height:14px}
+
+/* ── bottom nav (mobile) ── */
+.bottom-nav{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:680px;
+  background:#fff;border-top:1px solid #ebebeb;
+  display:flex;justify-content:space-around;padding:6px 0 env(safe-area-inset-bottom,4px);
+  z-index:200;
+}
+.nav-item{
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  padding:4px 0;min-width:48px;position:relative;
+}
+.nav-item .nav-bar{
+  position:absolute;top:-6px;left:25%;right:25%;height:2px;
+  border-radius:1px;background:transparent;transition:background .15s;
+}
+.nav-item.active .nav-bar{background:#534AB7}
+.nav-icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center}
+.nav-icon svg{width:18px;height:18px}
+.nav-item .nav-label{font-size:9px;font-weight:600;color:#b4b2a9}
+.nav-item.active .nav-label{color:#534AB7}
+.nav-item.active svg{color:#534AB7}
+.nav-item:not(.active) svg{color:#b4b2a9}
+
+/* ── FAB ── */
+.fab{
+  position:fixed;bottom:76px;right:calc(50% - 340px + 16px);
+  width:48px;height:48px;border-radius:50%;
+  background:#27500A;color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;font-weight:300;
+  box-shadow:0 2px 8px rgba(0,0,0,.18);z-index:150;
+  transition:transform .15s;
+}
+.fab:hover{transform:scale(1.08)}
+.fab.hidden{display:none}
+
+/* ── events tab ── */
+.event-list-item{
+  display:flex;gap:12px;align-items:flex-start;
+  padding:12px 16px;border-bottom:1px solid #f0eeea;
+}
+.event-date-box{
+  min-width:40px;text-align:center;
+  background:#f5f4f0;border-radius:8px;padding:6px 8px;
+}
+.event-date-day{font-size:16px;font-weight:800;color:#1a1a18;line-height:1}
+.event-date-mon{font-size:9px;font-weight:600;color:#888780;text-transform:uppercase}
+.event-info{flex:1}
+.event-info-name{font-size:12px;font-weight:700;color:#1a1a18}
+.event-info-sub{font-size:10px;color:#888780;margin:2px 0 6px}
+
+/* ── sponsors tab ── */
+.ded-card{
+  padding:12px 16px;border-bottom:1px solid #f0eeea;
+  display:flex;gap:10px;align-items:flex-start;
+}
+.ded-icon{
+  width:28px;height:28px;border-radius:50%;
+  background:#FAEEDA;color:#633806;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;flex-shrink:0;
+}
+.ded-body{flex:1}
+.ded-title{font-size:11px;font-weight:700;color:#1a1a18}
+.ded-sub{font-size:10px;color:#888780;margin-top:1px}
+
+/* ── newsletter tab ── */
+.nl-card{
+  margin:12px 16px;background:#fff;border:1px solid #ebebeb;
+  border-radius:10px;padding:14px;cursor:pointer;transition:box-shadow .15s;
+}
+.nl-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.nl-date{font-size:9px;color:#b4b2a9;margin-bottom:2px}
+.nl-title{font-size:13px;font-weight:700;color:#1a1a18;margin-bottom:4px}
+.nl-excerpt{font-size:10px;color:#888780;line-height:1.4}
+
+/* ── me tab ── */
+.me-section{padding:16px}
+.me-card{background:#fff;border:1px solid #ebebeb;border-radius:10px;padding:16px;margin-bottom:12px}
+.me-card.purple{background:#EEEDFE;border-color:#EEEDFE}
+.me-card h3{font-size:13px;font-weight:700;color:#1a1a18;margin-bottom:10px}
+.me-row{display:flex;justify-content:space-between;padding:5px 0;font-size:11px}
+.me-row-label{color:#888780}
+.me-row-value{font-weight:700;color:#1a1a18}
+.me-avatar-big{
+  width:56px;height:56px;border-radius:50%;
+  background:#EEEDFE;color:#3C3489;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;font-weight:700;margin-bottom:10px;
+}
+.me-name{font-size:16px;font-weight:700;margin-bottom:2px}
+.me-email{font-size:11px;color:#888780;margin-bottom:12px}
+.btn-sponsor{
+  display:block;width:100%;text-align:center;
+  font-size:11px;font-weight:700;color:#534AB7;
+  background:#fff;border:1px solid #534AB7;
+  padding:8px;border-radius:8px;margin-top:10px;transition:all .15s;
+}
+.btn-sponsor:hover{background:#534AB7;color:#fff}
+.btn-outline{
+  font-size:10px;font-weight:600;color:#888780;
+  border:1px solid #d3d1c7;padding:6px 14px;border-radius:6px;
+  transition:all .15s;
+}
+.btn-outline:hover{border-color:#534AB7;color:#534AB7}
+
+/* ── modals ── */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;
+  display:none;align-items:center;justify-content:center;
+  padding:20px;
+}
+.modal-overlay.open{display:flex}
+.modal-card{
+  background:#fff;border-radius:14px;width:100%;max-width:440px;
+  max-height:85vh;overflow-y:auto;
+  box-shadow:0 8px 30px rgba(0,0,0,.18);
+  animation:modalIn .2s ease;
+}
+@keyframes modalIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.modal-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;border-bottom:1px solid #ebebeb;
+}
+.modal-header h3{font-size:14px;font-weight:700}
+.modal-close{font-size:18px;color:#b4b2a9;padding:4px;line-height:1}
+.modal-close:hover{color:#1a1a18}
+.modal-body{padding:16px}
+.modal-body textarea{
+  width:100%;min-height:80px;resize:vertical;
+  border:1px solid #d3d1c7;border-radius:8px;padding:10px;
+  font-size:11px;color:#1a1a18;background:#fff;
+}
+.modal-body textarea:focus{border-color:#534AB7}
+.modal-body input[type=text]{
+  width:100%;border:1px solid #d3d1c7;border-radius:8px;
+  padding:8px 10px;font-size:11px;color:#1a1a18;
+}
+.modal-body input[type=text]:focus{border-color:#534AB7}
+.modal-body label{font-size:10px;font-weight:600;color:#888780;display:block;margin-bottom:4px}
+.modal-body .field{margin-bottom:12px}
+.modal-footer{padding:0 16px 16px;display:flex;justify-content:flex-end;gap:8px}
+.btn-primary{
+  font-size:11px;font-weight:700;color:#fff;background:#534AB7;
+  padding:8px 20px;border-radius:8px;transition:all .15s;
+}
+.btn-primary:hover{background:#3C3489}
+.btn-cancel{font-size:11px;font-weight:600;color:#888780;padding:8px 14px}
+
+/* ── modal pills ── */
+.modal-pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.modal-pill{
+  font-size:10px;font-weight:600;padding:5px 12px;border-radius:20px;
+  background:#f5f4f0;color:#888780;border:1px solid #d3d1c7;
+  transition:all .15s;
+}
+.modal-pill.active{background:#534AB7;color:#fff;border-color:#534AB7}
+
+/* ── amount chips ── */
+.amount-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.amount-chip{
+  font-size:11px;font-weight:700;padding:6px 14px;border-radius:8px;
+  background:#f5f4f0;color:#1a1a18;border:1px solid #d3d1c7;
+  transition:all .15s;
+}
+.amount-chip.active{background:#534AB7;color:#fff;border-color:#534AB7}
+.custom-amount{display:none;margin-bottom:8px}
+.custom-amount.show{display:block}
+
+/* ── newsletter modal ── */
+.nl-modal-label{font-size:10px;color:#534AB7;font-weight:600;margin-bottom:2px}
+.nl-modal-title{font-size:18px;font-weight:800;margin-bottom:2px}
+.nl-modal-date{font-size:10px;color:#b4b2a9;margin-bottom:14px}
+.nl-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.nl-chip{
+  font-size:9px;font-weight:700;padding:4px 10px;border-radius:12px;
+}
+.nl-modal-body{font-size:11px;color:#1a1a18;line-height:1.6;margin-bottom:14px}
+.nl-modal-body p{margin-bottom:8px}
+.nl-modal-footer{
+  font-size:10px;color:#b4b2a9;text-align:center;
+  padding-top:10px;border-top:1px solid #f0eeea;
+}
+
+/* ── reply modal ── */
+.reply-original{
+  background:#f5f4f0;border-radius:8px;padding:10px;
+  margin-bottom:12px;font-size:10px;color:#888780;line-height:1.4;
+}
+.reply-original strong{color:#1a1a18}
+
+/* ── toast ── */
+.toast{
+  position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:#1a1a18;color:#fff;font-size:11px;font-weight:600;
+  padding:8px 20px;border-radius:20px;z-index:600;
+  opacity:0;transition:all .25s ease;pointer-events:none;
+  white-space:nowrap;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── yahrzeit ── */
+.yahr-row{display:flex;justify-content:space-between;padding:6px 0;font-size:11px;border-bottom:1px solid #f0eeea}
+.yahr-row:last-child{border:none}
+.yahr-name{font-weight:600;color:#1a1a18}
+.yahr-date{color:#888780;font-size:10px}
+
+/* ── section headers ── */
+.section-head{
+  font-size:12px;font-weight:700;color:#1a1a18;
+  padding:12px 16px 6px;
+}
+
+/* ── desktop ── */
+@media(min-width:850px){
+  .shell{max-width:100%;flex-direction:column}
+  .topbar{padding:10px 32px;max-width:100%}
+  .topbar-nav{display:flex}
+  .bottom-nav{display:none}
+  .content{padding-bottom:0}
+  .fab{bottom:28px;right:32px}
+  .desktop-wrap{display:flex;max-width:1100px;margin:0 auto;width:100%;gap:0}
+  .desktop-main{flex:2.2;min-width:0}
+  .desktop-sidebar{
+    flex:1;background:#faf9f6;border-left:1px solid #ebebeb;
+    padding:16px;min-width:260px;max-width:340px;
+  }
+  .sidebar-card{
+    background:#fff;border:1px solid #ebebeb;border-radius:10px;
+    padding:14px;margin-bottom:12px;
+  }
+  .sidebar-card.purple{background:#EEEDFE;border-color:#EEEDFE}
+  .sidebar-card h4{font-size:12px;font-weight:700;color:#1a1a18;margin-bottom:8px}
+  .sidebar-event{display:flex;gap:8px;align-items:flex-start;margin-bottom:10px}
+  .sidebar-event:last-child{margin-bottom:0}
+  .sidebar-date{text-align:center;min-width:32px}
+  .sidebar-date .day{font-size:14px;font-weight:800;line-height:1}
+  .sidebar-date .mon{font-size:8px;color:#888780;text-transform:uppercase;font-weight:600}
+  .sidebar-event-info{flex:1}
+  .sidebar-event-name{font-size:11px;font-weight:700}
+  .sidebar-event-sub{font-size:9px;color:#888780}
+  .sidebar-event .btn-rsvp{font-size:9px;padding:4px 10px}
+  .sidebar-stat{display:flex;justify-content:space-between;padding:4px 0;font-size:11px}
+  .sidebar-stat-label{color:#888780}
+  .sidebar-stat-val{font-weight:700}
+  .pin-banner{max-width:1100px;margin:0 auto;width:100%}
+  .compose-bar{max-width:1100px;margin:0 auto}
+}
+@media(max-width:849px){
+  .desktop-sidebar{display:none}
+  .desktop-wrap{display:block}
+}
+</style>
+</head>
+<body>
+
+<!-- Topbar -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-name" id="topbarName">Kehillat Shalom</div>
+    <div class="topbar-sub" id="topbarSub">84 members</div>
+  </div>
+  <div class="topbar-nav" id="topbarNav">
+    <button class="active" onclick="switchTab('feed')">Feed</button>
+    <button onclick="switchTab('events')">Events</button>
+    <button onclick="switchTab('sponsors')">Sponsors</button>
+    <button onclick="switchTab('newsletter')">Newsletter</button>
+    <button onclick="switchTab('me')">Me</button>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px">
+    <button class="btn-outline" onclick="toggleGroupSwitcher()" id="groupSwitchBtn" style="font-size:9px">Switch group</button>
+    <div class="topbar-avatar">MK</div>
+  </div>
+</div>
+
+<!-- Pin banner -->
+<div class="pin-banner" id="pinBanner">
+  <div class="pin-dot"></div>
+  <div class="pin-text" id="pinText">Annual campaign open through Jan 15</div>
+</div>
+
+<!-- Desktop wrapper -->
+<div class="desktop-wrap">
+<div class="desktop-main">
+
+<!-- Content -->
+<div class="content">
+
+  <!-- Feed tab -->
+  <div class="tab-panel active" id="tab-feed">
+    <div class="cat-pills" id="catPills"></div>
+    <div id="feedList"></div>
+    <div class="compose-bar">
+      <div class="topbar-avatar" style="width:28px;height:28px;font-size:10px">MK</div>
+      <input class="compose-input" placeholder="Share something..." readonly onclick="openModal('postModal')">
+      <button class="compose-send" onclick="openModal('postModal')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Events tab -->
+  <div class="tab-panel" id="tab-events">
+    <div class="section-head">Upcoming Events</div>
+    <div id="eventsList"></div>
+  </div>
+
+  <!-- Sponsors tab -->
+  <div class="tab-panel" id="tab-sponsors">
+    <div style="padding:12px 16px;display:flex;justify-content:space-between;align-items:center">
+      <div class="section-head" style="padding:0">Recent Dedications</div>
+      <button class="btn-primary" style="font-size:10px;padding:6px 14px" onclick="openModal('dedModal')">Make a dedication</button>
+    </div>
+    <div id="dedList"></div>
+  </div>
+
+  <!-- Newsletter tab -->
+  <div class="tab-panel" id="tab-newsletter">
+    <div class="section-head">Newsletters</div>
+    <div id="nlList"></div>
+  </div>
+
+  <!-- Me tab -->
+  <div class="tab-panel" id="tab-me">
+    <div class="me-section">
+      <div class="me-card" style="text-align:center">
+        <div class="me-avatar-big" style="margin:0 auto 10px">MK</div>
+        <div class="me-name">Moshe K.</div>
+        <div class="me-email">moshe@email.com</div>
+        <button class="btn-outline" onclick="copyInviteLink()">Copy invite link</button>
+      </div>
+      <div class="me-card purple">
+        <h3>Your membership</h3>
+        <div class="me-row"><span class="me-row-label">Member since</span><span class="me-row-value">2019</span></div>
+        <div class="me-row"><span class="me-row-label">Given</span><span class="me-row-value">$540</span></div>
+        <div class="me-row"><span class="me-row-label">Events attended</span><span class="me-row-value">18</span></div>
+        <div class="me-row"><span class="me-row-label">Aliyos</span><span class="me-row-value">3</span></div>
+        <button class="btn-sponsor" onclick="openModal('dedModal')">Become a sponsor</button>
+      </div>
+      <div class="me-card">
+        <h3>Yahrzeits this week</h3>
+        <div id="meYahrzeits"></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /desktop-main -->
+
+<!-- Desktop sidebar -->
+<div class="desktop-sidebar">
+  <div class="sidebar-card">
+    <h4>Coming up</h4>
+    <div id="sidebarEvents"></div>
+  </div>
+  <div class="sidebar-card purple">
+    <h4>Your membership</h4>
+    <div class="sidebar-stat"><span class="sidebar-stat-label">Member since</span><span class="sidebar-stat-val">2019</span></div>
+    <div class="sidebar-stat"><span class="sidebar-stat-label">Given</span><span class="sidebar-stat-val">$540</span></div>
+    <div class="sidebar-stat"><span class="sidebar-stat-label">Events</span><span class="sidebar-stat-val">18</span></div>
+    <div class="sidebar-stat"><span class="sidebar-stat-label">Aliyos</span><span class="sidebar-stat-val">3</span></div>
+    <button class="btn-sponsor" onclick="openModal('dedModal')">Become a sponsor</button>
+  </div>
+  <div class="sidebar-card">
+    <h4>Yahrzeits this week</h4>
+    <div id="sidebarYahrzeits"></div>
+  </div>
+</div>
+</div><!-- /desktop-wrap -->
+
+<!-- FAB -->
+<button class="fab" id="fab" onclick="openModal('postModal')">+</button>
+
+<!-- Bottom nav (mobile) -->
+<div class="bottom-nav" id="bottomNav">
+  <button class="nav-item active" onclick="switchTab('feed')">
+    <div class="nav-bar"></div>
+    <div class="nav-icon"><svg viewBox="0 0 20 20" fill="currentColor"><rect x="2" y="2" width="16" height="5" rx="1.5"/><rect x="2" y="9" width="16" height="9" rx="1.5"/></svg></div>
+    <span class="nav-label">Feed</span>
+  </button>
+  <button class="nav-item" onclick="switchTab('events')">
+    <div class="nav-bar"></div>
+    <div class="nav-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="7.5"/><path d="M10 6v4l3 2"/></svg></div>
+    <span class="nav-label">Events</span>
+  </button>
+  <button class="nav-item" onclick="switchTab('sponsors')">
+    <div class="nav-bar"></div>
+    <div class="nav-icon"><svg viewBox="0 0 20 20" fill="currentColor"><rect x="3" y="4" width="14" height="2" rx="1"/><rect x="3" y="9" width="14" height="2" rx="1"/><rect x="3" y="14" width="10" height="2" rx="1"/></svg></div>
+    <span class="nav-label">Sponsors</span>
+  </button>
+  <button class="nav-item" onclick="switchTab('newsletter')">
+    <div class="nav-bar"></div>
+    <div class="nav-icon"><svg viewBox="0 0 20 20" fill="currentColor"><rect x="3" y="3" width="14" height="2" rx="1"/><rect x="3" y="7.5" width="14" height="2" rx="1"/><rect x="3" y="12" width="9" height="2" rx="1"/><rect x="3" y="16" width="6" height="2" rx="1"/></svg></div>
+    <span class="nav-label">Newsletter</span>
+  </button>
+  <button class="nav-item" onclick="switchTab('me')">
+    <div class="nav-bar"></div>
+    <div class="nav-icon"><svg viewBox="0 0 20 20" fill="currentColor"><circle cx="10" cy="7" r="3.5"/><path d="M3.5 17.5c0-3.6 2.9-6.5 6.5-6.5s6.5 2.9 6.5 6.5"/></svg></div>
+    <span class="nav-label">Me</span>
+  </button>
+</div>
+
+<!-- Post Modal -->
+<div class="modal-overlay" id="postModal" onclick="closeModalOverlay(event,'postModal')">
+  <div class="modal-card" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h3>New post</h3>
+      <button class="modal-close" onclick="closeModal('postModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-pills" id="postCatPills"></div>
+      <div class="field">
+        <textarea id="postBody" placeholder="What's on your mind?"></textarea>
+      </div>
+      <div class="field">
+        <label>Link (optional)</label>
+        <input type="text" id="postLink" placeholder="https://...">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('postModal')">Cancel</button>
+      <button class="btn-primary" onclick="submitPost()">Post</button>
+    </div>
+  </div>
+</div>
+
+<!-- Reply Modal -->
+<div class="modal-overlay" id="replyModal" onclick="closeModalOverlay(event,'replyModal')">
+  <div class="modal-card" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Reply</h3>
+      <button class="modal-close" onclick="closeModal('replyModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="reply-original" id="replyOriginal"></div>
+      <div class="field">
+        <textarea id="replyBody" placeholder="Write a reply..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('replyModal')">Cancel</button>
+      <button class="btn-primary" onclick="submitReply()">Reply</button>
+    </div>
+  </div>
+</div>
+
+<!-- Newsletter Modal -->
+<div class="modal-overlay" id="nlModal" onclick="closeModalOverlay(event,'nlModal')">
+  <div class="modal-card" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Newsletter</h3>
+      <button class="modal-close" onclick="closeModal('nlModal')">&times;</button>
+    </div>
+    <div class="modal-body" id="nlModalBody"></div>
+  </div>
+</div>
+
+<!-- Dedication Modal -->
+<div class="modal-overlay" id="dedModal" onclick="closeModalOverlay(event,'dedModal')">
+  <div class="modal-card" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Make a dedication</h3>
+      <button class="modal-close" onclick="closeModal('dedModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <label>Type</label>
+      <div class="modal-pills" id="dedTypePills"></div>
+      <div class="field">
+        <label>Honoree name</label>
+        <input type="text" id="dedHonoree" placeholder="In honor of...">
+      </div>
+      <div class="field">
+        <label>Message (optional)</label>
+        <textarea id="dedMessage" placeholder="Add a personal note..."></textarea>
+      </div>
+      <label>Amount</label>
+      <div class="amount-chips" id="amountChips">
+        <button class="amount-chip" onclick="selectAmount(54,this)">$54</button>
+        <button class="amount-chip" onclick="selectAmount(100,this)">$100</button>
+        <button class="amount-chip active" onclick="selectAmount(180,this)">$180</button>
+        <button class="amount-chip" onclick="selectAmount(-1,this)">Other</button>
+      </div>
+      <div class="custom-amount" id="customAmount">
+        <input type="text" id="dedCustomAmt" placeholder="Enter amount">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('dedModal')">Cancel</button>
+      <button class="btn-primary" onclick="submitDedication()">Submit</button>
+    </div>
+  </div>
+</div>
+
+<!-- Group switcher modal -->
+<div class="modal-overlay" id="groupModal" onclick="closeModalOverlay(event,'groupModal')">
+  <div class="modal-card" onclick="event.stopPropagation()" style="max-width:320px">
+    <div class="modal-header">
+      <h3>Switch group</h3>
+      <button class="modal-close" onclick="closeModal('groupModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <button class="modal-pill" style="display:block;width:100%;text-align:left;margin-bottom:6px;padding:10px 14px" onclick="switchGroup('shul')">Kehillat Shalom</button>
+      <button class="modal-pill" style="display:block;width:100%;text-align:left;padding:10px 14px" onclick="switchGroup('sports')">Maccabi Mets</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ── data ── */
+var currentGroup = 'shul';
+var currentTab = 'feed';
+var currentFilter = 'All';
+var selectedPostCat = 'Torah';
+var selectedDedType = 'Shabbat kiddush';
+var selectedAmount = 180;
+var replyTargetIdx = -1;
+var renderedTabs = {feed:false,events:false,sponsors:false,newsletter:false,me:false};
+
+var groupData = {
+  shul: {
+    name:'Kehillat Shalom', members:84,
+    pin:'Annual campaign open through Jan 15',
+    categories:['All','Torah','Current events','Community','Politics'],
+    discussions:[
+      {id:1,author:'Yosef G.',initials:'YG',avBg:'#FAEEDA',avColor:'#633806',cat:'Torah',catBg:'#E1F5EE',catColor:'#085041',time:'2h',body:'Interesting piece on the Rambam\'s approach to tefillah. He frames kavanah not as a feeling but as a cognitive act \u2014 directing the mind toward meaning, not mood.',link:{title:'The Rambam on daily prayer',url:'torahmusings.com'},replies:4},
+      {id:2,author:'David R.',initials:'DR',avBg:'#E1F5EE',avColor:'#085041',cat:'Sponsored',catBg:'#EAF3DE',catColor:'#27500A',time:'5h',body:'Sponsored this Shabbat\'s kiddush in honor of his anniversary. Mazal tov to David and Sarah!',link:null,replies:6},
+      {id:3,author:'Shimon L.',initials:'SL',avBg:'#E6F1FB',avColor:'#0C447C',cat:'Current events',catBg:'#FAEEDA',catColor:'#633806',time:'8h',body:'Anyone following the situation in the north? Heard conflicting reports this morning.',link:null,replies:11},
+      {id:4,author:'Keep Alive',initials:'KA',avBg:'#EAF3DE',avColor:'#27500A',cat:'Newsletter',catBg:'#EEEDFE',catColor:'#3C3489',time:'1d',body:'',link:null,replies:0,newsletter:{label:'Dec 10 \u2014 Parshat Vayechi',title:'Week in review',preview:'Shabbat times, upcoming events, parsha insights, and community updates.',badge:'You gave this week'}},
+      {id:5,author:'Rachel B.',initials:'RB',avBg:'#FAECE7',avColor:'#712B13',cat:'Event',catBg:'#E6F1FB',catColor:'#0C447C',time:'1d',body:'',link:null,replies:0,event:{title:'Chanukah party \u2014 Dec 28',sub:'Needs a sponsor',going:false,eventId:'e-feed-1'}}
+    ],
+    events:[
+      {id:'e1',day:'28',mon:'Dec',name:'Chanukah Party',sub:'7:00 PM \u00b7 Main hall',going:false},
+      {id:'e2',day:'4',mon:'Jan',name:'Shabbat Lunch',sub:'After davening \u00b7 Social hall',going:false},
+      {id:'e3',day:'11',mon:'Jan',name:'Board Meeting',sub:'8:00 PM \u00b7 Library',going:true},
+      {id:'e4',day:'18',mon:'Jan',name:'Tu B\'Shvat Seder',sub:'6:30 PM \u00b7 Main hall',going:false}
+    ],
+    newsletters:[
+      {id:'n1',date:'Dec 10, 2025',label:'Dec 10 \u2014 Parshat Vayechi',title:'Week in review',excerpt:'Shabbat times, upcoming events, parsha insights, and community updates for the week ahead.',chips:[{text:'3 events',bg:'#E6F1FB',color:'#0C447C'},{text:'2 sponsors',bg:'#EAF3DE',color:'#27500A'},{text:'$1,240 raised',bg:'#FAEEDA',color:'#633806'}],body:'<p>This week we celebrated two beautiful simchas and welcomed three new families. The annual campaign has reached 62% of its goal.</p><p>Parsha insight: Yaakov\'s blessings to his sons teach us that each person has unique strengths to contribute to the community.</p><p>Shabbat candle lighting: 4:12 PM. Havdalah: 5:18 PM.</p>'},
+      {id:'n2',date:'Dec 3, 2025',label:'Dec 3 \u2014 Parshat Vayigash',title:'Community spotlight',excerpt:'Highlighting the volunteer efforts of our youth group and upcoming winter programming.',chips:[{text:'5 events',bg:'#E6F1FB',color:'#0C447C'},{text:'1 sponsor',bg:'#EAF3DE',color:'#27500A'}],body:'<p>Our youth group organized a chesed drive collecting winter coats for families in need. Over 120 coats were donated!</p><p>Winter programming kicks off next week with a new Wednesday night shiur series.</p>'},
+      {id:'n3',date:'Nov 26, 2025',label:'Nov 26 \u2014 Parshat Mikeitz',title:'Chanukah preview',excerpt:'Everything you need to know about our Chanukah celebrations and menorah lighting schedule.',chips:[{text:'4 events',bg:'#E6F1FB',color:'#0C447C'}],body:'<p>Chanukah is just around the corner! Join us for community menorah lightings every night in the courtyard.</p>'}
+    ],
+    dedications:[
+      {id:'d1',name:'David R.',type:'Shabbat kiddush',honoree:'Anniversary',amount:180},
+      {id:'d2',name:'Sarah M.',type:'Yahrzeit',honoree:'Rivka bat Avraham',amount:54},
+      {id:'d3',name:'Avi T.',type:'Aliyah',honoree:'New baby',amount:100},
+      {id:'d4',name:'Leah P.',type:'General gift',honoree:'Annual campaign',amount:360}
+    ],
+    yahrzeits:[
+      {name:'Rivka bat Avraham',date:'Tevet 12',family:'Goldstein'},
+      {name:'Shmuel ben Yitzchak',date:'Tevet 14',family:'Levine'},
+      {name:'Chana bat Moshe',date:'Tevet 15',family:'Cohen'}
+    ]
+  },
+  sports: {
+    name:'Maccabi Mets', members:24,
+    pin:'Season opener Jan 20 \u2014 sign up now',
+    categories:['All','Game day','Training','Off-field','Highlights'],
+    discussions:[
+      {id:101,author:'Avi T.',initials:'AT',avBg:'#E6F1FB',avColor:'#0C447C',cat:'Game day',catBg:'#FAEEDA',catColor:'#633806',time:'3h',body:'Great game yesterday. Defense was solid in the second half. Let\'s keep that energy for next week.',link:null,replies:7},
+      {id:102,author:'Danny F.',initials:'DF',avBg:'#EAF3DE',avColor:'#27500A',cat:'Training',catBg:'#E1F5EE',catColor:'#085041',time:'6h',body:'Practice moved to Thursday this week \u2014 the field is booked Tuesday. Same time 7 PM.',link:null,replies:3},
+      {id:103,author:'Moshe K.',initials:'MK',avBg:'#EEEDFE',avColor:'#3C3489',cat:'Off-field',catBg:'#EEEDFE',catColor:'#3C3489',time:'1d',body:'Anyone have an extra pair of cleats size 10? Mine finally gave out.',link:null,replies:5},
+      {id:104,author:'Keep Alive',initials:'KA',avBg:'#EAF3DE',avColor:'#27500A',cat:'Highlights',catBg:'#E6F1FB',catColor:'#0C447C',time:'2d',body:'',link:null,replies:0,newsletter:{label:'Week 12 Recap',title:'Mets win 3-1',preview:'Match highlights, player of the week, and upcoming fixtures.',badge:'MVP: Avi T.'}},
+      {id:105,author:'Yoni B.',initials:'YB',avBg:'#FAECE7',avColor:'#712B13',cat:'Game day',catBg:'#FAEEDA',catColor:'#633806',time:'3d',body:'Bring your families to the next home game! We\'re setting up a BBQ on the sideline.',link:null,replies:9}
+    ],
+    events:[
+      {id:'se1',day:'20',mon:'Jan',name:'Season Opener vs. Lions',sub:'4:00 PM \u00b7 Central Field',going:true},
+      {id:'se2',day:'23',mon:'Jan',name:'Thursday Practice',sub:'7:00 PM \u00b7 West Field',going:false},
+      {id:'se3',day:'27',mon:'Jan',name:'Away Game vs. Bears',sub:'3:00 PM \u00b7 North Park',going:false}
+    ],
+    newsletters:[
+      {id:'sn1',date:'Dec 12, 2025',label:'Week 12 Recap',title:'Mets win 3-1',excerpt:'Match highlights, player of the week, and upcoming fixtures for the winter break.',chips:[{text:'2 games',bg:'#E6F1FB',color:'#0C447C'},{text:'MVP: Avi T.',bg:'#EAF3DE',color:'#27500A'}],body:'<p>The Mets dominated with a strong 3-1 victory. Avi T. scored twice in the first half and Danny F. sealed it in the 78th minute.</p><p>Next fixture: Season opener Jan 20 vs. Lions.</p>'},
+      {id:'sn2',date:'Dec 5, 2025',label:'Week 11 Recap',title:'Tough loss away',excerpt:'Post-game analysis and what we need to work on before the break.',chips:[{text:'1 game',bg:'#E6F1FB',color:'#0C447C'}],body:'<p>A hard-fought 2-1 loss on the road. We created chances but couldn\'t convert. Focus for the break: set pieces and finishing.</p>'}
+    ],
+    dedications:[
+      {id:'sd1',name:'Avi T.',type:'Event sponsorship',honoree:'Season opener BBQ',amount:200},
+      {id:'sd2',name:'Danny F.',type:'General gift',honoree:'New jerseys fund',amount:150}
+    ],
+    yahrzeits:[]
+  }
+};
+
+var dedTypes = ['Shabbat kiddush','Aliyah','Event sponsorship','General gift','Yahrzeit','Simcha'];
+
+/* ── helpers ── */
+function esc(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+
+function G(){return groupData[currentGroup]}
+
+function toast(msg){
+  var t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show')},2500);
+}
+
+function openModal(id){document.getElementById(id).classList.add('open')}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+function closeModalOverlay(e,id){if(e.target===document.getElementById(id))closeModal(id)}
+
+function toggleGroupSwitcher(){openModal('groupModal')}
+
+/* ── tab switching ── */
+function switchTab(name){
+  currentTab=name;
+  var panels=document.querySelectorAll('.tab-panel');
+  for(var i=0;i<panels.length;i++)panels[i].classList.remove('active');
+  document.getElementById('tab-'+name).classList.add('active');
+
+  // bottom nav
+  var navItems=document.querySelectorAll('.nav-item');
+  var tabs=['feed','events','sponsors','newsletter','me'];
+  for(var i=0;i<navItems.length;i++){
+    if(tabs[i]===name)navItems[i].classList.add('active');
+    else navItems[i].classList.remove('active');
+  }
+
+  // topbar nav (desktop)
+  var topBtns=document.querySelectorAll('.topbar-nav button');
+  for(var i=0;i<topBtns.length;i++){
+    if(tabs[i]===name)topBtns[i].classList.add('active');
+    else topBtns[i].classList.remove('active');
+  }
+
+  // FAB
+  document.getElementById('fab').classList.toggle('hidden',name!=='feed');
+
+  // lazy render
+  if(!renderedTabs[name]){
+    renderTabContent(name);
+    renderedTabs[name]=true;
+  }
+}
+
+function renderTabContent(name){
+  if(name==='feed')renderFeed();
+  else if(name==='events')renderEvents('eventsList');
+  else if(name==='sponsors')renderDedications('dedList');
+  else if(name==='newsletter')renderNewsletterList();
+  else if(name==='me')renderYahrzeits('meYahrzeits');
+}
+
+/* ── group switching ── */
+function switchGroup(type){
+  currentGroup=type;
+  closeModal('groupModal');
+  document.getElementById('topbarName').textContent=G().name;
+  document.getElementById('topbarSub').textContent=G().members+' members';
+  document.getElementById('pinText').textContent=G().pin;
+
+  // reset rendered
+  renderedTabs={feed:false,events:false,sponsors:false,newsletter:false,me:false};
+  currentFilter='All';
+
+  renderFeed();renderedTabs.feed=true;
+  // re-render current tab if not feed
+  if(currentTab!=='feed'){
+    renderTabContent(currentTab);
+    renderedTabs[currentTab]=true;
+  }
+  // sidebar
+  renderSidebar();
+  toast('Switched to '+G().name);
+}
+
+/* ── category filter ── */
+function renderCatPills(){
+  var cats=G().categories;
+  var h='';
+  for(var i=0;i<cats.length;i++){
+    h+='<button class="cat-pill'+(cats[i]===currentFilter?' active':'')+'" onclick="filterCat(\''+esc(cats[i])+'\')">'+esc(cats[i])+'</button>';
+  }
+  document.getElementById('catPills').innerHTML=h;
+}
+
+function filterCat(cat){
+  currentFilter=cat;
+  renderCatPills();
+  renderDiscussions('feedList');
+}
+
+/* ── feed rendering ── */
+function renderFeed(){
+  renderCatPills();
+  renderDiscussions('feedList');
+}
+
+function renderDiscussions(containerId,limit){
+  var items=G().discussions;
+  var filtered=[];
+  for(var i=0;i<items.length;i++){
+    if(currentFilter==='All'||items[i].cat===currentFilter)filtered.push(items[i]);
+  }
+  if(limit&&filtered.length>limit)filtered=filtered.slice(0,limit);
+  var h='';
+  for(var i=0;i<filtered.length;i++){
+    var d=filtered[i];
+    h+='<div class="feed-item">';
+    h+='<div class="feed-header">';
+    h+='<div class="feed-av" style="background:'+d.avBg+';color:'+d.avColor+'">'+esc(d.initials)+'</div>';
+    h+='<span class="feed-author">'+esc(d.author)+'</span>';
+    h+='<span class="feed-badge" style="background:'+d.catBg+';color:'+d.catColor+'">'+esc(d.cat)+'</span>';
+    h+='<span class="feed-time">'+esc(d.time)+'</span>';
+    h+='</div>';
+
+    if(d.body)h+='<div class="feed-body">'+esc(d.body)+'</div>';
+
+    if(d.link){
+      h+='<div class="link-preview"><div class="link-title">'+esc(d.link.title)+'</div><div class="link-url">'+esc(d.link.url)+'</div></div>';
+    }
+    if(d.newsletter){
+      var nl=d.newsletter;
+      h+='<div class="news-card" onclick="openNewsletterModal(0)">';
+      h+='<div class="news-label">'+esc(nl.label)+'</div>';
+      h+='<div class="news-title">'+esc(nl.title)+'</div>';
+      h+='<div class="news-preview">'+esc(nl.preview)+'</div>';
+      if(nl.badge)h+='<span class="news-badge">'+esc(nl.badge)+'</span>';
+      h+='</div>';
+    }
+    if(d.event){
+      var ev=d.event;
+      h+='<div class="event-card">';
+      h+='<div class="event-title">'+esc(ev.title)+'</div>';
+      h+='<div class="event-sub">'+esc(ev.sub)+'</div>';
+      h+='<button class="btn-rsvp'+(ev.going?' going':'')+'" onclick="toggleFeedRsvp('+d.id+')">'+(ev.going?'Going':'RSVP')+'</button>';
+      h+='</div>';
+    }
+
+    if(d.replies>0){
+      h+='<div class="feed-footer" onclick="openReply('+i+')">';
+      h+='<svg width="12" height="12" viewBox="0 0 20 20" fill="#b4b2a9"><path d="M2 4a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H7l-4 3v-3H4a2 2 0 01-2-2V4z"/></svg>';
+      h+=d.replies+' replies</div>';
+    }
+    h+='</div>';
+  }
+  document.getElementById(containerId).innerHTML=h;
+}
+
+/* ── events ── */
+function renderEvents(containerId,limit){
+  var evts=G().events;
+  if(limit&&evts.length>limit)evts=evts.slice(0,limit);
+  var h='';
+  for(var i=0;i<evts.length;i++){
+    var e=evts[i];
+    h+='<div class="event-list-item">';
+    h+='<div class="event-date-box"><div class="event-date-day">'+esc(e.day)+'</div><div class="event-date-mon">'+esc(e.mon)+'</div></div>';
+    h+='<div class="event-info"><div class="event-info-name">'+esc(e.name)+'</div><div class="event-info-sub">'+esc(e.sub)+'</div></div>';
+    h+='<button class="btn-rsvp'+(e.going?' going':'')+'" onclick="toggleRsvp(\''+e.id+'\')">'+(e.going?'Going':'RSVP')+'</button>';
+    h+='</div>';
+  }
+  document.getElementById(containerId).innerHTML=h;
+}
+
+function toggleRsvp(id){
+  var evts=G().events;
+  for(var i=0;i<evts.length;i++){
+    if(evts[i].id===id){
+      evts[i].going=!evts[i].going;
+      toast(evts[i].going?'You\'re going!':'RSVP removed');
+      break;
+    }
+  }
+  renderEvents('eventsList');
+  renderSidebar();
+}
+
+function toggleFeedRsvp(discId){
+  var discs=G().discussions;
+  for(var i=0;i<discs.length;i++){
+    if(discs[i].id===discId&&discs[i].event){
+      discs[i].event.going=!discs[i].event.going;
+      toast(discs[i].event.going?'You\'re going!':'RSVP removed');
+      break;
+    }
+  }
+  renderDiscussions('feedList');
+}
+
+/* ── dedications ── */
+function renderDedications(containerId,limit){
+  var deds=G().dedications;
+  if(limit&&deds.length>limit)deds=deds.slice(0,limit);
+  var h='';
+  for(var i=0;i<deds.length;i++){
+    var d=deds[i];
+    h+='<div class="ded-card">';
+    h+='<div class="ded-icon">&#10084;</div>';
+    h+='<div class="ded-body"><div class="ded-title">'+esc(d.name)+' \u2014 '+esc(d.type)+'</div>';
+    h+='<div class="ded-sub">In honor of '+esc(d.honoree)+' \u00b7 $'+d.amount+'</div></div>';
+    h+='</div>';
+  }
+  document.getElementById(containerId).innerHTML=h;
+}
+
+/* ── newsletters ── */
+function renderNewsletterList(){
+  var nls=G().newsletters;
+  var h='';
+  for(var i=0;i<nls.length;i++){
+    var n=nls[i];
+    h+='<div class="nl-card" onclick="openNewsletterModal('+i+')">';
+    h+='<div class="nl-date">'+esc(n.date)+'</div>';
+    h+='<div class="nl-title">'+esc(n.title)+'</div>';
+    h+='<div class="nl-excerpt">'+esc(n.excerpt)+'</div>';
+    h+='</div>';
+  }
+  document.getElementById('nlList').innerHTML=h;
+}
+
+function openNewsletterModal(idx){
+  var nls=G().newsletters;
+  if(idx>=nls.length)return;
+  var n=nls[idx];
+  var h='';
+  h+='<div class="nl-modal-label">'+esc(n.label)+'</div>';
+  h+='<div class="nl-modal-title">'+esc(n.title)+'</div>';
+  h+='<div class="nl-modal-date">'+esc(n.date)+'</div>';
+  if(n.chips&&n.chips.length){
+    h+='<div class="nl-chips">';
+    for(var i=0;i<n.chips.length;i++){
+      h+='<span class="nl-chip" style="background:'+n.chips[i].bg+';color:'+n.chips[i].color+'">'+esc(n.chips[i].text)+'</span>';
+    }
+    h+='</div>';
+  }
+  h+='<div class="nl-modal-body">'+n.body+'</div>';
+  h+='<div class="nl-modal-footer">'+esc(G().name)+'</div>';
+  document.getElementById('nlModalBody').innerHTML=h;
+  openModal('nlModal');
+}
+
+/* ── yahrzeits ── */
+function renderYahrzeits(containerId){
+  var yrs=G().yahrzeits;
+  if(!yrs||!yrs.length){
+    document.getElementById(containerId).innerHTML='<div style="font-size:10px;color:#b4b2a9">None this week</div>';
+    return;
+  }
+  var h='';
+  for(var i=0;i<yrs.length;i++){
+    h+='<div class="yahr-row"><span class="yahr-name">'+esc(yrs[i].name)+'</span><span class="yahr-date">'+esc(yrs[i].date)+'</span></div>';
+  }
+  document.getElementById(containerId).innerHTML=h;
+}
+
+/* ── sidebar (desktop) ── */
+function renderSidebar(){
+  // events
+  var evts=G().events;
+  var h='';
+  var lim=Math.min(evts.length,3);
+  for(var i=0;i<lim;i++){
+    var e=evts[i];
+    h+='<div class="sidebar-event">';
+    h+='<div class="sidebar-date"><div class="day">'+esc(e.day)+'</div><div class="mon">'+esc(e.mon)+'</div></div>';
+    h+='<div class="sidebar-event-info"><div class="sidebar-event-name">'+esc(e.name)+'</div><div class="sidebar-event-sub">'+esc(e.sub)+'</div></div>';
+    h+='<button class="btn-rsvp'+(e.going?' going':'')+'" onclick="toggleRsvp(\''+e.id+'\')">'+(e.going?'Going':'RSVP')+'</button>';
+    h+='</div>';
+  }
+  document.getElementById('sidebarEvents').innerHTML=h;
+
+  // yahrzeits
+  renderYahrzeits('sidebarYahrzeits');
+}
+
+/* ── post modal ── */
+function renderPostCatPills(){
+  var cats=G().categories.slice(1); // skip "All"
+  var h='';
+  for(var i=0;i<cats.length;i++){
+    h+='<button class="modal-pill'+(cats[i]===selectedPostCat?' active':'')+'" onclick="selectPostCat(\''+esc(cats[i])+'\')">'+esc(cats[i])+'</button>';
+  }
+  document.getElementById('postCatPills').innerHTML=h;
+}
+
+function selectPostCat(cat){selectedPostCat=cat;renderPostCatPills()}
+
+function submitPost(){
+  var body=document.getElementById('postBody').value.trim();
+  if(!body){toast('Please write something');return}
+  var link=document.getElementById('postLink').value.trim();
+  var linkObj=null;
+  if(link){
+    var domain=link.replace(/^https?:\/\//,'').split('/')[0];
+    linkObj={title:link,url:domain};
+  }
+  var catColors={
+    'Torah':{bg:'#E1F5EE',c:'#085041'},'Current events':{bg:'#FAEEDA',c:'#633806'},
+    'Community':{bg:'#EEEDFE',c:'#3C3489'},'Politics':{bg:'#FAECE7',c:'#712B13'},
+    'Game day':{bg:'#FAEEDA',c:'#633806'},'Training':{bg:'#E1F5EE',c:'#085041'},
+    'Off-field':{bg:'#EEEDFE',c:'#3C3489'},'Highlights':{bg:'#E6F1FB',c:'#0C447C'},
+    'Sponsored':{bg:'#EAF3DE',c:'#27500A'}
+  };
+  var cc=catColors[selectedPostCat]||{bg:'#EEEDFE',c:'#3C3489'};
+  G().discussions.unshift({
+    id:Date.now(),author:'Moshe K.',initials:'MK',avBg:'#EEEDFE',avColor:'#3C3489',
+    cat:selectedPostCat,catBg:cc.bg,catColor:cc.c,
+    time:'now',body:body,link:linkObj,replies:0
+  });
+  document.getElementById('postBody').value='';
+  document.getElementById('postLink').value='';
+  renderDiscussions('feedList');
+  closeModal('postModal');
+  toast('Posted!');
+}
+
+/* ── reply modal ── */
+function openReply(idx){
+  var filtered=[];
+  var items=G().discussions;
+  for(var i=0;i<items.length;i++){
+    if(currentFilter==='All'||items[i].cat===currentFilter)filtered.push(items[i]);
+  }
+  if(idx>=filtered.length)return;
+  replyTargetIdx=idx;
+  var d=filtered[idx];
+  document.getElementById('replyOriginal').innerHTML='<strong>'+esc(d.author)+'</strong> '+esc(d.body);
+  document.getElementById('replyBody').value='';
+  openModal('replyModal');
+}
+
+function submitReply(){
+  var body=document.getElementById('replyBody').value.trim();
+  if(!body){toast('Please write a reply');return}
+  // find the original discussion and increment replies
+  var filtered=[];
+  var items=G().discussions;
+  for(var i=0;i<items.length;i++){
+    if(currentFilter==='All'||items[i].cat===currentFilter)filtered.push(items[i]);
+  }
+  if(replyTargetIdx>=0&&replyTargetIdx<filtered.length){
+    filtered[replyTargetIdx].replies++;
+  }
+  renderDiscussions('feedList');
+  closeModal('replyModal');
+  toast('Reply sent!');
+}
+
+/* ── dedication modal ── */
+function renderDedTypePills(){
+  var h='';
+  for(var i=0;i<dedTypes.length;i++){
+    h+='<button class="modal-pill'+(dedTypes[i]===selectedDedType?' active':'')+'" onclick="selectDedType(\''+esc(dedTypes[i])+'\')">'+esc(dedTypes[i])+'</button>';
+  }
+  document.getElementById('dedTypePills').innerHTML=h;
+}
+
+function selectDedType(t){selectedDedType=t;renderDedTypePills()}
+
+function selectAmount(amt,btn){
+  selectedAmount=amt;
+  var chips=document.querySelectorAll('.amount-chip');
+  for(var i=0;i<chips.length;i++)chips[i].classList.remove('active');
+  btn.classList.add('active');
+  var custom=document.getElementById('customAmount');
+  if(amt===-1){custom.classList.add('show');document.getElementById('dedCustomAmt').focus()}
+  else custom.classList.remove('show');
+}
+
+function submitDedication(){
+  var honoree=document.getElementById('dedHonoree').value.trim();
+  if(!honoree){toast('Please enter an honoree name');return}
+  var amt=selectedAmount;
+  if(amt===-1){
+    amt=parseInt(document.getElementById('dedCustomAmt').value)||0;
+    if(amt<=0){toast('Please enter a valid amount');return}
+  }
+  G().dedications.unshift({
+    id:Date.now(),name:'Moshe K.',type:selectedDedType,honoree:honoree,amount:amt
+  });
+  document.getElementById('dedHonoree').value='';
+  document.getElementById('dedMessage').value='';
+  if(renderedTabs.sponsors)renderDedications('dedList');
+  closeModal('dedModal');
+  toast('Dedication submitted!');
+}
+
+/* ── invite link ── */
+function copyInviteLink(){
+  var url=window.location.href.split('?')[0]+'?invite='+currentGroup;
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(url).then(function(){toast('Invite link copied!')});
+  }else{
+    toast('Invite link copied!');
+  }
+}
+
+/* ── init ── */
+function init(){
+  renderFeed();
+  renderedTabs.feed=true;
+  renderPostCatPills();
+  renderDedTypePills();
+  renderSidebar();
+}
+init();
+</script>
+</body>
+</html>

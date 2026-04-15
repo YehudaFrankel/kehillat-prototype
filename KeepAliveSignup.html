@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Keep Alive &mdash; Join</title>
+<meta property="og:title" content="Join Kehilat Shalom on Keep Alive">
+<meta property="og:description" content="Dovid Levy invited you to join the community. 84 members. Tap to join instantly.">
+<meta property="og:type" content="website">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:#f5f4f0;
+  color:#1a1a18;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px 16px;
+}
+
+/* ── Card ── */
+.signup-card{
+  background:#fff;
+  border:1px solid #d3d1c7;
+  border-radius:22px;
+  width:100%;
+  max-width:480px;
+  padding:36px 32px 32px;
+  position:relative;
+  overflow:hidden;
+}
+
+/* ── Header ── */
+.card-header{text-align:center;margin-bottom:24px}
+.avatar{
+  width:48px;height:48px;border-radius:50%;
+  background:#534AB7;color:#fff;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:700;letter-spacing:.5px;
+  margin-bottom:8px;
+}
+.brand-name{font-size:14px;font-weight:500;color:#534AB7;margin-bottom:4px}
+.card-subtitle{font-size:15px;color:#888780;font-weight:400}
+
+/* ── Invite card ── */
+.invite-card{
+  background:#EEEDFE;
+  border-radius:10px;
+  padding:12px;
+  margin-bottom:20px;
+}
+.invite-from{font-size:10px;font-weight:700;color:#534AB7;margin-bottom:4px}
+.invite-org{font-size:13px;font-weight:700;color:#26215C;margin-bottom:6px}
+.invite-msg{font-size:10px;color:#3C3489;line-height:1.5;margin-bottom:12px}
+.btn-join{
+  width:100%;padding:11px 0;border:none;border-radius:8px;
+  background:#534AB7;color:#fff;font-size:14px;font-weight:600;
+  cursor:pointer;transition:opacity .15s;
+}
+.btn-join:hover{opacity:.9}
+
+/* ── Or divider ── */
+.or-text{text-align:center;font-size:12px;color:#888780;margin:16px 0}
+.divider{
+  display:flex;align-items:center;gap:12px;
+  margin:16px 0;
+}
+.divider-line{flex:1;height:1px;background:#d3d1c7}
+.divider-label{font-size:12px;color:#888780;white-space:nowrap}
+
+/* ── Google button ── */
+.btn-google{
+  width:100%;padding:11px 0;border:1px solid #d3d1c7;border-radius:8px;
+  background:#fff;font-size:14px;font-weight:500;color:#1a1a18;
+  cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  transition:background .15s;
+}
+.btn-google:hover{background:#fafaf8}
+.btn-google svg{width:18px;height:18px;flex-shrink:0}
+
+/* ── Email input ── */
+.email-input{
+  width:100%;padding:11px 16px;border:1px solid #d3d1c7;border-radius:8px;
+  font-size:14px;text-align:center;outline:none;
+  font-family:inherit;color:#1a1a18;
+  transition:border-color .15s;
+  margin-bottom:10px;
+}
+.email-input::placeholder{color:#b4b2a9}
+.email-input:focus{border-color:#534AB7}
+.email-input.input-error{border-color:#E24B4A}
+
+/* ── Send link button ── */
+.btn-send{
+  width:100%;padding:11px 0;border:none;border-radius:8px;
+  background:#1a1a18;color:#fff;font-size:14px;font-weight:600;
+  cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  transition:opacity .15s;
+}
+.btn-send:hover{opacity:.9}
+.btn-send:disabled,.btn-join:disabled,.btn-google:disabled{opacity:.6;cursor:not-allowed}
+
+.note{font-size:9px;color:#b4b2a9;text-align:center;margin-top:10px}
+
+/* ── Error message ── */
+.error-msg{
+  font-size:12px;color:#E24B4A;text-align:center;
+  margin-bottom:8px;min-height:18px;
+}
+
+/* ── Spinner ── */
+.spinner{
+  display:inline-block;width:16px;height:16px;
+  border:2px solid rgba(255,255,255,.3);border-top-color:#fff;
+  border-radius:50%;animation:spin .6s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── Views ── */
+.view{transition:opacity .35s ease,transform .35s ease}
+.hidden{display:none}
+.slide-out{opacity:0;transform:translateY(-30px);pointer-events:none}
+.slide-in{animation:slideIn .4s ease forwards}
+@keyframes slideIn{
+  from{opacity:0;transform:translateY(30px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* ── Success view ── */
+.success-view{text-align:center;padding:20px 0}
+.success-heading{font-size:22px;font-weight:700;margin:18px 0 8px}
+.success-detail{font-size:14px;color:#888780;margin-bottom:24px;line-height:1.5}
+.success-detail strong{color:#1a1a18}
+.btn-open{
+  width:100%;padding:12px 0;border:none;border-radius:8px;
+  background:#534AB7;color:#fff;font-size:14px;font-weight:600;
+  cursor:pointer;transition:opacity .15s;
+  text-decoration:none;display:inline-block;text-align:center;
+}
+.btn-open:hover{opacity:.9}
+
+/* ── SVG checkmark ── */
+.checkmark-circle{
+  stroke:#27500A;stroke-width:2;fill:none;
+  stroke-dasharray:204;stroke-dashoffset:204;
+  animation:drawCircle .6s ease forwards;
+}
+.checkmark-check{
+  stroke:#27500A;stroke-width:3;fill:none;
+  stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:46;stroke-dashoffset:46;
+  animation:drawCheck .4s ease forwards .5s;
+}
+@keyframes drawCircle{to{stroke-dashoffset:0}}
+@keyframes drawCheck{to{stroke-dashoffset:0}}
+
+/* ── Toast ── */
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:#1a1a18;color:#fff;font-size:13px;font-weight:500;
+  padding:10px 20px;border-radius:8px;
+  opacity:0;transition:opacity .3s ease,transform .3s ease;
+  pointer-events:none;z-index:100;white-space:nowrap;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+
+<div class="signup-card">
+
+  <!-- ═══ Form View ═══ -->
+  <div id="formView" class="view">
+    <div class="card-header">
+      <div class="avatar">KS</div>
+      <div class="brand-name">Keep Alive</div>
+      <div class="card-subtitle">You have an invitation</div>
+    </div>
+
+    <div class="invite-card">
+      <div class="invite-from">From Dovid Levy, gabbai</div>
+      <div class="invite-org">Kehillat Shalom</div>
+      <div class="invite-msg">We'd love to have you as part of our community. Join us and stay connected with everything happening at the shul.</div>
+      <button class="btn-join" id="btnJoin" onclick="googleSignIn()">Join Kehillat Shalom</button>
+    </div>
+
+    <div class="or-text">or sign in with</div>
+
+    <button class="btn-google" id="btnGoogle" onclick="googleSignIn()">
+      <svg viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
+        <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.26c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/>
+        <path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.997 8.997 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
+        <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
+      </svg>
+      Continue with Google
+    </button>
+
+    <div class="divider">
+      <span class="divider-line"></span>
+      <span class="divider-label">or use your email</span>
+      <span class="divider-line"></span>
+    </div>
+
+    <input type="email" id="emailInput" class="email-input" placeholder="your@email.com" autocomplete="email">
+    <div id="errorMsg" class="error-msg"></div>
+    <button class="btn-send" id="btnSend" onclick="sendLink()">Send me a link</button>
+    <div class="note">No password needed</div>
+  </div>
+
+  <!-- ═══ Success View ═══ -->
+  <div id="successView" class="view hidden">
+    <div class="success-view">
+      <svg width="64" height="64" viewBox="0 0 64 64">
+        <circle class="checkmark-circle" cx="32" cy="32" r="30"/>
+        <polyline class="checkmark-check" points="20,34 28,42 44,24"/>
+      </svg>
+      <div class="success-heading">You're in!</div>
+      <div class="success-detail" id="successDetail"></div>
+      <a href="KeepAlivePicker.html" class="btn-open">Open Keep Alive</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast"></div>
+
+<script>
+function escHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 3000);
+}
+
+function setButtonLoading(btn, text) {
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> ' + escHtml(text);
+}
+
+function transitionToSuccess() {
+  var form = document.getElementById('formView');
+  var success = document.getElementById('successView');
+  form.classList.add('slide-out');
+  setTimeout(function() {
+    form.classList.add('hidden');
+    success.classList.remove('hidden');
+    success.classList.add('slide-in');
+  }, 350);
+}
+
+function googleSignIn() {
+  var btnJoin = document.getElementById('btnJoin');
+  var btnGoogle = document.getElementById('btnGoogle');
+  setButtonLoading(btnJoin, 'Signing in...');
+  setButtonLoading(btnGoogle, 'Signing in...');
+
+  setTimeout(function() {
+    document.getElementById('successDetail').innerHTML = 'Signed in with Google';
+    transitionToSuccess();
+    showToast('Welcome to Kehillat Shalom!');
+  }, 1500);
+}
+
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function sendLink() {
+  var input = document.getElementById('emailInput');
+  var errorEl = document.getElementById('errorMsg');
+  var btn = document.getElementById('btnSend');
+  var email = input.value.trim();
+
+  input.classList.remove('input-error');
+  errorEl.textContent = '';
+
+  if (!email) {
+    input.classList.add('input-error');
+    errorEl.textContent = 'Please enter your email address';
+    input.focus();
+    return;
+  }
+  if (!isValidEmail(email)) {
+    input.classList.add('input-error');
+    errorEl.textContent = 'Please enter a valid email address';
+    input.focus();
+    return;
+  }
+
+  setButtonLoading(btn, 'Sending...');
+
+  setTimeout(function() {
+    document.getElementById('successDetail').innerHTML =
+      'We sent a link to <strong>' + escHtml(email) + '</strong>';
+    transitionToSuccess();
+    showToast('Check your inbox!');
+  }, 1200);
+}
+
+/* Allow Enter key on email input */
+document.getElementById('emailInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') sendLink();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Keep Alive — Your Communities</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #f5f4f0;
+  color: #1a1a18;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+}
+
+.picker-card {
+  background: #fff;
+  border-radius: 10px;
+  max-width: 420px;
+  width: 100%;
+  padding: 32px 28px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+/* --- Header --- */
+.picker-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #534AB7;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+.picker-header h1 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.picker-header p {
+  color: #888780;
+  font-size: 14px;
+}
+
+/* --- Community list --- */
+.community-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.community-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid #d3d1c7;
+  border-radius: 10px;
+  padding: 14px 16px;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+
+.community-link:hover {
+  border-color: #534AB7;
+  box-shadow: 0 2px 8px rgba(83,74,183,0.10);
+  transform: translateY(-1px);
+}
+
+.community-link:active {
+  transform: scale(0.985);
+  box-shadow: none;
+}
+
+.community-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.community-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.community-name {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 9px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.badge-organizer {
+  background: #EEEDFE;
+  color: #534AB7;
+}
+
+.badge-member {
+  background: #EAF3DE;
+  color: #27500A;
+}
+
+.community-meta {
+  font-size: 13px;
+  color: #888780;
+}
+
+.arrow {
+  color: #b4b2a9;
+  font-size: 18px;
+  flex-shrink: 0;
+  margin-left: 4px;
+}
+
+/* --- Create link --- */
+.create-link {
+  display: block;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.create-link a {
+  color: #534AB7;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.create-link a:hover {
+  text-decoration: underline;
+}
+
+/* --- Footer --- */
+.picker-footer {
+  text-align: center;
+  font-size: 12px;
+  color: #b4b2a9;
+  border-top: 1px solid #d3d1c7;
+  padding-top: 16px;
+}
+</style>
+</head>
+<body>
+
+<div class="picker-card">
+  <div class="picker-header">
+    <div class="avatar">DC</div>
+    <h1>Welcome back, David</h1>
+    <p>Choose a community</p>
+  </div>
+
+  <div class="community-list">
+    <a href="KeepAliveAdmin.html" class="community-link">
+      <div class="community-icon" style="background:#EEEDFE;">&#127860;</div>
+      <div class="community-info">
+        <div class="community-name">
+          Kehilat Shalom
+          <span class="badge badge-organizer">Organizer</span>
+        </div>
+        <div class="community-meta">42 members</div>
+      </div>
+      <div class="arrow">&#8250;</div>
+    </a>
+
+    <a href="KeepAlive.html" class="community-link">
+      <div class="community-icon" style="background:#EAF3DE;">&#128214;</div>
+      <div class="community-info">
+        <div class="community-name">
+          Daf Yomi Chevra
+          <span class="badge badge-member">Member</span>
+        </div>
+        <div class="community-meta">18 members</div>
+      </div>
+      <div class="arrow">&#8250;</div>
+    </a>
+
+    <a href="KeepAlive.html" class="community-link">
+      <div class="community-icon" style="background:#FFF3E0;">&#9918;</div>
+      <div class="community-info">
+        <div class="community-name">
+          Maccabi Mets
+          <span class="badge badge-member">Member</span>
+        </div>
+        <div class="community-meta">24 players</div>
+      </div>
+      <div class="arrow">&#8250;</div>
+    </a>
+  </div>
+
+  <div class="create-link">
+    <a href="KeepAliveOnboard.html">+ Create a new community</a>
+  </div>
+
+  <div class="picker-footer">
+    Signed in as david@example.com
+  </div>
+</div>
+
+</body>
+</html>
