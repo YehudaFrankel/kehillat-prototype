@@ -684,7 +684,6 @@ body {
 .nl-header-label { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; opacity: .7; margin-bottom: 6px; }
 .nl-header-title { font-size: 22px; font-weight: 700; margin-bottom: 2px; }
 .nl-header-date { font-size: 13px; opacity: .8; }
-.nl-glance { background: #faf9f6; padding: 14px 28px; border-bottom: 1px solid #ebebeb; }
 .nl-glance-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; color: #b4b2a9; margin-bottom: 8px; }
 .nl-chips { display: flex; gap: 8px; flex-wrap: wrap; }
 .nl-chip { display: flex; align-items: center; gap: 5px; background: #EEEDFE; border: 1px solid rgba(83,74,183,.12); border-radius: 20px; padding: 4px 10px 4px 7px; font-size: 11px; color: #1a1a18; }
@@ -692,6 +691,7 @@ body {
 .nl-chip-label { font-weight: 600; color: #534AB7; }
 .nl-chip-value { color: #888780; }
 .nl-body { padding: 24px 28px; font-size: 15px; line-height: 1.8; color: #1a1a18; flex: 1; overflow-y: auto; }
+.nl-glance-inline { background: #faf9f6; border-radius: 10px; padding: 12px 14px; margin-bottom: 16px; }
 .nl-body h3 { font-size: 16px; font-weight: 700; color: #534AB7; margin: 20px 0 6px; padding-bottom: 4px; border-bottom: 2px solid #EEEDFE; }
 .nl-body h3:first-child { margin-top: 0; }
 .nl-body p { margin-bottom: 12px; }
@@ -1142,10 +1142,6 @@ David Levine</textarea>
       <div class="nl-header-label" id="nlLabel">WEEKLY NEWSLETTER</div>
       <div class="nl-header-title" id="nlTitle" contenteditable="true"></div>
       <div class="nl-header-date" id="nlDate" contenteditable="true"></div>
-    </div>
-    <div class="nl-glance" id="nlGlance">
-      <div class="nl-glance-label">This week at a glance</div>
-      <div class="nl-chips" id="nlChips"></div>
     </div>
     <div class="nl-toolbar" id="nlToolbar">
       <button onclick="document.execCommand('bold')"><b>B</b></button>
@@ -2059,8 +2055,8 @@ function populateNewsletter() {
   if (nlGenerated[currentGroup]) {
     document.getElementById('nlTitle').textContent = nl.title;
     nlChipData = nlGenerated[currentGroup].chips;
-    renderNlEditChips();
-    document.getElementById('nlBody').innerHTML = nlGenerated[currentGroup].body;
+    var chipsHtml = buildChipsHtml();
+    document.getElementById('nlBody').innerHTML = chipsHtml + nlGenerated[currentGroup].body;
     document.getElementById('nlBody').setAttribute('contenteditable', 'true');
     document.getElementById('nlBody').classList.add('editing');
     document.getElementById('nlToolbar').style.display = '';
@@ -2070,7 +2066,6 @@ function populateNewsletter() {
 
   document.getElementById('nlTitle').textContent = '';
   nlChipData = [];
-  document.getElementById('nlChips').innerHTML = '';
   document.getElementById('nlToolbar').style.display = 'none';
   document.getElementById('nlBody').removeAttribute('contenteditable');
   document.getElementById('nlBody').classList.remove('editing');
@@ -2085,23 +2080,35 @@ function generateNewsletter() {
 
   setTimeout(function() { document.getElementById('nlTitle').textContent = nl.title; }, 500);
 
+  // Chips appear inside body one at a time
+  setTimeout(function() {
+    body.innerHTML = '<div class="nl-glance-inline"><div class="nl-glance-label">This week at a glance</div><div class="nl-chips" id="nlChips"></div></div>';
+  }, 700);
+
   for (var i = 0; i < nl.reports.length; i++) {
     (function(idx) {
       setTimeout(function() {
         nlChipData.push({ icon: nl.reports[idx].icon, label: nl.reports[idx].label, value: nl.reports[idx].value });
-        renderNlEditChips();
+        var chipsEl = document.getElementById('nlChips');
+        if (chipsEl) {
+          var chip = document.createElement('span');
+          chip.className = 'nl-chip';
+          chip.innerHTML = '<span class="nl-chip-icon">' + nlChipData[idx].icon + '</span><span class="nl-chip-label">' + esc(nlChipData[idx].label) + '</span> <span class="nl-chip-value">' + esc(nlChipData[idx].value) + '</span>';
+          chipsEl.appendChild(chip);
+        }
       }, 800 + (idx * 300));
     })(i);
   }
 
+  // Body sections appear below chips
   var sections = nl.body.split('<h3>');
-  var builtHtml = '';
   var baseDelay = 800 + (nl.reports.length * 300) + 400;
   for (var s = 0; s < sections.length; s++) {
     (function(idx, content) {
       setTimeout(function() {
-        builtHtml += (idx === 0 ? '' : '<h3>') + content;
-        body.innerHTML = builtHtml;
+        var div = document.createElement('div');
+        div.innerHTML = (idx === 0 ? '' : '<h3>') + content;
+        body.appendChild(div);
         body.scrollTop = body.scrollHeight;
       }, baseDelay + (idx * 600));
     })(s, sections[s]);
@@ -2113,8 +2120,27 @@ function generateNewsletter() {
     body.classList.add('editing');
     document.getElementById('nlToolbar').style.display = '';
     document.getElementById('nlToolbar').classList.add('visible');
+    // Convert inline chips to editable
+    var chipsHtml = buildChipsHtml();
+    var glanceEl = body.querySelector('.nl-glance-inline');
+    if (glanceEl) glanceEl.outerHTML = chipsHtml;
     nlGenerated[currentGroup] = { body: body.innerHTML, chips: nlChipData.slice() };
   }, totalDelay);
+}
+
+function buildChipsHtml() {
+  var html = '<div class="nl-glance-inline"><div class="nl-glance-label">This week at a glance</div><div class="nl-chips">';
+  for (var i = 0; i < nlChipData.length; i++) {
+    html += '<span class="nl-chip-edit">';
+    html += '<span class="nl-chip-icon">' + nlChipData[i].icon + '</span>';
+    html += '<input class="chip-label" value="' + esc(nlChipData[i].label) + '" data-idx="' + i + '" data-field="label">';
+    html += '<input class="chip-value" value="' + esc(nlChipData[i].value) + '" data-idx="' + i + '" data-field="value">';
+    html += '<button class="chip-remove" onclick="removeNlChip(' + i + ')">&times;</button>';
+    html += '</span>';
+  }
+  html += '<button class="nl-add-chip" onclick="addNlChip()">+ Add</button>';
+  html += '</div></div>';
+  return html;
 }
 
 function renderNlEditChips() {
