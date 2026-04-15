@@ -1133,11 +1133,11 @@ David Levine</textarea>
       <button onclick="document.execCommand('insertHorizontalRule')">HR</button>
     </div>
     <div class="nl-body" id="nlBody"></div>
-    <div class="nl-footer">
+    <div class="nl-footer" id="nlFooter">
       <div class="nl-footer-name" id="nlFooterName" contenteditable="true"></div>
       <br>Sent with Keep Alive
     </div>
-    <div class="nl-actions">
+    <div class="nl-actions" id="nlActions">
       <button class="modal-submit" id="nlSendBtn" onclick="sendNewsletter()">Send newsletter</button>
       <button style="background:none;border:1px solid #d3d1c7;border-radius:8px;padding:10px 24px;font-size:14px;cursor:pointer;font-family:inherit;color:#888780;" onclick="closeModal('newsletterModal')">Cancel</button>
       <span class="nl-count" id="nlCount"></span>
@@ -2034,16 +2034,22 @@ function openNewsletterModal() {
     document.getElementById('nlTitle').textContent = nl.title;
     nlChipData = nlGenerated[currentGroup].chips;
     renderNlEditChips();
+    document.getElementById('nlGlance').style.display = '';
     document.getElementById('nlBody').innerHTML = nlGenerated[currentGroup].body;
     document.getElementById('nlBody').setAttribute('contenteditable', 'true');
     document.getElementById('nlBody').classList.add('editing');
     document.getElementById('nlToolbar').style.display = '';
     document.getElementById('nlToolbar').classList.add('visible');
+    document.getElementById('nlFooter').style.display = '';
+    document.getElementById('nlActions').style.display = '';
   } else {
     document.getElementById('nlTitle').textContent = '';
     nlChipData = [];
     document.getElementById('nlChips').innerHTML = '';
+    document.getElementById('nlGlance').style.display = 'none';
     document.getElementById('nlToolbar').style.display = 'none';
+    document.getElementById('nlFooter').style.display = 'none';
+    document.getElementById('nlActions').style.display = 'none';
     document.getElementById('nlBody').removeAttribute('contenteditable');
     document.getElementById('nlBody').classList.remove('editing');
     document.getElementById('nlBody').innerHTML = '<div class="nl-generate-wrap"><button class="nl-generate-btn" onclick="generateNewsletter()">Generate with AI</button><span class="nl-generate-hint">Based on this week\'s discussions, events, and activity</span></div>';
@@ -2057,7 +2063,10 @@ function generateNewsletter() {
   var body = document.getElementById('nlBody');
   body.innerHTML = '<div class="nl-generate-wrap"><span class="nl-generating">Writing your newsletter<span class="nl-generating-dots"> ...</span></span></div>';
 
-  setTimeout(function() { document.getElementById('nlTitle').textContent = nl.title; }, 500);
+  setTimeout(function() {
+    document.getElementById('nlTitle').textContent = nl.title;
+    document.getElementById('nlGlance').style.display = '';
+  }, 500);
 
   for (var i = 0; i < nl.reports.length; i++) {
     (function(idx) {
@@ -2087,6 +2096,8 @@ function generateNewsletter() {
     body.classList.add('editing');
     document.getElementById('nlToolbar').style.display = '';
     document.getElementById('nlToolbar').classList.add('visible');
+    document.getElementById('nlFooter').style.display = '';
+    document.getElementById('nlActions').style.display = '';
     nlGenerated[currentGroup] = { body: body.innerHTML, chips: nlChipData.slice() };
   }, totalDelay);
 }
