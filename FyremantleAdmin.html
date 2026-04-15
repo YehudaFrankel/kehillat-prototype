@@ -157,6 +157,7 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 28px 40px;
+  background: #fff;
 }
 .two-col {
   display: grid;
@@ -172,12 +173,13 @@ body {
 
 /* ── Card ─────────────────────────────────────────── */
 .card {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: var(--radius-sm);
   padding: 24px;
   margin-bottom: 20px;
   overflow: hidden;
+  box-shadow: none;
 }
 .card-header {
   display: flex;
@@ -240,7 +242,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  font-size: 11px;
+  font-size: 10px;
   color: var(--text-muted);
   margin-bottom: 8px;
 }
@@ -252,8 +254,8 @@ body {
   margin-bottom: 8px;
 }
 .avatar {
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -561,10 +563,11 @@ body {
 
 /* ── Newsletter banner ────────────────────────────── */
 .newsletter-banner {
+  display: none;
   background: var(--white);
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 18px 24px;
+  border-radius: var(--radius-sm);
+  padding: 10px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1032,6 +1035,27 @@ table.aliyah-table {
   .card-title { font-size: 15px; }
   .newsletter-banner { flex-direction: column; gap: 10px; padding: 14px 16px; }
   .newsletter-text { font-size: 13px; }
+  .nav-tabs { display: none; }
+  .main { padding-bottom: 120px; }
+}
+
+/* ── Bottom nav ──────────────────────────────────── */
+.bottom-nav {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: #fff; border-top: 1px solid #e0e0e0;
+  display: flex; height: 56px; z-index: 200;
+}
+.bottom-nav-btn {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 2px;
+  background: none; border: none; font-size: 9px;
+  color: #9B9B9B; cursor: pointer; font-family: inherit;
+}
+.bottom-nav-btn.active { color: #6B5CE7; }
+.bottom-nav-btn svg { width: 20px; height: 20px; }
+
+@media (min-width: 961px) {
+  .bottom-nav { display: none; }
 }
 </style>
 </head>
@@ -1247,6 +1271,28 @@ table.aliyah-table {
     <span class="card-title" id="dedCardTitle">Submitted Dedications</span>
   </div>
   <div id="dedicationsList"></div>
+</div>
+</div>
+
+<!-- ═══ EVENTS VIEW ═══ -->
+<div class="view" id="viewEvents">
+<div class="card">
+  <div class="card-header">
+    <span class="card-title">Upcoming Events</span>
+    <a class="card-link" onclick="openModal('newEventModal')">+ New event</a>
+  </div>
+  <div id="eventsListPanel"></div>
+</div>
+</div>
+
+<!-- ═══ NEWSLETTER VIEW ═══ -->
+<div class="view" id="viewNewsletter">
+<div class="card" style="margin-bottom:12px;">
+  <div class="card-header">
+    <span class="card-title">Newsletters</span>
+    <a class="card-link" onclick="openModal('newsletterModal');populateNewsletter();">+ Create new</a>
+  </div>
+  <div id="newsletterListPanel"></div>
 </div>
 </div>
 
@@ -2250,6 +2296,12 @@ function switchTab(tab) {
     document.getElementById('viewAliyah').classList.add('active');
   } else if (tab === 'dedications') {
     document.getElementById('viewDedications').classList.add('active');
+  } else if (tab === 'events') {
+    document.getElementById('viewEvents').classList.add('active');
+    renderEventsPanel();
+  } else if (tab === 'newsletter') {
+    document.getElementById('viewNewsletter').classList.add('active');
+    renderNewsletterList();
   } else if (tab === 'manage') {
     document.getElementById('viewManage').classList.add('active');
     renderRequests('memberRequests');
@@ -2276,6 +2328,68 @@ function switchTab(tab) {
       for (var j = 0; j < lbl.length; j++) lbl[j].className = 'bnav-label';
     }
   }
+}
+
+function renderNewsletterList() {
+  var gd = adminGroups[currentAdminGroup];
+  var nl = gd.newsletter;
+  var html = '';
+  // Current/draft newsletter
+  html += '<div style="border-bottom:1px solid #f0eeea;padding:14px 20px;cursor:pointer;" onclick="openModal(\'newsletterModal\');populateNewsletter();">';
+  html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">';
+  html += '<span style="font-size:15px;font-weight:600;">' + esc(nl.title || 'This week\'s newsletter') + '</span>';
+  html += '<span style="font-size:10px;padding:2px 8px;border-radius:10px;background:#EDE9FC;color:#6B5CE7;font-weight:600;">' + (nlGenerated[currentAdminGroup] ? 'Ready to send' : 'Draft') + '</span>';
+  html += '</div>';
+  html += '<div style="font-size:12px;color:#9B9B9B;">' + esc(nl.label || nl.date) + '</div>';
+  html += '</div>';
+  // Past newsletters (static samples)
+  var past = [{title:'Community spotlight',date:'Dec 3, 2025',status:'Sent'},{title:'Chanukah preview',date:'Nov 26, 2025',status:'Sent'},{title:'Thanksgiving gratitude',date:'Nov 19, 2025',status:'Sent'}];
+  for (var i = 0; i < past.length; i++) {
+    html += '<div style="border-bottom:1px solid #f0eeea;padding:14px 20px;">';
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">';
+    html += '<span style="font-size:15px;font-weight:600;">' + esc(past[i].title) + '</span>';
+    html += '<span style="font-size:10px;padding:2px 8px;border-radius:10px;background:#E8F5EE;color:#4CAF7D;font-weight:600;">' + past[i].status + '</span>';
+    html += '</div>';
+    html += '<div style="font-size:12px;color:#9B9B9B;">' + esc(past[i].date) + '</div>';
+    html += '</div>';
+  }
+  document.getElementById('newsletterListPanel').innerHTML = html;
+}
+
+function switchBottomTab(tab) {
+  var btns = document.querySelectorAll('.bottom-nav-btn');
+  var tabKeys = ['feed','events','sponsors','newsletter','me'];
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].classList.toggle('active', tabKeys[i] === tab);
+  }
+
+  if (tab === 'newsletter') { switchTab('newsletter'); return; }
+
+  if (tab === 'feed') switchTab('discussions');
+  else if (tab === 'events') switchTab('events');
+  else if (tab === 'sponsors') switchTab('dedications');
+  else if (tab === 'me') switchTab('manage');
+}
+
+function renderEventsPanel() {
+  var g = adminGroups[currentAdminGroup];
+  var events = g.events || [];
+  var el = document.getElementById('eventsListPanel');
+  var html = '';
+  for (var i = 0; i < events.length; i++) {
+    var ev = events[i];
+    html += '<div class="event-item">';
+    html += '<div>';
+    html += '<div class="event-name">' + esc(ev.name) + '</div>';
+    html += '<div class="event-date">' + esc(ev.date) + '</div>';
+    html += '</div>';
+    html += '<div class="event-confirmed' + (ev.warn ? ' warning' : '') + '">' + esc(ev.status) + '</div>';
+    html += '</div>';
+  }
+  if (events.length === 0) {
+    html = '<p style="font-size:14px;color:var(--text-muted);padding:8px 0;">No upcoming events.</p>';
+  }
+  el.innerHTML = html;
 }
 
 // Filter pills
@@ -2694,5 +2808,30 @@ renderDiscussions();
 renderAliyah();
 renderDedications();
 </script>
+
+<!-- ── Bottom nav ─────────────────────────────────── -->
+<div class="bottom-nav" id="bottomNav">
+  <button class="bottom-nav-btn active" onclick="switchBottomTab('feed')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
+    Feed
+  </button>
+  <button class="bottom-nav-btn" onclick="switchBottomTab('events')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+    Events
+  </button>
+  <button class="bottom-nav-btn" onclick="switchBottomTab('sponsors')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg>
+    Sponsors
+  </button>
+  <button class="bottom-nav-btn" onclick="switchBottomTab('newsletter')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="3" rx="1"/><rect x="3" y="8.5" width="18" height="3" rx="1"/><rect x="3" y="14" width="12" height="3" rx="1"/></svg>
+    Newsletter
+  </button>
+  <button class="bottom-nav-btn" onclick="switchBottomTab('me')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M5.5 21c0-3.6 2.9-6.5 6.5-6.5s6.5 2.9 6.5 6.5"/></svg>
+    Me
+  </button>
+</div>
+
 </body>
 </html>
