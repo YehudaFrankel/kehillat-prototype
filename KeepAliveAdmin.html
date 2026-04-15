@@ -679,94 +679,57 @@ body {
 .modal-submit.amber { background: #BA7517; }
 
 /* Newsletter modal */
-.nl-modal { border-radius: 12px; overflow: hidden; overflow-y: auto; max-width: 620px; width: 90vw; max-height: 85vh; background: #fff; box-shadow: 0 8px 30px rgba(0,0,0,.18); }
-.nl-header {
-  background: linear-gradient(135deg, #534AB7 0%, #7F77DD 100%);
-  padding: 28px 28px 20px; color: #fff; position: relative;
-}
+.nl-modal { width: 600px; max-width: 95vw; padding: 0; border-radius: 14px; overflow: hidden; background: #fff; box-shadow: 0 8px 30px rgba(0,0,0,.18); max-height: 85vh; overflow-y: auto; }
+.nl-header { background: linear-gradient(135deg, #534AB7 0%, #7F77DD 100%); padding: 28px 28px 20px; color: #fff; position: relative; }
 .nl-header-label { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; opacity: .7; margin-bottom: 6px; }
-.nl-header-title {
-  font-size: 22px; font-weight: 700; margin-bottom: 2px;
-  outline: none; border-bottom: 1px solid transparent;
-}
+.nl-header-title { font-size: 22px; font-weight: 700; margin-bottom: 2px; outline: none; border-bottom: 1px solid transparent; }
 .nl-header-title:hover { border-bottom-color: rgba(255,255,255,.3); }
 .nl-header-title:focus { border-bottom-color: #fff; }
-.nl-header-date {
-  font-size: 13px; opacity: .8;
-  outline: none; border-bottom: 1px solid transparent;
-}
+.nl-header-date { font-size: 13px; opacity: .8; outline: none; border-bottom: 1px solid transparent; }
 .nl-header-date:hover { border-bottom-color: rgba(255,255,255,.3); }
 .nl-header-date:focus { border-bottom-color: #fff; }
-.nl-header-close {
-  position: absolute; top: 12px; right: 12px; width: 32px; height: 32px;
-  border-radius: 50%; border: none; background: rgba(255,255,255,.2);
-  color: #fff; font-size: 18px; cursor: pointer;
-}
-.nl-glance { padding: 14px 28px; background: #faf9f6; border-bottom: 1px solid #ebebeb; }
-.nl-glance-label { font-size: 11px; font-weight: 600; color: #888780; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
-.nl-chips { display: flex; gap: 6px; flex-wrap: wrap; }
-.nl-chip {
-  background: #EEEDFE; color: #534AB7; border: 1px solid rgba(83,74,183,.12);
-  border-radius: 20px; padding: 4px 10px;
-  font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 6px;
-}
-.nl-chip-remove { background: none; border: none; color: #534AB7; cursor: pointer; font-size: 14px; line-height: 1; }
-.nl-chip-add {
-  background: #f5f4f0; border: 1px dashed #d3d1c7;
-  border-radius: 20px; padding: 4px 12px;
-  font-size: 12px; color: #888780; cursor: pointer;
-}
-.nl-toolbar {
-  display: flex; gap: 4px; padding: 8px 28px; background: #faf9f6; border-bottom: 1px solid #ebebeb;
-}
-.nl-toolbar-btn {
-  background: #fff; border: 1px solid #ebebeb;
-  border-radius: 6px; padding: 4px 10px;
-  font-size: 13px; font-weight: 600; cursor: pointer;
-  font-family: inherit; color: #1a1a18;
-}
-.nl-toolbar-btn:hover { border-color: #534AB7; color: #534AB7; }
-.nl-body-edit {
-  padding: 24px 28px; font-size: 15px; line-height: 1.8;
-  min-height: 200px; max-height: 40vh; overflow-y: auto;
-  outline: none; font-family: inherit; color: #1a1a18;
-}
-.nl-body-edit:focus { background: rgba(83,74,183,.02); }
-.nl-body-edit h3 { font-size: 16px; font-weight: 700; color: #534AB7; margin: 20px 0 6px; padding-bottom: 4px; border-bottom: 2px solid #EEEDFE; }
-.nl-body-edit h3:first-child { margin-top: 0; }
-.nl-body-edit p { margin-bottom: 12px; }
-.nl-body-edit hr { border: none; border-top: 1px solid #ebebeb; margin: 16px 0; }
-.nl-footer {
-  background: #faf9f6; padding: 14px 28px; border-top: 1px solid #ebebeb;
-  text-align: center; font-size: 12px; color: #b4b2a9;
-}
-.nl-footer-name {
-  font-weight: 600; color: #1a1a18; outline: none;
-  border-bottom: 1px solid transparent; display: inline-block;
-}
+.nl-glance { background: #faf9f6; padding: 14px 28px; border-bottom: 1px solid #ebebeb; }
+.nl-glance-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; color: #b4b2a9; margin-bottom: 8px; }
+.nl-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.nl-chip-edit { display: flex; align-items: center; gap: 4px; background: #fff; border: 1px solid #d3d1c7; border-radius: 20px; padding: 4px 6px; }
+.nl-chip-edit input { border: none; outline: none; font-size: 11px; font-family: inherit; padding: 2px 4px; background: transparent; }
+.nl-chip-edit input.chip-label { font-weight: 600; color: #534AB7; width: 60px; }
+.nl-chip-edit input.chip-value { color: #888780; width: 120px; }
+.nl-chip-edit .chip-remove { border: none; background: none; color: #E24B4A; cursor: pointer; font-size: 14px; padding: 0 2px; }
+.nl-add-chip { border: 1px dashed #d3d1c7; background: none; border-radius: 20px; padding: 4px 12px; font-size: 11px; color: #b4b2a9; cursor: pointer; font-family: inherit; }
+.nl-add-chip:hover { border-color: #534AB7; color: #534AB7; }
+.nl-toolbar { display: none; padding: 8px 28px; background: #faf9f6; border-bottom: 1px solid #ebebeb; }
+.nl-toolbar.visible { display: flex; gap: 4px; }
+.nl-toolbar button { border: 1px solid #ebebeb; background: #fff; border-radius: 6px; padding: 4px 10px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; color: #1a1a18; }
+.nl-toolbar button:hover { border-color: #534AB7; color: #534AB7; }
+.nl-body { padding: 24px 28px; font-size: 15px; line-height: 1.8; color: #1a1a18; max-height: 40vh; overflow-y: auto; }
+.nl-body h3 { font-size: 16px; font-weight: 700; color: #534AB7; margin: 20px 0 6px; padding-bottom: 4px; border-bottom: 2px solid #EEEDFE; }
+.nl-body h3:first-child { margin-top: 0; }
+.nl-body p { margin-bottom: 12px; }
+.nl-body.editing { outline: none; cursor: text; }
+.nl-body.editing:focus { background: rgba(83,74,183,.02); }
+.nl-footer { background: #faf9f6; padding: 14px 28px; border-top: 1px solid #ebebeb; text-align: center; font-size: 12px; color: #b4b2a9; }
+.nl-footer-name { font-weight: 600; color: #1a1a18; outline: none; border-bottom: 1px solid transparent; display: inline-block; }
 .nl-footer-name:hover { border-bottom-color: #d3d1c7; }
 .nl-footer-name:focus { border-bottom-color: #534AB7; }
-.nl-actions { padding: 16px 28px; display: flex; flex-direction: column; gap: 8px; align-items: center; }
-.nl-actions .modal-submit { max-width: 100%; }
-.nl-count { font-size: 12px; color: #888780; }
+.nl-actions { padding: 16px 28px 24px; display: flex; gap: 10px; align-items: center; }
+.nl-actions .nl-count { font-size: 13px; color: #b4b2a9; margin-left: auto; }
 .nl-generate-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 48px 28px; gap: 16px; }
-.nl-generate-btn {
-  background: linear-gradient(135deg, #534AB7 0%, #7F77DD 100%);
-  color: #fff; border: none; border-radius: 12px; padding: 14px 28px;
-  font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit;
-  transition: transform .15s, box-shadow .15s;
-}
+.nl-generate-btn { background: linear-gradient(135deg, #534AB7 0%, #7F77DD 100%); color: #fff; border: none; border-radius: 12px; padding: 14px 28px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit; transition: transform .15s, box-shadow .15s; }
 .nl-generate-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(83,74,183,.3); }
-.nl-generate-btn:disabled { opacity: 0.5; cursor: default; transform: none; box-shadow: none; }
+.nl-generate-hint { font-size: 13px; color: #b4b2a9; }
 .nl-generating { font-size: 14px; color: #534AB7; font-weight: 500; }
+@keyframes nlPulse { 0%,100% { opacity:.4; } 50% { opacity:1; } }
+.nl-generating-dots { animation: nlPulse 1.2s infinite; }
 @media(max-width:520px){
+  .nl-modal{max-width:95vw}
   .nl-header{padding:20px 16px 16px}
   .nl-header-title{font-size:18px}
   .nl-glance{padding:12px 16px}
-  .nl-body-edit{padding:16px;font-size:14px}
+  .nl-body{padding:16px;font-size:14px}
   .nl-footer{padding:12px 16px}
+  .nl-actions{padding:12px 16px 16px;flex-wrap:wrap}
   .nl-toolbar{padding:8px 16px}
-  .nl-actions{padding:12px 16px}
 }
 
 /* ========== TOAST ========== */
@@ -1154,32 +1117,29 @@ David Levine</textarea>
 <div class="modal-overlay" id="newsletterModal">
   <div class="nl-modal">
     <div class="nl-header">
-      <button class="nl-header-close" onclick="closeModal('newsletterModal')">&times;</button>
+      <button onclick="closeModal('newsletterModal')" style="position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:50%;border:none;background:rgba(255,255,255,.2);color:#fff;font-size:18px;cursor:pointer;">&times;</button>
       <div class="nl-header-label" id="nlLabel">WEEKLY NEWSLETTER</div>
       <div class="nl-header-title" id="nlTitle" contenteditable="true"></div>
       <div class="nl-header-date" id="nlDate" contenteditable="true"></div>
     </div>
     <div class="nl-glance" id="nlGlance">
       <div class="nl-glance-label">This week at a glance</div>
-      <div class="nl-chips" id="nlChipsArea"></div>
+      <div class="nl-chips" id="nlChips"></div>
     </div>
-    <div class="nl-generate-wrap" id="nlGenerateWrap">
-      <button class="nl-generate-btn" id="nlGenerateBtn" onclick="generateNewsletter()">Generate newsletter</button>
-      <div class="nl-generating" id="nlGenerating" style="display:none;">Generating<span class="nl-generating-dots">...</span></div>
+    <div class="nl-toolbar" id="nlToolbar">
+      <button onclick="document.execCommand('bold')"><b>B</b></button>
+      <button onclick="document.execCommand('italic')"><i>I</i></button>
+      <button onclick="document.execCommand('formatBlock',false,'h3')">H3</button>
+      <button onclick="document.execCommand('insertHorizontalRule')">HR</button>
     </div>
-    <div class="nl-toolbar" id="nlToolbar" style="display:none;">
-      <button class="nl-toolbar-btn" onclick="document.execCommand('bold')"><b>B</b></button>
-      <button class="nl-toolbar-btn" onclick="document.execCommand('italic')"><i>I</i></button>
-      <button class="nl-toolbar-btn" onclick="document.execCommand('formatBlock',false,'h3')">H3</button>
-      <button class="nl-toolbar-btn" onclick="document.execCommand('insertHorizontalRule')">HR</button>
-    </div>
-    <div class="nl-body-edit" id="nlBodyEdit" contenteditable="false"></div>
+    <div class="nl-body" id="nlBody"></div>
     <div class="nl-footer">
-      <span class="nl-footer-name" id="nlFooterName" contenteditable="true"></span>
+      <div class="nl-footer-name" id="nlFooterName" contenteditable="true"></div>
       <br>Sent with Keep Alive
     </div>
-    <div class="nl-actions" id="nlActions" style="display:none;">
+    <div class="nl-actions">
       <button class="modal-submit" id="nlSendBtn" onclick="sendNewsletter()">Send newsletter</button>
+      <button style="background:none;border:1px solid #d3d1c7;border-radius:8px;padding:10px 24px;font-size:14px;cursor:pointer;font-family:inherit;color:#888780;" onclick="closeModal('newsletterModal')">Cancel</button>
       <span class="nl-count" id="nlCount"></span>
     </div>
   </div>
@@ -1223,6 +1183,7 @@ var currentTab = 'discussions';
 var currentCat = 'all';
 var currentBottomTab = 'feed';
 var nlGenerated = {};
+var nlChipData = [];
 var toastTimer = null;
 
 var avatarColors = ['#534AB7','#185FA5','#085041','#854F0B','#712B13','#3C3489','#27500A','#633806'];
@@ -1292,9 +1253,16 @@ var adminGroups = {
     ],
     newsletter: {
       label: 'Dec 10 \u2014 Parshat Vayechi',
+      date: 'December 10, 2025',
       title: 'Week in review',
-      chips: ['18 new replies','Campaign at 74%','Chanukah party Dec 28','3 new members'],
-      body: '<h3>Torah Corner</h3><p>Rabbi Weiss shared a beautiful insight on Parshat Vayechi this week, connecting Yehuda\'s leadership to the concept of communal responsibility. The Thursday shiur had 14 attendees \u2014 our best turnout yet.</p><hr><h3>Community Updates</h3><p>The annual campaign has reached $18,400 of our $25,000 goal. Thank you to the 47 families who have contributed so far. The campaign runs through January 15.</p><p>We welcomed 3 new member families this month: the Greens, the Silvers, and the Friedmans. Please make them feel at home!</p><hr><h3>Upcoming Events</h3><p>Chanukah party on December 28 \u2014 we still need a dinner sponsor. If interested, please contact David Levine.</p><p>Women\'s Nach study group forming \u2014 Tuesdays at 7:30pm starting in January.</p>'
+      members: 84,
+      reports: [
+        {icon: '\uD83D\uDCAC', label: 'Replies', value: '18 new'},
+        {icon: '\uD83D\uDCCA', label: 'Campaign', value: '74%'},
+        {icon: '\uD83C\uDF89', label: 'Event', value: 'Dec 28'},
+        {icon: '\uD83D\uDC65', label: 'Members', value: '3 new'}
+      ],
+      body: '<h3>Torah Corner</h3><p>Rabbi Weiss shared a beautiful insight on Parshat Vayechi this week, connecting Yehuda\'s leadership to the concept of communal responsibility. The Thursday shiur had 14 attendees \u2014 our best turnout yet.</p><h3>Community Updates</h3><p>The annual campaign has reached $18,400 of our $25,000 goal. Thank you to the 47 families who have contributed so far. The campaign runs through January 15.</p><p>We welcomed 3 new member families this month: the Greens, the Silvers, and the Friedmans. Please make them feel at home!</p><h3>Upcoming Events</h3><p>Chanukah party on December 28 \u2014 we still need a dinner sponsor. If interested, please contact David Levine.</p><p>Women\'s Nach study group forming \u2014 Tuesdays at 7:30pm starting in January.</p>'
     }
   },
   sports: {
@@ -1339,9 +1307,15 @@ var adminGroups = {
     ],
     newsletter: {
       label: 'Dec 20 \u2014 Weekly Recap',
+      date: 'December 20, 2025',
       title: 'Game day recap',
-      chips: ['Team Aleph wins 72-68','Spring registration open','6 new signups'],
-      body: '<h3>Game Recap</h3><p>An exciting game this week with Team Aleph edging out Team Bet 72-68. MVP honors go to Jake R. with 24 points.</p><hr><h3>League News</h3><p>Spring season registration is open! We\'re adding a 6th team due to demand. Sign up before February 1.</p>'
+      members: 32,
+      reports: [
+        {icon: '\uD83C\uDFC0', label: 'Score', value: '72-68 Aleph'},
+        {icon: '\uD83D\uDCDD', label: 'Registration', value: 'Open'},
+        {icon: '\uD83D\uDC65', label: 'Signups', value: '6 new'}
+      ],
+      body: '<h3>Game Recap</h3><p>An exciting game this week with Team Aleph edging out Team Bet 72-68. MVP honors go to Jake R. with 24 points.</p><h3>League News</h3><p>Spring season registration is open! We\'re adding a 6th team due to demand. Sign up before February 1.</p>'
     }
   },
   learning: {
@@ -1386,9 +1360,16 @@ var adminGroups = {
     ],
     newsletter: {
       label: 'Dec 15 \u2014 Weekly Learning Recap',
+      date: 'December 15, 2025',
       title: 'Weekly learning recap',
-      chips: ['5 dafim completed','Siyum in 3 weeks','New chavrusa match','14 avg attendance'],
-      body: '<h3>This Week\'s Learning</h3><p>We covered Bava Metzia dafim 34\u201338 this week. Rabbi Goldstein highlighted the sugya on shomer responsibilities which generated excellent discussion. Average attendance was 14 members per shiur.</p><hr><h3>Chavrusa Board</h3><p>Avi Schwartz is looking for an afternoon chavrusa for Gittin \u2014 reach out if interested. Dov K. has already expressed interest.</p><hr><h3>Upcoming</h3><p>Siyum on Bava Metzia estimated for January 8. We still need a sponsor for the seudah. Guest shiur by Rav Asher Weiss on January 15.</p>'
+      members: 18,
+      reports: [
+        {icon: '\uD83D\uDCD6', label: 'Dafim', value: '5 completed'},
+        {icon: '\uD83C\uDF89', label: 'Siyum', value: 'In 3 weeks'},
+        {icon: '\uD83E\uDD1D', label: 'Chavrusa', value: 'New match'},
+        {icon: '\uD83D\uDC65', label: 'Attendance', value: '14 avg'}
+      ],
+      body: '<h3>This Week\'s Learning</h3><p>We covered Bava Metzia dafim 34\u201338 this week. Rabbi Goldstein highlighted the sugya on shomer responsibilities which generated excellent discussion. Average attendance was 14 members per shiur.</p><h3>Chavrusa Board</h3><p>Avi Schwartz is looking for an afternoon chavrusa for Gittin \u2014 reach out if interested. Dov K. has already expressed interest.</p><h3>Upcoming</h3><p>Siyum on Bava Metzia estimated for January 8. We still need a sponsor for the seudah. Guest shiur by Rav Asher Weiss on January 15.</p>'
     }
   },
   professional: {
@@ -1434,9 +1415,16 @@ var adminGroups = {
     ],
     newsletter: {
       label: 'Dec 18 \u2014 Industry Updates',
+      date: 'December 18, 2025',
       title: 'Network pulse',
-      chips: ['45 members strong','Annual dinner Jan 9','3 job postings','Mentorship launching'],
-      body: '<h3>Industry Corner</h3><p>Exciting week in tech \u2014 three members shared job openings within the network. Josh Freedman\'s fintech is hiring senior backend engineers, and two other startups are looking for product and design talent.</p><hr><h3>Mentorship Program</h3><p>Tamar Levy is launching a mentorship program pairing senior engineers with junior devs. 8 mentees are already signed up. If you\'re a senior IC or manager willing to meet monthly, sign up on the network board.</p><hr><h3>Upcoming Events</h3><p>Lunch & Learn on Dec 26 with Ari Katz. Annual networking dinner on January 9 \u2014 keynote speaker pending confirmation. Tech Talk Tuesday returns January 7.</p>'
+      members: 45,
+      reports: [
+        {icon: '\uD83D\uDC65', label: 'Members', value: '45 strong'},
+        {icon: '\uD83C\uDF7D\uFE0F', label: 'Dinner', value: 'Jan 9'},
+        {icon: '\uD83D\uDCBC', label: 'Jobs', value: '3 posted'},
+        {icon: '\uD83C\uDF93', label: 'Mentorship', value: 'Launching'}
+      ],
+      body: '<h3>Industry Corner</h3><p>Exciting week in tech \u2014 three members shared job openings within the network. Josh Freedman\'s fintech is hiring senior backend engineers, and two other startups are looking for product and design talent.</p><h3>Mentorship Program</h3><p>Tamar Levy is launching a mentorship program pairing senior engineers with junior devs. 8 mentees are already signed up. If you\'re a senior IC or manager willing to meet monthly, sign up on the network board.</p><h3>Upcoming Events</h3><p>Lunch & Learn on Dec 26 with Ari Katz. Annual networking dinner on January 9 \u2014 keynote speaker pending confirmation. Tech Talk Tuesday returns January 7.</p>'
     }
   },
   friends: {
@@ -1476,9 +1464,16 @@ var adminGroups = {
     ],
     newsletter: {
       label: 'Dec 14 \u2014 Monthly Roundup',
+      date: 'December 14, 2025',
       title: 'Crew update',
-      chips: ['Trip vote open','Thursday dinner','5-year reunion idea','12 strong'],
-      body: '<h3>Trip Planning</h3><p>We\'re finally doing it! Group trip voting is live \u2014 Miami, Cancun, and Austin are the finalists. Vote by Thursday night and get your $150 deposit in by Friday. 8 of 12 members have confirmed so far.</p><hr><h3>Catching Up</h3><p>Great dinner last week at Bistro 88 \u2014 9 of us made it out. Benny floated the idea of a 5-year reunion weekend this spring. Let\'s keep the momentum going.</p><hr><h3>Birthdays</h3><p>Happy birthday to Dani W. on December 22! Group gift collection is open \u2014 Venmo Ari by Thursday.</p>'
+      members: 12,
+      reports: [
+        {icon: '\u2708\uFE0F', label: 'Trip', value: 'Vote open'},
+        {icon: '\uD83C\uDF7D\uFE0F', label: 'Dinner', value: 'Thursday'},
+        {icon: '\uD83C\uDF82', label: 'Reunion', value: '5-year idea'},
+        {icon: '\uD83D\uDC65', label: 'Members', value: '12 strong'}
+      ],
+      body: '<h3>Trip Planning</h3><p>We\'re finally doing it! Group trip voting is live \u2014 Miami, Cancun, and Austin are the finalists. Vote by Thursday night and get your $150 deposit in by Friday. 8 of 12 members have confirmed so far.</p><h3>Catching Up</h3><p>Great dinner last week at Bistro 88 \u2014 9 of us made it out. Benny floated the idea of a 5-year reunion weekend this spring. Let\'s keep the momentum going.</p><h3>Birthdays</h3><p>Happy birthday to Dani W. on December 22! Group gift collection is open \u2014 Venmo Ari by Thursday.</p>'
     }
   }
 };
@@ -1648,10 +1643,10 @@ function renderDiscussions() {
       html += '<div style="background:#EEEDFE;border-radius:10px;padding:12px 14px;margin-bottom:8px;cursor:pointer;" onclick="openNewsletterModal()">';
       html += '<div style="font-size:11px;color:#534AB7;font-weight:600;margin-bottom:3px;">' + esc(nl.label) + '</div>';
       html += '<div style="font-size:15px;font-weight:600;color:#26215C;margin-bottom:4px;">' + esc(nl.title) + ' &mdash; ready to review</div>';
-      if (nl.chips && nl.chips.length) {
+      if (nl.reports && nl.reports.length) {
         html += '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px;">';
-        for (var c = 0; c < nl.chips.length; c++) {
-          html += '<span style="font-size:10px;font-weight:600;padding:3px 8px;border-radius:20px;background:#534AB7;color:#EEEDFE;">' + esc(nl.chips[c]) + '</span>';
+        for (var c = 0; c < nl.reports.length; c++) {
+          html += '<span style="font-size:10px;font-weight:600;padding:3px 8px;border-radius:20px;background:#534AB7;color:#EEEDFE;">' + nl.reports[c].icon + ' ' + esc(nl.reports[c].label) + '</span>';
         }
         html += '</div>';
       }
@@ -2028,130 +2023,118 @@ function sendSponsorAsk() {
    NEWSLETTER MODAL
    ====================================================== */
 function openNewsletterModal() {
-  var nl = g().newsletter;
-  document.getElementById('nlTitle').textContent = nl.title;
-  document.getElementById('nlDate').textContent = nl.label;
-  document.getElementById('nlFooterName').textContent = g().name;
-  document.getElementById('nlCount').textContent = g().members + ' members will receive this';
+  var gd = g();
+  var nl = gd.newsletter;
+  document.getElementById('nlLabel').textContent = nl.label;
+  document.getElementById('nlDate').textContent = nl.date || nl.label;
+  document.getElementById('nlFooterName').textContent = gd.name;
+  document.getElementById('nlCount').textContent = gd.members + ' members will receive this';
 
-  var gk = currentGroup;
-  if (nlGenerated[gk]) {
-    renderNlEditChips(nl.chips);
-    document.getElementById('nlBodyEdit').innerHTML = nl.body;
-    document.getElementById('nlBodyEdit').contentEditable = 'true';
-    document.getElementById('nlToolbar').style.display = 'flex';
-    document.getElementById('nlGenerateWrap').style.display = 'none';
-    document.getElementById('nlGlance').style.display = '';
-    document.getElementById('nlActions').style.display = '';
+  if (nlGenerated[currentGroup]) {
+    document.getElementById('nlTitle').textContent = nl.title;
+    nlChipData = nlGenerated[currentGroup].chips;
+    renderNlEditChips();
+    document.getElementById('nlBody').innerHTML = nlGenerated[currentGroup].body;
+    document.getElementById('nlBody').setAttribute('contenteditable', 'true');
+    document.getElementById('nlBody').classList.add('editing');
+    document.getElementById('nlToolbar').style.display = '';
+    document.getElementById('nlToolbar').classList.add('visible');
   } else {
-    document.getElementById('nlChipsArea').innerHTML = '';
-    document.getElementById('nlBodyEdit').innerHTML = '';
-    document.getElementById('nlBodyEdit').contentEditable = 'false';
+    document.getElementById('nlTitle').textContent = '';
+    nlChipData = [];
+    document.getElementById('nlChips').innerHTML = '';
     document.getElementById('nlToolbar').style.display = 'none';
-    document.getElementById('nlGenerateWrap').style.display = '';
-    document.getElementById('nlGlance').style.display = 'none';
-    document.getElementById('nlActions').style.display = 'none';
-    document.getElementById('nlGenerateBtn').disabled = false;
-    document.getElementById('nlGenerateBtn').textContent = 'Generate newsletter';
-    document.getElementById('nlGenerating').style.display = 'none';
+    document.getElementById('nlBody').removeAttribute('contenteditable');
+    document.getElementById('nlBody').classList.remove('editing');
+    document.getElementById('nlBody').innerHTML = '<div class="nl-generate-wrap"><button class="nl-generate-btn" onclick="generateNewsletter()">Generate with AI</button><span class="nl-generate-hint">Based on this week\'s discussions, events, and activity</span></div>';
   }
   openModal('newsletterModal');
 }
 
 function generateNewsletter() {
-  var btn = document.getElementById('nlGenerateBtn');
-  btn.disabled = true;
-  btn.style.display = 'none';
-  document.getElementById('nlGenerating').style.display = '';
-  var nl = g().newsletter;
-  var gk = currentGroup;
+  var gd = g();
+  var nl = gd.newsletter;
+  var body = document.getElementById('nlBody');
+  body.innerHTML = '<div class="nl-generate-wrap"><span class="nl-generating">Writing your newsletter<span class="nl-generating-dots"> ...</span></span></div>';
 
-  // Show glance area
-  setTimeout(function() {
-    document.getElementById('nlGlance').style.display = '';
-  }, 500);
+  setTimeout(function() { document.getElementById('nlTitle').textContent = nl.title; }, 500);
 
-  // Chips appear one by one
-  var chips = nl.chips;
-  for (var i = 0; i < chips.length; i++) {
+  for (var i = 0; i < nl.reports.length; i++) {
     (function(idx) {
       setTimeout(function() {
-        var area = document.getElementById('nlChipsArea');
-        var chip = document.createElement('span');
-        chip.className = 'nl-chip';
-        chip.innerHTML = esc(chips[idx]) + ' <button class="nl-chip-remove" onclick="this.parentElement.remove()">&times;</button>';
-        area.appendChild(chip);
+        nlChipData.push({ icon: nl.reports[idx].icon, label: nl.reports[idx].label, value: nl.reports[idx].value });
+        renderNlEditChips();
       }, 800 + idx * 300);
     })(i);
   }
 
-  // Add "+" button after last chip
-  setTimeout(function() {
-    var area = document.getElementById('nlChipsArea');
-    var addBtn = document.createElement('span');
-    addBtn.className = 'nl-chip-add';
-    addBtn.textContent = '+ Add';
-    addBtn.onclick = addNlChip;
-    area.appendChild(addBtn);
-  }, 800 + chips.length * 300 + 100);
-
-  // Body sections appear
-  var bodyParts = nl.body.split('<hr>');
-  var bodyEl = document.getElementById('nlBodyEdit');
-  var baseDelay = 800 + chips.length * 300 + 400;
-  for (var j = 0; j < bodyParts.length; j++) {
-    (function(idx) {
+  var sections = nl.body.split('<h3>');
+  var builtHtml = '';
+  var baseDelay = 800 + nl.reports.length * 300 + 400;
+  for (var s = 0; s < sections.length; s++) {
+    (function(idx, content) {
       setTimeout(function() {
-        bodyEl.innerHTML += bodyParts[idx] + (idx < bodyParts.length - 1 ? '<hr>' : '');
+        builtHtml += (idx === 0 ? '' : '<h3>') + content;
+        body.innerHTML = builtHtml;
+        body.scrollTop = body.scrollHeight;
       }, baseDelay + idx * 600);
-    })(j);
+    })(s, sections[s]);
   }
 
-  // Enable editing last
-  var finalDelay = baseDelay + bodyParts.length * 600 + 400;
+  var totalDelay = baseDelay + sections.length * 600 + 200;
   setTimeout(function() {
-    bodyEl.contentEditable = 'true';
-    document.getElementById('nlToolbar').style.display = 'flex';
-    document.getElementById('nlGenerateWrap').style.display = 'none';
-    document.getElementById('nlActions').style.display = '';
-    nlGenerated[gk] = true;
-  }, finalDelay);
+    body.setAttribute('contenteditable', 'true');
+    body.classList.add('editing');
+    document.getElementById('nlToolbar').style.display = '';
+    document.getElementById('nlToolbar').classList.add('visible');
+    nlGenerated[currentGroup] = { body: body.innerHTML, chips: nlChipData.slice() };
+  }, totalDelay);
 }
 
-function renderNlEditChips(chips) {
+function renderNlEditChips() {
   var html = '';
-  for (var i = 0; i < chips.length; i++) {
-    html += '<span class="nl-chip">' + esc(chips[i]) + ' <button class="nl-chip-remove" onclick="this.parentElement.remove()">&times;</button></span>';
+  for (var i = 0; i < nlChipData.length; i++) {
+    html += '<span class="nl-chip-edit">';
+    html += '<span style="font-size:13px;">' + nlChipData[i].icon + '</span>';
+    html += '<input class="chip-label" value="' + esc(nlChipData[i].label) + '" data-idx="' + i + '" data-field="label">';
+    html += '<input class="chip-value" value="' + esc(nlChipData[i].value) + '" data-idx="' + i + '" data-field="value">';
+    html += '<button class="chip-remove" onclick="removeNlChip(' + i + ')">&times;</button>';
+    html += '</span>';
   }
-  html += '<span class="nl-chip-add" onclick="addNlChip()">+ Add</span>';
-  document.getElementById('nlChipsArea').innerHTML = html;
+  html += '<button class="nl-add-chip" onclick="addNlChip()">+ Add</button>';
+  document.getElementById('nlChips').innerHTML = html;
+  var inputs = document.querySelectorAll('#nlChips .nl-chip-edit input');
+  for (var i = 0; i < inputs.length; i++) {
+    inputs[i].addEventListener('input', function() {
+      var idx = parseInt(this.getAttribute('data-idx'));
+      var field = this.getAttribute('data-field');
+      nlChipData[idx][field] = this.value;
+    });
+  }
+}
+
+function removeNlChip(idx) {
+  nlChipData.splice(idx, 1);
+  renderNlEditChips();
 }
 
 function addNlChip() {
-  var text = prompt('Chip text:');
-  if (!text) return;
-  var area = document.getElementById('nlChipsArea');
-  var addBtn = area.querySelector('.nl-chip-add');
-  var chip = document.createElement('span');
-  chip.className = 'nl-chip';
-  chip.innerHTML = esc(text) + ' <button class="nl-chip-remove" onclick="this.parentElement.remove()">&times;</button>';
-  area.insertBefore(chip, addBtn);
+  nlChipData.push({ icon: '\uD83D\uDCCC', label: 'Label', value: 'Value' });
+  renderNlEditChips();
 }
 
 function sendNewsletter() {
   closeModal('newsletterModal');
-  // Update the newsletter discussion card
   var items = g().discussions;
   for (var i = 0; i < items.length; i++) {
     if (items[i].isNewsletter) {
       items[i].time = 'Sent just now';
       items[i].isNewsletter = false;
-      items[i].body = 'Weekly newsletter sent to ' + g().members + ' members.';
       break;
     }
   }
   renderDiscussions();
-  showToast('Newsletter sent');
+  showToast('Newsletter sent to ' + g().members + ' members');
 }
 
 /* ======================================================
