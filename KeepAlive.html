@@ -778,9 +778,10 @@ function switchTab(name){
     else topBtns[i].classList.remove('active');
   }
 
-  // FAB + banners (only on feed)
+  // FAB + banners + compose (only on feed)
   document.getElementById('fab').classList.toggle('hidden',name!=='feed');
   document.getElementById('pinBanner').style.display=name==='feed'?'':'none';
+  document.querySelector('.compose-bar').style.display=name==='feed'?'':'none';
 
   // lazy render
   if(!renderedTabs[name]){

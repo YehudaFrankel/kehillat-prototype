@@ -1352,6 +1352,7 @@ function switchBottomTab(tab) {
   var isFeed = (tab === 'feed');
   document.getElementById('alertBanner').style.display = isFeed ? '' : 'none';
   document.getElementById('pinBanner').style.display = isFeed ? '' : 'none';
+  document.getElementById('composeBarMobile').style.display = isFeed ? '' : 'none';
 
   // Map bottom tabs to content tabs
   if (tab === 'feed') switchTab('discussions');
