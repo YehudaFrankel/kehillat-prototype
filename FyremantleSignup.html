@@ -3,9 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Keep Alive &mdash; Join</title>
-<meta property="og:title" content="Join Kehilat Shalom on Keep Alive">
-<meta property="og:description" content="Dovid Levy invited you to join the community. 84 members. Tap to join instantly.">
+<title>Join KeepAliveNow</title>
+
+<!-- Open Graph — WhatsApp / iMessage / Slack link preview -->
+<meta property="og:title" content="Join Kehilat Shalom on KeepAliveNow">
+<meta property="og:description" content="Rabbi Schwartz invited you to join the community. 84 members. Tap to join instantly.">
+<meta property="og:image" content="https://fyremantle.com/og-invite.png">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://fyremantle.com/join/kehilat-shalom">
 
@@ -44,301 +47,585 @@
   --font-body:    -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-/* ── Card ── */
-.signup-card{
-  background:#fff;
-  border:1px solid #d3d1c7;
-  border-radius:22px;
-  width:100%;
-  max-width:480px;
-  padding:36px 32px 32px;
-  position:relative;
-  overflow:hidden;
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* ── Header ── */
-.card-header{text-align:center;margin-bottom:24px}
-.avatar{
-  width:48px;height:48px;border-radius:50%;
-  background:#534AB7;color:#fff;
-  display:inline-flex;align-items:center;justify-content:center;
-  font-size:16px;font-weight:700;letter-spacing:.5px;
-  margin-bottom:8px;
-}
-.brand-name{font-size:14px;font-weight:500;color:#534AB7;margin-bottom:4px}
-.card-subtitle{font-size:15px;color:#888780;font-weight:400}
-
-/* ── Invite card ── */
-.invite-card{
-  background:#EEEDFE;
-  border-radius:10px;
-  padding:12px;
-  margin-bottom:20px;
-}
-.invite-from{font-size:10px;font-weight:700;color:#534AB7;margin-bottom:4px}
-.invite-org{font-size:13px;font-weight:700;color:#26215C;margin-bottom:6px}
-.invite-msg{font-size:10px;color:#3C3489;line-height:1.5;margin-bottom:12px}
-.btn-join{
-  width:100%;padding:11px 0;border:none;border-radius:8px;
-  background:#534AB7;color:#fff;font-size:14px;font-weight:600;
-  cursor:pointer;transition:opacity .15s;
-}
-.btn-join:hover{opacity:.9}
-
-/* ── Or divider ── */
-.or-text{text-align:center;font-size:12px;color:#888780;margin:16px 0}
-.divider{
-  display:flex;align-items:center;gap:12px;
-  margin:16px 0;
-}
-.divider-line{flex:1;height:1px;background:#d3d1c7}
-.divider-label{font-size:12px;color:#888780;white-space:nowrap}
-
-/* ── Google button ── */
-.btn-google{
-  width:100%;padding:11px 0;border:1px solid #d3d1c7;border-radius:8px;
-  background:#fff;font-size:14px;font-weight:500;color:#1a1a18;
-  cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;
-  transition:background .15s;
-}
-.btn-google:hover{background:#fafaf8}
-.btn-google svg{width:18px;height:18px;flex-shrink:0}
-
-/* ── Email input ── */
-.email-input{
-  width:100%;padding:11px 16px;border:1px solid #d3d1c7;border-radius:8px;
-  font-size:14px;text-align:center;outline:none;
-  font-family:inherit;color:#1a1a18;
-  transition:border-color .15s;
-  margin-bottom:10px;
-}
-.email-input::placeholder{color:#b4b2a9}
-.email-input:focus{border-color:#534AB7}
-.email-input.input-error{border-color:#E24B4A}
-
-/* ── Send link button ── */
-.btn-send{
-  width:100%;padding:11px 0;border:none;border-radius:8px;
-  background:#1a1a18;color:#fff;font-size:14px;font-weight:600;
-  cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;
-  transition:opacity .15s;
-}
-.btn-send:hover{opacity:.9}
-.btn-send:disabled,.btn-join:disabled,.btn-google:disabled{opacity:.6;cursor:not-allowed}
-
-.note{font-size:9px;color:#b4b2a9;text-align:center;margin-top:10px}
-
-/* ── Error message ── */
-.error-msg{
-  font-size:12px;color:#E24B4A;text-align:center;
-  margin-bottom:8px;min-height:18px;
+.signup-container {
+  width: 100%;
+  max-width: 480px;
+  position: relative;
 }
 
-/* ── Spinner ── */
-.spinner{
-  display:inline-block;width:16px;height:16px;
-  border:2px solid rgba(255,255,255,.3);border-top-color:#fff;
-  border-radius:50%;animation:spin .6s linear infinite;
-}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* ── Views ── */
-.view{transition:opacity .35s ease,transform .35s ease}
-.hidden{display:none}
-.slide-out{opacity:0;transform:translateY(-30px);pointer-events:none}
-.slide-in{animation:slideIn .4s ease forwards}
-@keyframes slideIn{
-  from{opacity:0;transform:translateY(30px)}
-  to{opacity:1;transform:translateY(0)}
+.signup-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  position: relative;
+  border: 1px solid var(--border);
 }
 
-/* ── Success view ── */
-.success-view{text-align:center;padding:20px 0}
-.success-heading{font-size:22px;font-weight:700;margin:18px 0 8px}
-.success-detail{font-size:14px;color:#888780;margin-bottom:24px;line-height:1.5}
-.success-detail strong{color:#1a1a18}
-.btn-open{
-  width:100%;padding:12px 0;border:none;border-radius:8px;
-  background:#534AB7;color:#fff;font-size:14px;font-weight:600;
-  cursor:pointer;transition:opacity .15s;
-  text-decoration:none;display:inline-block;text-align:center;
+/* View transitions */
+.view {
+  padding: 36px 32px 32px;
+  transition: opacity .4s, transform .4s;
 }
-.btn-open:hover{opacity:.9}
+.view.hidden {
+  display: none;
+}
+.view.slide-out {
+  opacity: 0;
+  transform: translateY(-30px);
+  pointer-events: none;
+}
+.view.slide-in {
+  animation: slideIn .5s .15s ease both;
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-/* ── SVG checkmark ── */
-.checkmark-circle{
-  stroke:#27500A;stroke-width:2;fill:none;
-  stroke-dasharray:204;stroke-dashoffset:204;
-  animation:drawCircle .6s ease forwards;
+@media (max-width: 520px) {
+  .signup-container { max-width: 100%; }
+  .view { padding: 28px 20px 24px; }
 }
-.checkmark-check{
-  stroke:#27500A;stroke-width:3;fill:none;
-  stroke-linecap:round;stroke-linejoin:round;
-  stroke-dasharray:46;stroke-dashoffset:46;
-  animation:drawCheck .4s ease forwards .5s;
-}
-@keyframes drawCircle{to{stroke-dashoffset:0}}
-@keyframes drawCheck{to{stroke-dashoffset:0}}
 
-/* ── Toast ── */
-.toast{
-  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
-  background:#1a1a18;color:#fff;font-size:13px;font-weight:500;
-  padding:10px 20px;border-radius:8px;
-  opacity:0;transition:opacity .3s ease,transform .3s ease;
-  pointer-events:none;z-index:100;white-space:nowrap;
+/* Header */
+.community-header {
+  text-align: center;
+  margin-bottom: 28px;
 }
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.avatar-circle {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--purple);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #fff;
+}
+.community-header .invited-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+.community-header h1 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1.55rem;
+  color: var(--text);
+  margin-bottom: 4px;
+  letter-spacing: -0.3px;
+}
+.community-header .invited-by {
+  font-size: 13px;
+  color: var(--text-sec);
+  margin-bottom: 4px;
+}
+.community-header .meta {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* Form */
+label {
+  display: block;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+label .optional-tag {
+  font-weight: 400;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+select {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text);
+  background: var(--white);
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+input:focus, select:focus {
+  border-color: var(--purple);
+  box-shadow: 0 0 0 3px rgba(107,92,231,.12);
+}
+input.error {
+  border-color: var(--red);
+}
+input::placeholder {
+  color: var(--text-muted);
+}
+input.prefilled {
+  color: var(--text-sec);
+  background: var(--bg);
+}
+
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239B9B9B' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+
+.field-group {
+  margin-bottom: 18px;
+}
+
+.name-row {
+  display: flex;
+  gap: 10px;
+}
+.name-row .field-group { flex: 1; }
+
+.error-msg {
+  color: var(--red);
+  font-size: 12px;
+  margin-top: 4px;
+  min-height: 0;
+}
+.error-msg:empty { margin-top: 0; }
+
+/* Interest tags */
+.interests-section {
+  margin-bottom: 24px;
+}
+.interests-label {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.interests-optional {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+.tags-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.tag-pill {
+  padding: 7px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-sec);
+  background: var(--white);
+  cursor: pointer;
+  transition: all .2s;
+  user-select: none;
+}
+.tag-pill:hover {
+  border-color: var(--purple);
+  color: var(--purple);
+  background: var(--purple-light);
+}
+.tag-pill.selected {
+  border-color: var(--purple);
+  background: var(--purple);
+  color: #fff;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all .2s;
+  text-decoration: none;
+  width: 100%;
+  position: relative;
+}
+.btn-primary {
+  background: var(--purple);
+  color: #fff;
+}
+.btn-primary:hover { background: var(--purple-dark); }
+.btn-primary:active { transform: scale(.985); }
+.btn-primary:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+#googleBtn:hover { box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-sec);
+}
+.btn-outline:hover { background: var(--bg); border-color: var(--purple); color: var(--purple); }
+
+.terms {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 12px;
+}
+
+/* Loading spinner */
+.spinner {
+  display: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  margin-left: 8px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.btn.loading .btn-text { opacity: .7; }
+.btn.loading .spinner { display: inline-block; }
+
+/* Divider */
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 24px 0;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+.section-divider::before, .section-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* Magic link section */
+.magic-link-section {
+  text-align: center;
+}
+.magic-link-section .magic-btn {
+  margin-bottom: 0;
+}
+.magic-input-row {
+  display: none;
+  margin-top: 14px;
+}
+.magic-input-row.visible { display: block; }
+.magic-input-row input {
+  margin-bottom: 10px;
+}
+.magic-sent {
+  display: none;
+  text-align: center;
+  padding: 16px 0 4px;
+  color: var(--purple);
+  font-size: 14px;
+}
+.magic-sent .magic-icon {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 8px;
+}
+.magic-sent.visible { display: block; }
+
+/* Success view */
+.success-view {
+  text-align: center;
+}
+.success-view h2 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1.6rem;
+  color: var(--text);
+  margin-bottom: 4px;
+  letter-spacing: -0.3px;
+}
+.success-view .success-subtitle {
+  color: var(--text-sec);
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+/* Animated checkmark */
+.checkmark-wrap {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 20px;
+}
+.checkmark-wrap svg {
+  width: 72px;
+  height: 72px;
+}
+.checkmark-wrap .circle {
+  fill: none;
+  stroke: var(--green);
+  stroke-width: 3;
+  stroke-dasharray: 204;
+  stroke-dashoffset: 204;
+  stroke-linecap: round;
+  animation: drawCircle .6s ease forwards;
+}
+.checkmark-wrap .check {
+  fill: none;
+  stroke: var(--green);
+  stroke-width: 3.5;
+  stroke-dasharray: 46;
+  stroke-dashoffset: 46;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  animation: drawCheck .4s .5s ease forwards;
+}
+@keyframes drawCircle { to { stroke-dashoffset: 0; } }
+@keyframes drawCheck { to { stroke-dashoffset: 0; } }
+
+.next-steps-card {
+  background: var(--bg);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  margin-bottom: 24px;
+  text-align: left;
+  border: 1px solid var(--border);
+}
+.next-steps-card .ns-heading {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+.next-steps-card .ns-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  font-size: 13px;
+  color: var(--text-sec);
+}
+.next-steps-card .ns-check {
+  color: var(--green);
+  font-weight: 700;
+  flex-shrink: 0;
+  font-size: 14px;
+}
+
+.magic-note {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 16px;
+  line-height: 1.5;
+}
+
+.btn-group-vert {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--text);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  transition: all .35s cubic-bezier(.4, 0, .2, 1);
+  pointer-events: none;
+  z-index: 100;
+  white-space: nowrap;
+}
+.toast.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
 </style>
 </head>
 <body>
 
-<div class="signup-card">
+<div class="signup-container">
+  <div class="signup-card">
 
-  <!-- ═══ Form View ═══ -->
-  <div id="formView" class="view">
-    <div class="card-header">
-      <div class="avatar">KS</div>
-      <div class="brand-name">Keep Alive</div>
-      <div class="card-subtitle">You have an invitation</div>
+    <!-- Main View -->
+    <div class="view" id="formView">
+      <div class="community-header">
+        <div class="avatar-circle">KS</div>
+        <h1>KeepAliveNow</h1>
+        <p class="invited-by">Rabbi Schwartz invited you</p>
+        <p class="meta">84 members &middot; Est. 2019</p>
+      </div>
+
+      <p style="font-size:15px; color:var(--text); text-align:center; margin-bottom:20px; line-height:1.5;">Join or sign in to your community</p>
+
+      <!-- Google Sign-In -->
+      <button onclick="googleSignIn()" id="googleBtn" style="width:100%; padding:12px; font-size:15px; font-weight:500; font-family:inherit; background:#fff; border:1px solid #dadce0; border-radius:8px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px; transition:box-shadow .2s;">
+        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        <span>Continue with Google</span>
+      </button>
+
+      <!-- Divider -->
+      <div style="display:flex; align-items:center; gap:12px; margin:18px 0;">
+        <div style="flex:1; height:1px; background:var(--border);"></div>
+        <span style="font-size:12px; color:var(--text-muted);">or use your email</span>
+        <div style="flex:1; height:1px; background:var(--border);"></div>
+      </div>
+
+      <!-- Magic link email -->
+      <div class="field-group">
+        <input type="email" id="magicEmail" placeholder="your@email.com" style="text-align:center; font-size:15px; padding:12px;">
+        <div class="error-msg" id="errEmail" style="text-align:center;"></div>
+      </div>
+
+      <button class="btn btn-primary" onclick="sendLink()" id="sendBtn" style="width:100%; margin-top:8px; padding:12px; font-size:14px; background:var(--text); border-color:var(--text);">
+        <span class="btn-text">Send me a link</span>
+        <span class="spinner"></span>
+      </button>
+
+      <p style="font-size:11px; color:var(--text-muted); text-align:center; margin-top:10px;">No password needed</p>
     </div>
 
-    <div class="invite-card">
-      <div class="invite-from">From Dovid Levy, gabbai</div>
-      <div class="invite-org">Kehillat Shalom</div>
-      <div class="invite-msg">We'd love to have you as part of our community. Join us and stay connected with everything happening at the shul.</div>
-      <button class="btn-join" id="btnJoin" onclick="googleSignIn()">Join Kehillat Shalom</button>
+    <!-- Success View -->
+    <div class="view hidden" id="successView">
+      <div class="success-view">
+        <div class="checkmark-wrap" id="successCheck">
+          <svg viewBox="0 0 72 72">
+            <circle class="circle" cx="36" cy="36" r="32"/>
+            <polyline class="check" points="21,38 31,48 51,27"/>
+          </svg>
+        </div>
+        <h2>You're in!</h2>
+        <p class="magic-note" id="magicNoteText"></p>
+
+        <div class="btn-group-vert" style="margin-top:24px;">
+          <button class="btn btn-primary" onclick="window.location.href='FyremantlePicker.html'" style="width:100%; padding:14px; font-size:15px;">Open Fyremantle</button>
+        </div>
+      </div>
     </div>
 
-    <div class="or-text">or sign in with</div>
-
-    <button class="btn-google" id="btnGoogle" onclick="googleSignIn()">
-      <svg viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
-        <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
-        <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.26c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/>
-        <path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.997 8.997 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
-        <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
-      </svg>
-      Continue with Google
-    </button>
-
-    <div class="divider">
-      <span class="divider-line"></span>
-      <span class="divider-label">or use your email</span>
-      <span class="divider-line"></span>
-    </div>
-
-    <input type="email" id="emailInput" class="email-input" placeholder="your@email.com" autocomplete="email">
-    <div id="errorMsg" class="error-msg"></div>
-    <button class="btn-send" id="btnSend" onclick="sendLink()">Send me a link</button>
-    <div class="note">No password needed</div>
   </div>
-
-  <!-- ═══ Success View ═══ -->
-  <div id="successView" class="view hidden">
-    <div class="success-view">
-      <svg width="64" height="64" viewBox="0 0 64 64">
-        <circle class="checkmark-circle" cx="32" cy="32" r="30"/>
-        <polyline class="checkmark-check" points="20,34 28,42 44,24"/>
-      </svg>
-      <div class="success-heading">You're in!</div>
-      <div class="success-detail" id="successDetail"></div>
-      <a href="FyremantlePicker.html" class="btn-open">Open Keep Alive</a>
-    </div>
-  </div>
-
 </div>
 
-<!-- Toast -->
-<div id="toast" class="toast"></div>
+<div class="toast" id="toast"></div>
 
 <script>
-function escHtml(str) {
-  if (!str) return '';
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
+function googleSignIn() {
+  var btn = document.getElementById('googleBtn');
+  btn.style.opacity = '0.7';
+  btn.style.pointerEvents = 'none';
+  btn.innerHTML = '<span class="spinner" style="display:inline-block;width:18px;height:18px;border:2px solid #dadce0;border-top-color:#4285F4;border-radius:50%;animation:spin .6s linear infinite;"></span> <span>Signing in...</span>';
+
+  setTimeout(function() {
+    var formView = document.getElementById('formView');
+    var successView = document.getElementById('successView');
+    formView.classList.add('slide-out');
+    setTimeout(function() {
+      formView.classList.add('hidden');
+      successView.classList.remove('hidden');
+      successView.classList.add('slide-in');
+      var wrap = document.getElementById('successCheck');
+      var svg = wrap.innerHTML;
+      wrap.innerHTML = '';
+      void wrap.offsetWidth;
+      wrap.innerHTML = svg;
+      document.getElementById('magicNoteText').innerHTML = 'Signed in with Google';
+    }, 400);
+  }, 1500);
+}
+
+function sendLink() {
+  var email = document.getElementById('magicEmail').value.trim();
+  var errEl = document.getElementById('errEmail');
+
+  if (!email) {
+    errEl.textContent = 'Enter your email';
+    document.getElementById('magicEmail').classList.add('error');
+    return;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    errEl.textContent = 'Please enter a valid email';
+    document.getElementById('magicEmail').classList.add('error');
+    return;
+  }
+  errEl.textContent = '';
+  document.getElementById('magicEmail').classList.remove('error');
+
+  var btn = document.getElementById('sendBtn');
+  btn.classList.add('loading');
+  btn.disabled = true;
+
+  setTimeout(function() {
+    /* show success — transition to success view */
+    var formView = document.getElementById('formView');
+    var successView = document.getElementById('successView');
+
+    formView.classList.add('slide-out');
+
+    setTimeout(function() {
+      formView.classList.add('hidden');
+      successView.classList.remove('hidden');
+      successView.classList.add('slide-in');
+
+      var wrap = document.getElementById('successCheck');
+      var svg = wrap.innerHTML;
+      wrap.innerHTML = '';
+      void wrap.offsetWidth;
+      wrap.innerHTML = svg;
+
+      document.getElementById('magicNoteText').innerHTML =
+        'We sent a link to <strong>' + escHtml(email) + '</strong>';
+    }, 400);
+  }, 1200);
 }
 
 function showToast(msg) {
   var t = document.getElementById('toast');
   t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(function() { t.classList.remove('show'); }, 3000);
+  t.classList.add('visible');
+  setTimeout(function() { t.classList.remove('visible'); }, 3000);
 }
 
-function setButtonLoading(btn, text) {
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span> ' + escHtml(text);
+function escHtml(str) {
+  return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
-
-function transitionToSuccess() {
-  var form = document.getElementById('formView');
-  var success = document.getElementById('successView');
-  form.classList.add('slide-out');
-  setTimeout(function() {
-    form.classList.add('hidden');
-    success.classList.remove('hidden');
-    success.classList.add('slide-in');
-  }, 350);
-}
-
-function googleSignIn() {
-  var btnJoin = document.getElementById('btnJoin');
-  var btnGoogle = document.getElementById('btnGoogle');
-  setButtonLoading(btnJoin, 'Signing in...');
-  setButtonLoading(btnGoogle, 'Signing in...');
-
-  setTimeout(function() {
-    document.getElementById('successDetail').innerHTML = 'Signed in with Google';
-    transitionToSuccess();
-    showToast('Welcome to Kehillat Shalom!');
-  }, 1500);
-}
-
-function isValidEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
-function sendLink() {
-  var input = document.getElementById('emailInput');
-  var errorEl = document.getElementById('errorMsg');
-  var btn = document.getElementById('btnSend');
-  var email = input.value.trim();
-
-  input.classList.remove('input-error');
-  errorEl.textContent = '';
-
-  if (!email) {
-    input.classList.add('input-error');
-    errorEl.textContent = 'Please enter your email address';
-    input.focus();
-    return;
-  }
-  if (!isValidEmail(email)) {
-    input.classList.add('input-error');
-    errorEl.textContent = 'Please enter a valid email address';
-    input.focus();
-    return;
-  }
-
-  setButtonLoading(btn, 'Sending...');
-
-  setTimeout(function() {
-    document.getElementById('successDetail').innerHTML =
-      'We sent a link to <strong>' + escHtml(email) + '</strong>';
-    transitionToSuccess();
-    showToast('Check your inbox!');
-  }, 1200);
-}
-
-/* Allow Enter key on email input */
-document.getElementById('emailInput').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') sendLink();
-});
 </script>
 </body>
 </html>
