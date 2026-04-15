@@ -804,7 +804,7 @@ body {
     <button class="topbar-nav-btn nav-tab-btn" onclick="switchBottomTab('events')">Events</button>
     <button class="topbar-nav-btn nav-tab-btn" onclick="switchBottomTab('sponsors')">Sponsors</button>
     <button class="topbar-nav-btn nav-tab-btn" onclick="switchBottomTab('aliyos')">Aliyos</button>
-    <button class="topbar-nav-btn nav-tab-btn" onclick="switchBottomTab('members')">Members<span class="topbar-nav-dot"></span></button>
+    <button class="topbar-nav-btn nav-tab-btn" onclick="switchBottomTab('members')">Me<span class="topbar-nav-dot"></span></button>
     <button class="topbar-nav-btn" onclick="openModal('groupSwitcherModal')" style="margin-left:4px;font-size:12px;">Switch group</button>
     <div class="topbar-avatar" style="margin-left:8px;">DL</div>
   </div>
@@ -1015,7 +1015,7 @@ body {
   </button>
   <button class="bottom-nav-btn" onclick="switchBottomTab('members')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
-    <span class="bnav-label">Members</span>
+    <span class="bnav-label">Me</span>
     <span class="bottom-nav-dot"></span>
   </button>
 </div>
@@ -1200,7 +1200,7 @@ var adminGroups = {
     name: 'Kehillat Shalom',
     members: 84,
     role: 'organizer',
-    tabLabels: ['Feed','Events','Sponsors','Aliyos','Members'],
+    tabLabels: ['Feed','Events','Sponsors','Aliyos','Me'],
     catLabels: {cats:['all','torah','current','community','events'], labels:['All','Torah','Current events','Community','Events']},
     stats: {
       members: '84', membersChange: '+3 this month',
@@ -1260,7 +1260,7 @@ var adminGroups = {
     name: 'Maccabee League',
     members: 32,
     role: 'organizer',
-    tabLabels: ['Feed','Events','Sponsors','Stats','Roster'],
+    tabLabels: ['Feed','Events','Sponsors','Stats','Me'],
     catLabels: {cats:['all','community','events','current'], labels:['All','Team news','Game day','League']},
     stats: {
       members: '32', membersChange: '+5 this month',
@@ -1307,7 +1307,7 @@ var adminGroups = {
     name: 'Daf Yomi Chevra',
     members: 18,
     role: 'organizer',
-    tabLabels: ['Feed','Events','Sponsors','Resources','Members'],
+    tabLabels: ['Feed','Events','Sponsors','Resources','Me'],
     catLabels: {cats:['all','torah','community','current'], labels:['All','Gemara','Halacha','Resources']},
     stats: {
       members: '18', membersChange: '+2 this month',
@@ -1354,7 +1354,7 @@ var adminGroups = {
     name: 'Jewish Tech Network',
     members: 45,
     role: 'organizer',
-    tabLabels: ['Feed','Events','Sponsors','Directory','Resources'],
+    tabLabels: ['Feed','Events','Sponsors','Directory','Me'],
     catLabels: {cats:['all','community','current','events'], labels:['All','Jobs','Mentorship','Industry']},
     stats: {
       members: '45', membersChange: '+7 this month',
@@ -1402,7 +1402,7 @@ var adminGroups = {
     name: 'College Crew',
     members: 12,
     role: 'organizer',
-    tabLabels: ['Feed','Events','Sponsors','Photos','Members'],
+    tabLabels: ['Feed','Events','Sponsors','Photos','Me'],
     catLabels: {cats:['all','community','current','events'], labels:['All','Hangouts','Updates','Trips']},
     stats: {
       members: '12', membersChange: '+0 this month',
