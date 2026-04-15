@@ -1538,7 +1538,7 @@ function renderEvents() {
     html += '<div style="background:#fff;border:1px solid #ebebeb;border-radius:10px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:12px;">';
     html += '<div style="text-align:center;min-width:36px;"><div style="font-size:18px;font-weight:700;line-height:1;">' + esc(e.day) + '</div><div style="font-size:9px;color:#888780;text-transform:uppercase;font-weight:600;">' + esc(e.month) + '</div></div>';
     html += '<div style="flex:1;"><div style="font-size:13px;font-weight:600;">' + esc(e.name) + '</div><div style="font-size:11px;color:#888780;">' + (e.confirmed ? e.confirmed + ' confirmed' : 'No sponsor yet') + '</div></div>';
-    html += '<button style="font-size:10px;font-weight:600;padding:6px 14px;border-radius:6px;border:1px solid #d3d1c7;background:#fff;color:#1a1a18;cursor:pointer;font-family:inherit;" onclick="showToast(\'Event management coming soon\')">Manage</button>';
+    html += '<button style="font-size:10px;font-weight:600;padding:6px 14px;border-radius:6px;border:1px solid #d3d1c7;background:#fff;color:#1a1a18;cursor:pointer;font-family:inherit;" onclick="manageEvent(\'' + esc(e.name).replace(/'/g,'\\\'') + '\')">Manage</button>';
     html += '</div>';
   }
   document.getElementById('eventsList').innerHTML = html;
@@ -1737,6 +1737,13 @@ function submitPost() {
   closeModal('postModal');
   renderDiscussions();
   showToast('Post published');
+}
+
+function manageEvent(name) {
+  document.getElementById('eventName').value = name;
+  document.querySelector('#eventModal .modal-title').innerHTML = 'Manage event<button class="modal-close" onclick="closeModal(\'eventModal\')">&times;</button>';
+  document.querySelector('#eventModal .modal-submit').textContent = 'Save changes';
+  openModal('eventModal');
 }
 
 function submitEvent() {
