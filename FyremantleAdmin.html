@@ -962,6 +962,27 @@ table.aliyah-table {
   .card-title { font-size: 15px; }
   .newsletter-banner { flex-direction: column; gap: 10px; padding: 14px 16px; }
   .newsletter-text { font-size: 13px; }
+  .nav-tabs { display: none; }
+  .main { padding-bottom: 120px; }
+}
+
+/* ── Bottom nav ──────────────────────────────────── */
+.bottom-nav {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: #fff; border-top: 1px solid #EEECEC;
+  display: flex; height: 56px; z-index: 200;
+}
+.bottom-nav-btn {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 2px;
+  background: none; border: none; font-size: 9px;
+  color: #9B9B9B; cursor: pointer; font-family: inherit;
+}
+.bottom-nav-btn.active { color: #6B5CE7; }
+.bottom-nav-btn svg { width: 20px; height: 20px; }
+
+@media (min-width: 961px) {
+  .bottom-nav { display: none; }
 }
 </style>
 </head>
@@ -1187,6 +1208,17 @@ table.aliyah-table {
     <span class="card-title">Submitted Dedications</span>
   </div>
   <div id="dedicationsList"></div>
+</div>
+</div>
+
+<!-- ═══ EVENTS VIEW ═══ -->
+<div class="view" id="viewEvents">
+<div class="card">
+  <div class="card-header">
+    <span class="card-title">Upcoming Events</span>
+    <a class="card-link" onclick="openModal('newEventModal')">+ New event</a>
+  </div>
+  <div id="eventsListPanel"></div>
 </div>
 </div>
 
@@ -1852,11 +1884,50 @@ function switchTab(tab) {
   } else if (tab === 'dedications') {
     tabs[2].classList.add('active');
     document.getElementById('viewDedications').classList.add('active');
+  } else if (tab === 'events') {
+    document.getElementById('viewEvents').classList.add('active');
+    renderEventsPanel();
   } else if (tab === 'manage') {
     tabs[3].classList.add('active');
     document.getElementById('viewManage').classList.add('active');
     renderRequests('memberRequests');
   }
+}
+
+function switchBottomTab(tab) {
+  var btns = document.querySelectorAll('.bottom-nav-btn');
+  var tabKeys = ['feed','events','sponsors','newsletter','me'];
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].classList.toggle('active', tabKeys[i] === tab);
+  }
+
+  if (tab === 'newsletter') { openModal('newsletterModal'); populateNewsletter(); return; }
+
+  if (tab === 'feed') switchTab('discussions');
+  else if (tab === 'events') switchTab('events');
+  else if (tab === 'sponsors') switchTab('dedications');
+  else if (tab === 'me') switchTab('manage');
+}
+
+function renderEventsPanel() {
+  var g = adminGroups[currentAdminGroup];
+  var events = g.events || [];
+  var el = document.getElementById('eventsListPanel');
+  var html = '';
+  for (var i = 0; i < events.length; i++) {
+    var ev = events[i];
+    html += '<div class="event-item">';
+    html += '<div>';
+    html += '<div class="event-name">' + esc(ev.name) + '</div>';
+    html += '<div class="event-date">' + esc(ev.date) + '</div>';
+    html += '</div>';
+    html += '<div class="event-confirmed' + (ev.warn ? ' warning' : '') + '">' + esc(ev.status) + '</div>';
+    html += '</div>';
+  }
+  if (events.length === 0) {
+    html = '<p style="font-size:14px;color:var(--text-muted);padding:8px 0;">No upcoming events.</p>';
+  }
+  el.innerHTML = html;
 }
 
 // Filter pills
@@ -2275,5 +2346,30 @@ renderDiscussions();
 renderAliyah();
 renderDedications();
 </script>
+
+<!-- ── Bottom nav ─────────────────────────────────── -->
+<div class="bottom-nav" id="bottomNav">
+  <button class="bottom-nav-btn active" onclick="switchBottomTab('feed')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
+    Feed
+  </button>
+  <button class="bottom-nav-btn" onclick="switchBottomTab('events')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+    Events
+  </button>
+  <button class="bottom-nav-btn" onclick="switchBottomTab('sponsors')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg>
+    Sponsors
+  </button>
+  <button class="bottom-nav-btn" onclick="switchBottomTab('newsletter')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="3" rx="1"/><rect x="3" y="8.5" width="18" height="3" rx="1"/><rect x="3" y="14" width="12" height="3" rx="1"/></svg>
+    Newsletter
+  </button>
+  <button class="bottom-nav-btn" onclick="switchBottomTab('me')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M5.5 21c0-3.6 2.9-6.5 6.5-6.5s6.5 2.9 6.5 6.5"/></svg>
+    Me
+  </button>
+</div>
+
 </body>
 </html>
