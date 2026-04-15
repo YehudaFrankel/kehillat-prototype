@@ -1201,6 +1201,7 @@ var adminGroups = {
     members: 84,
     role: 'organizer',
     tabLabels: ['Feed','Events','Sponsors','Aliyos','Members'],
+    catLabels: {cats:['all','torah','current','community','events'], labels:['All','Torah','Current events','Community','Events']},
     stats: {
       members: '84', membersChange: '+3 this month',
       contributions: '$2,340', contribChange: '+$480 this week',
@@ -1260,6 +1261,7 @@ var adminGroups = {
     members: 32,
     role: 'organizer',
     tabLabels: ['Feed','Events','Sponsors','Stats','Roster'],
+    catLabels: {cats:['all','community','events','current'], labels:['All','Team news','Game day','League']},
     stats: {
       members: '32', membersChange: '+5 this month',
       contributions: '$840', contribChange: '+$120 this week',
@@ -1306,6 +1308,7 @@ var adminGroups = {
     members: 18,
     role: 'organizer',
     tabLabels: ['Feed','Events','Sponsors','Resources','Members'],
+    catLabels: {cats:['all','torah','community','current'], labels:['All','Gemara','Halacha','Resources']},
     stats: {
       members: '18', membersChange: '+2 this month',
       contributions: '$320', contribChange: '+$60 this week',
@@ -1352,6 +1355,7 @@ var adminGroups = {
     members: 45,
     role: 'organizer',
     tabLabels: ['Feed','Events','Sponsors','Directory','Resources'],
+    catLabels: {cats:['all','community','current','events'], labels:['All','Jobs','Mentorship','Industry']},
     stats: {
       members: '45', membersChange: '+7 this month',
       contributions: '$1,800', contribChange: '+$350 this week',
@@ -1399,6 +1403,7 @@ var adminGroups = {
     members: 12,
     role: 'organizer',
     tabLabels: ['Feed','Events','Sponsors','Photos','Members'],
+    catLabels: {cats:['all','community','current','events'], labels:['All','Hangouts','Updates','Trips']},
     stats: {
       members: '12', membersChange: '+0 this month',
       contributions: '$180', contribChange: '+$30 this week',
@@ -1462,6 +1467,8 @@ function closeModal(id) { document.getElementById(id).classList.remove('open'); 
    ====================================================== */
 function switchAdminGroup(type) {
   currentGroup = type;
+  currentCat = 'all';
+  renderCatPills();
   var gd = g();
   document.getElementById('topbarName').textContent = gd.name;
   document.getElementById('topbarMeta').textContent = gd.members + ' members \u00b7 ' + gd.role;
@@ -1559,8 +1566,9 @@ function filterCat(cat) {
 }
 
 function renderCatPills() {
-  var cats = ['all','torah','current','community','events'];
-  var labels = ['All','Torah','Current events','Community','Events'];
+  var cl = g().catLabels || {cats:['all','torah','current','community','events'], labels:['All','Torah','Current events','Community','Events']};
+  var cats = cl.cats;
+  var labels = cl.labels;
   var html = '';
   for (var i = 0; i < cats.length; i++) {
     html += '<button class="cat-pill' + (cats[i] === currentCat ? ' active' : '') + '" data-cat="' + cats[i] + '" onclick="filterCat(\'' + cats[i] + '\')">' + labels[i] + '</button>';
