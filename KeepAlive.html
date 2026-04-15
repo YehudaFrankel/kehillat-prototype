@@ -69,23 +69,25 @@ input,textarea{font-family:inherit;border:none;outline:none}
 }
 .cat-pill.active{background:#534AB7;color:#fff;border-color:#534AB7}
 
-/* ── feed item ── */
-.feed-item{padding:14px 16px;border-bottom:1px solid #f0eeea}
-.feed-header{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+/* ── feed card ── */
+.feed-card{background:#fff;border:1px solid #ebebeb;border-radius:10px;padding:14px 16px;margin:0 16px 10px}
+.feed-header{display:flex;align-items:flex-start;gap:10px;margin-bottom:8px}
 .feed-av{
-  width:28px;height:28px;border-radius:50%;
+  width:34px;height:34px;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
-  font-size:9px;font-weight:700;flex-shrink:0;
+  font-size:12px;font-weight:600;color:#fff;flex-shrink:0;
 }
-.feed-author{font-size:11px;font-weight:700;color:#1a1a18}
+.feed-meta{flex:1}
+.feed-author{font-size:13px;font-weight:600;color:#1a1a18}
+.feed-time{font-size:11px;color:#b4b2a9}
 .feed-badge{
-  font-size:8px;font-weight:700;padding:2px 7px;border-radius:10px;
-  text-transform:uppercase;letter-spacing:.3px;
+  font-size:9px;font-weight:600;padding:2px 7px;border-radius:4px;
+  text-transform:uppercase;letter-spacing:.5px;
 }
-.feed-time{font-size:9px;color:#b4b2a9;margin-left:auto;flex-shrink:0}
-.feed-body{font-size:11px;color:#1a1a18;margin-bottom:6px;line-height:1.5}
-.feed-footer{font-size:9px;color:#b4b2a9;display:flex;align-items:center;gap:4px;cursor:pointer}
-.feed-footer:hover{color:#534AB7}
+.feed-body{font-size:14px;color:#1a1a18;margin-bottom:8px;line-height:1.5}
+.feed-footer{display:flex;align-items:center;justify-content:space-between;padding-top:8px;border-top:1px solid #f0eeea}
+.feed-reply-count{font-size:11px;color:#888780;cursor:pointer;background:none;border:none;font-family:inherit}
+.feed-reply-count:hover{color:#534AB7}
 
 /* ── link preview ── */
 .link-preview{
@@ -836,12 +838,11 @@ function renderDiscussions(containerId,limit){
   var h='';
   for(var i=0;i<filtered.length;i++){
     var d=filtered[i];
-    h+='<div class="feed-item">';
+    h+='<div class="feed-card">';
     h+='<div class="feed-header">';
     h+='<div class="feed-av" style="background:'+d.avBg+';color:'+d.avColor+'">'+esc(d.initials)+'</div>';
-    h+='<span class="feed-author">'+esc(d.author)+'</span>';
+    h+='<div class="feed-meta"><div class="feed-author">'+esc(d.author)+'</div><div class="feed-time">'+esc(d.time)+'</div></div>';
     h+='<span class="feed-badge" style="background:'+d.catBg+';color:'+d.catColor+'">'+esc(d.cat)+'</span>';
-    h+='<span class="feed-time">'+esc(d.time)+'</span>';
     h+='</div>';
 
     if(d.body)h+='<div class="feed-body">'+esc(d.body)+'</div>';
@@ -868,9 +869,8 @@ function renderDiscussions(containerId,limit){
     }
 
     if(d.replies>0){
-      h+='<div class="feed-footer" onclick="openReply('+i+')">';
-      h+='<svg width="12" height="12" viewBox="0 0 20 20" fill="#b4b2a9"><path d="M2 4a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H7l-4 3v-3H4a2 2 0 01-2-2V4z"/></svg>';
-      h+=d.replies+' replies</div>';
+      h+='<div class="feed-footer"><button class="feed-reply-count" onclick="openReply('+i+')">';
+      h+=d.replies+' replies</button></div>';
     }
     h+='</div>';
   }
