@@ -679,20 +679,46 @@ body {
 .modal-submit.amber { background: #BA7517; }
 
 /* Newsletter modal */
-.nl-modal { width: 100%; height: 100vh; padding: 0; border-radius: 0; overflow-y: auto; background: #fff; }
-.nl-header { background: linear-gradient(135deg, #534AB7 0%, #7F77DD 100%); padding: 28px 28px 20px; color: #fff; position: relative; }
+.nl-modal { width: 600px; max-width: 95vw; padding: 0; border-radius: 14px; overflow: hidden; background: #fff; max-height: 90vh; overflow-y: auto; }
+.nl-header { background: linear-gradient(135deg, #534AB7 0%, #7F77DD 100%); padding: 28px 28px 20px; color: #fff; }
 .nl-header-label { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; opacity: .7; margin-bottom: 6px; }
-.nl-header-title { font-size: 22px; font-weight: 700; margin-bottom: 2px; outline: none; border-bottom: 1px solid transparent; }
-.nl-header-title:hover { border-bottom-color: rgba(255,255,255,.3); }
-.nl-header-title:focus { border-bottom-color: #fff; }
-.nl-header-date { font-size: 13px; opacity: .8; outline: none; border-bottom: 1px solid transparent; }
-.nl-header-date:hover { border-bottom-color: rgba(255,255,255,.3); }
-.nl-header-date:focus { border-bottom-color: #fff; }
+.nl-header-title { font-size: 22px; font-weight: 700; margin-bottom: 2px; }
+.nl-header-date { font-size: 13px; opacity: .8; }
 .nl-glance { background: #faf9f6; padding: 14px 28px; border-bottom: 1px solid #ebebeb; }
 .nl-glance-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; color: #b4b2a9; margin-bottom: 8px; }
 .nl-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.nl-chip { display: flex; align-items: center; gap: 5px; background: #EEEDFE; border: 1px solid rgba(83,74,183,.12); border-radius: 20px; padding: 4px 10px 4px 7px; font-size: 11px; color: #1a1a18; }
+.nl-chip-icon { font-size: 13px; }
+.nl-chip-label { font-weight: 600; color: #534AB7; }
+.nl-chip-value { color: #888780; }
+.nl-body { padding: 24px 28px; font-size: 15px; line-height: 1.8; color: #1a1a18; max-height: 40vh; overflow-y: auto; }
+.nl-body h3 { font-size: 16px; font-weight: 700; color: #534AB7; margin: 20px 0 6px; padding-bottom: 4px; border-bottom: 2px solid #EEEDFE; }
+.nl-body h3:first-child { margin-top: 0; }
+.nl-body p { margin-bottom: 12px; }
+.nl-footer { background: #faf9f6; padding: 14px 28px; border-top: 1px solid #ebebeb; text-align: center; font-size: 12px; color: #b4b2a9; }
+.nl-footer-name { font-weight: 600; color: #1a1a18; }
+.nl-actions { padding: 16px 28px 24px; display: flex; gap: 10px; align-items: center; }
+.nl-actions .nl-count { font-size: 13px; color: #b4b2a9; margin-left: auto; }
+.nl-body.editing { outline: none; cursor: text; }
+.nl-body.editing:focus { background: rgba(83,74,183,.02); }
+.nl-generate-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 48px 28px; gap: 16px; }
+.nl-generate-btn { background: linear-gradient(135deg, #534AB7 0%, #7F77DD 100%); color: #fff; border: none; border-radius: 12px; padding: 14px 28px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit; transition: transform .15s, box-shadow .15s; }
+.nl-generate-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(83,74,183,.3); }
+.nl-generate-hint { font-size: 13px; color: #b4b2a9; }
+.nl-generating { font-size: 14px; color: #534AB7; font-weight: 500; }
+@keyframes nlPulse { 0%,100% { opacity:.4; } 50% { opacity:1; } }
+.nl-generating-dots { animation: nlPulse 1.2s infinite; }
+.nl-header-title[contenteditable] { outline: none; border-bottom: 1px solid transparent; cursor: text; }
+.nl-header-title[contenteditable]:hover { border-bottom-color: rgba(255,255,255,.3); }
+.nl-header-title[contenteditable]:focus { border-bottom-color: #fff; }
+.nl-header-date[contenteditable] { outline: none; border-bottom: 1px solid transparent; cursor: text; }
+.nl-header-date[contenteditable]:hover { border-bottom-color: rgba(255,255,255,.3); }
+.nl-header-date[contenteditable]:focus { border-bottom-color: #fff; }
+.nl-footer-name[contenteditable] { outline: none; border-bottom: 1px solid transparent; display: inline-block; cursor: text; }
+.nl-footer-name[contenteditable]:hover { border-bottom-color: #d3d1c7; }
+.nl-footer-name[contenteditable]:focus { border-bottom-color: #534AB7; }
 .nl-chip-edit { display: flex; align-items: center; gap: 4px; background: #fff; border: 1px solid #d3d1c7; border-radius: 20px; padding: 4px 6px; }
-.nl-chip-edit input { border: none; outline: none; font-size: 11px; font-family: inherit; padding: 2px 4px; background: transparent; }
+.nl-chip-edit input { border: none; outline: none; font-size: 11px; font-family: inherit; width: 50px; padding: 2px 4px; background: transparent; }
 .nl-chip-edit input.chip-label { font-weight: 600; color: #534AB7; width: 60px; }
 .nl-chip-edit input.chip-value { color: #888780; width: 120px; }
 .nl-chip-edit .chip-remove { border: none; background: none; color: #E24B4A; cursor: pointer; font-size: 14px; padding: 0 2px; }
@@ -702,25 +728,6 @@ body {
 .nl-toolbar.visible { display: flex; gap: 4px; }
 .nl-toolbar button { border: 1px solid #ebebeb; background: #fff; border-radius: 6px; padding: 4px 10px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; color: #1a1a18; }
 .nl-toolbar button:hover { border-color: #534AB7; color: #534AB7; }
-.nl-body { padding: 24px 28px; font-size: 15px; line-height: 1.8; color: #1a1a18; max-height: 40vh; overflow-y: auto; }
-.nl-body h3 { font-size: 16px; font-weight: 700; color: #534AB7; margin: 20px 0 6px; padding-bottom: 4px; border-bottom: 2px solid #EEEDFE; }
-.nl-body h3:first-child { margin-top: 0; }
-.nl-body p { margin-bottom: 12px; }
-.nl-body.editing { outline: none; cursor: text; }
-.nl-body.editing:focus { background: rgba(83,74,183,.02); }
-.nl-footer { background: #faf9f6; padding: 14px 28px; border-top: 1px solid #ebebeb; text-align: center; font-size: 12px; color: #b4b2a9; }
-.nl-footer-name { font-weight: 600; color: #1a1a18; outline: none; border-bottom: 1px solid transparent; display: inline-block; }
-.nl-footer-name:hover { border-bottom-color: #d3d1c7; }
-.nl-footer-name:focus { border-bottom-color: #534AB7; }
-.nl-actions { padding: 16px 28px 24px; display: flex; gap: 10px; align-items: center; }
-.nl-actions .nl-count { font-size: 13px; color: #b4b2a9; margin-left: auto; }
-.nl-generate-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 48px 28px; gap: 16px; }
-.nl-generate-btn { background: linear-gradient(135deg, #534AB7 0%, #7F77DD 100%); color: #fff; border: none; border-radius: 12px; padding: 14px 28px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit; transition: transform .15s, box-shadow .15s; }
-.nl-generate-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(83,74,183,.3); }
-.nl-generate-hint { font-size: 13px; color: #b4b2a9; }
-.nl-generating { font-size: 14px; color: #534AB7; font-weight: 500; }
-@keyframes nlPulse { 0%,100% { opacity:.4; } 50% { opacity:1; } }
-.nl-generating-dots { animation: nlPulse 1.2s infinite; }
 @media(max-width:520px){
   .nl-modal{max-width:95vw}
   .nl-header{padding:20px 16px 16px}
@@ -1115,8 +1122,8 @@ David Levine</textarea>
 
 <!-- Newsletter Modal -->
 <div class="modal-overlay" id="newsletterModal">
-  <div class="nl-modal">
-    <div class="nl-header">
+  <div class="modal-box nl-modal">
+    <div class="nl-header" style="position:relative;">
       <button onclick="closeModal('newsletterModal')" style="position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:50%;border:none;background:rgba(255,255,255,.2);color:#fff;font-size:18px;cursor:pointer;">&times;</button>
       <div class="nl-header-label" id="nlLabel">WEEKLY NEWSLETTER</div>
       <div class="nl-header-title" id="nlTitle" contenteditable="true"></div>
@@ -1133,11 +1140,11 @@ David Levine</textarea>
       <button onclick="document.execCommand('insertHorizontalRule')">HR</button>
     </div>
     <div class="nl-body" id="nlBody"></div>
-    <div class="nl-footer" id="nlFooter">
+    <div class="nl-footer">
       <div class="nl-footer-name" id="nlFooterName" contenteditable="true"></div>
       <br>Sent with Keep Alive
     </div>
-    <div class="nl-actions" id="nlActions">
+    <div class="nl-actions">
       <button class="modal-submit" id="nlSendBtn" onclick="sendNewsletter()">Send newsletter</button>
       <button style="background:none;border:1px solid #d3d1c7;border-radius:8px;padding:10px 24px;font-size:14px;cursor:pointer;font-family:inherit;color:#888780;" onclick="closeModal('newsletterModal')">Cancel</button>
       <span class="nl-count" id="nlCount"></span>
@@ -2023,6 +2030,11 @@ function sendSponsorAsk() {
    NEWSLETTER MODAL
    ====================================================== */
 function openNewsletterModal() {
+  populateNewsletter();
+  openModal('newsletterModal');
+}
+
+function populateNewsletter() {
   var gd = g();
   var nl = gd.newsletter;
   document.getElementById('nlLabel').textContent = nl.label;
@@ -2034,27 +2046,21 @@ function openNewsletterModal() {
     document.getElementById('nlTitle').textContent = nl.title;
     nlChipData = nlGenerated[currentGroup].chips;
     renderNlEditChips();
-    document.getElementById('nlGlance').style.display = '';
     document.getElementById('nlBody').innerHTML = nlGenerated[currentGroup].body;
     document.getElementById('nlBody').setAttribute('contenteditable', 'true');
     document.getElementById('nlBody').classList.add('editing');
     document.getElementById('nlToolbar').style.display = '';
     document.getElementById('nlToolbar').classList.add('visible');
-    document.getElementById('nlFooter').style.display = '';
-    document.getElementById('nlActions').style.display = '';
-  } else {
-    document.getElementById('nlTitle').textContent = '';
-    nlChipData = [];
-    document.getElementById('nlChips').innerHTML = '';
-    document.getElementById('nlGlance').style.display = 'none';
-    document.getElementById('nlToolbar').style.display = 'none';
-    document.getElementById('nlFooter').style.display = 'none';
-    document.getElementById('nlActions').style.display = 'none';
-    document.getElementById('nlBody').removeAttribute('contenteditable');
-    document.getElementById('nlBody').classList.remove('editing');
-    document.getElementById('nlBody').innerHTML = '<div class="nl-generate-wrap"><button class="nl-generate-btn" onclick="generateNewsletter()">Generate with AI</button><span class="nl-generate-hint">Based on this week\'s discussions, events, and activity</span></div>';
+    return;
   }
-  openModal('newsletterModal');
+
+  document.getElementById('nlTitle').textContent = '';
+  nlChipData = [];
+  document.getElementById('nlChips').innerHTML = '';
+  document.getElementById('nlToolbar').style.display = 'none';
+  document.getElementById('nlBody').removeAttribute('contenteditable');
+  document.getElementById('nlBody').classList.remove('editing');
+  document.getElementById('nlBody').innerHTML = '<div class="nl-generate-wrap"><button class="nl-generate-btn" onclick="generateNewsletter()">Generate with AI</button><span class="nl-generate-hint">Based on this week\'s discussions, events, and activity</span></div>';
 }
 
 function generateNewsletter() {
@@ -2063,41 +2069,36 @@ function generateNewsletter() {
   var body = document.getElementById('nlBody');
   body.innerHTML = '<div class="nl-generate-wrap"><span class="nl-generating">Writing your newsletter<span class="nl-generating-dots"> ...</span></span></div>';
 
-  setTimeout(function() {
-    document.getElementById('nlTitle').textContent = nl.title;
-    document.getElementById('nlGlance').style.display = '';
-  }, 500);
+  setTimeout(function() { document.getElementById('nlTitle').textContent = nl.title; }, 500);
 
   for (var i = 0; i < nl.reports.length; i++) {
     (function(idx) {
       setTimeout(function() {
         nlChipData.push({ icon: nl.reports[idx].icon, label: nl.reports[idx].label, value: nl.reports[idx].value });
         renderNlEditChips();
-      }, 800 + idx * 300);
+      }, 800 + (idx * 300));
     })(i);
   }
 
   var sections = nl.body.split('<h3>');
   var builtHtml = '';
-  var baseDelay = 800 + nl.reports.length * 300 + 400;
+  var baseDelay = 800 + (nl.reports.length * 300) + 400;
   for (var s = 0; s < sections.length; s++) {
     (function(idx, content) {
       setTimeout(function() {
         builtHtml += (idx === 0 ? '' : '<h3>') + content;
         body.innerHTML = builtHtml;
         body.scrollTop = body.scrollHeight;
-      }, baseDelay + idx * 600);
+      }, baseDelay + (idx * 600));
     })(s, sections[s]);
   }
 
-  var totalDelay = baseDelay + sections.length * 600 + 200;
+  var totalDelay = baseDelay + (sections.length * 600) + 200;
   setTimeout(function() {
     body.setAttribute('contenteditable', 'true');
     body.classList.add('editing');
     document.getElementById('nlToolbar').style.display = '';
     document.getElementById('nlToolbar').classList.add('visible');
-    document.getElementById('nlFooter').style.display = '';
-    document.getElementById('nlActions').style.display = '';
     nlGenerated[currentGroup] = { body: body.innerHTML, chips: nlChipData.slice() };
   }, totalDelay);
 }
@@ -2106,7 +2107,7 @@ function renderNlEditChips() {
   var html = '';
   for (var i = 0; i < nlChipData.length; i++) {
     html += '<span class="nl-chip-edit">';
-    html += '<span style="font-size:13px;">' + nlChipData[i].icon + '</span>';
+    html += '<span class="nl-chip-icon">' + nlChipData[i].icon + '</span>';
     html += '<input class="chip-label" value="' + esc(nlChipData[i].label) + '" data-idx="' + i + '" data-field="label">';
     html += '<input class="chip-value" value="' + esc(nlChipData[i].value) + '" data-idx="' + i + '" data-field="value">';
     html += '<button class="chip-remove" onclick="removeNlChip(' + i + ')">&times;</button>';
