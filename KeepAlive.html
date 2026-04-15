@@ -223,13 +223,15 @@ input,textarea{font-family:inherit;border:none;outline:none}
 
 /* ── newsletter tab ── */
 .nl-card{
-  margin:12px 16px;background:#fff;border:1px solid #ebebeb;
-  border-radius:10px;padding:14px;cursor:pointer;transition:box-shadow .15s;
+  margin:0 16px 10px;background:#EEEDFE;border-radius:10px;
+  padding:14px 16px;cursor:pointer;transition:box-shadow .15s;
 }
-.nl-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.06)}
-.nl-date{font-size:11px;color:#b4b2a9;margin-bottom:2px}
-.nl-title{font-size:15px;font-weight:600;color:#1a1a18;margin-bottom:4px}
-.nl-excerpt{font-size:13px;color:#888780;line-height:1.4}
+.nl-card:hover{box-shadow:0 2px 8px rgba(83,74,183,.12)}
+.nl-date{font-size:11px;color:#534AB7;font-weight:600;margin-bottom:3px}
+.nl-title{font-size:15px;font-weight:600;color:#26215C;margin-bottom:4px}
+.nl-excerpt{font-size:13px;color:#3C3489;line-height:1.5}
+.nl-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.nl-chip{font-size:10px;font-weight:600;padding:3px 8px;border-radius:20px}
 
 /* ── me tab ── */
 .me-section{padding:16px}
@@ -1051,9 +1053,16 @@ function renderNewsletterList(){
   for(var i=0;i<nls.length;i++){
     var n=nls[i];
     h+='<div class="nl-card" onclick="openNewsletterModal('+i+')">';
-    h+='<div class="nl-date">'+esc(n.date)+'</div>';
+    h+='<div class="nl-date">'+esc(n.label)+'</div>';
     h+='<div class="nl-title">'+esc(n.title)+'</div>';
     h+='<div class="nl-excerpt">'+esc(n.excerpt)+'</div>';
+    if(n.chips&&n.chips.length){
+      h+='<div class="nl-chips">';
+      for(var c=0;c<n.chips.length;c++){
+        h+='<span class="nl-chip" style="background:'+n.chips[c].bg+';color:'+n.chips[c].color+'">'+esc(n.chips[c].text)+'</span>';
+      }
+      h+='</div>';
+    }
     h+='</div>';
   }
   document.getElementById('nlList').innerHTML=h;
