@@ -424,49 +424,52 @@ body {
 .coming-manage:hover { border-color: #534AB7; color: #534AB7; }
 
 /* ========== ALIYAH TAB ========== */
-.aliyah-table-wrap { padding: 0 16px; overflow-x: auto; }
-.aliyah-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
+/* Aliyah cards */
+.aliyah-list { padding: 0 16px; }
+.aliyah-card {
+  background: #fff; border: 1px solid #ebebeb; border-radius: 10px;
+  padding: 14px 16px; margin-bottom: 10px;
 }
-.aliyah-table th {
-  text-align: left;
-  font-size: 10px;
-  text-transform: uppercase;
-  color: #888780;
-  letter-spacing: 0.5px;
-  padding: 8px 10px;
-  border-bottom: 1px solid #d3d1c7;
-  white-space: nowrap;
-}
-.aliyah-table td {
-  padding: 10px;
-  border-bottom: 1px solid #f0eeea;
-  vertical-align: middle;
-}
-.aliyah-member {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.aliyah-card-header {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
 }
 .aliyah-avatar {
-  width: 28px; height: 28px; border-radius: 50%;
-  font-size: 10px; font-weight: 600; color: #fff;
+  width: 34px; height: 34px; border-radius: 50%;
+  font-size: 12px; font-weight: 600; color: #fff;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
+.aliyah-card-meta { flex: 1; }
+.aliyah-card-name { font-size: 15px; font-weight: 600; }
+.aliyah-card-date { font-size: 12px; color: #b4b2a9; }
+.aliyah-card-type {
+  font-size: 10px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.5px; padding: 3px 8px; border-radius: 4px;
+  background: #EEEDFE; color: #534AB7;
+}
+.aliyah-card-body { margin-bottom: 10px; }
+.aliyah-card-row {
+  display: flex; justify-content: space-between; padding: 4px 0;
+  font-size: 13px;
+}
+.aliyah-card-label { color: #888780; }
+.aliyah-card-value { font-weight: 600; color: #1a1a18; }
+.aliyah-card-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 10px; border-top: 1px solid #f0eeea;
+}
 .aliyah-status {
   display: inline-block;
-  padding: 2px 8px; border-radius: 4px;
-  font-size: 10px; font-weight: 600;
+  padding: 3px 10px; border-radius: 20px;
+  font-size: 11px; font-weight: 600;
 }
 .aliyah-status.paid { background: #EAF3DE; color: #27500A; }
 .aliyah-status.pending { background: #FAEEDA; color: #633806; }
 .aliyah-mark-btn {
   background: none; border: 1px solid #d3d1c7;
-  border-radius: 6px; padding: 3px 10px;
-  font-size: 10px; cursor: pointer; font-family: inherit;
+  border-radius: 6px; padding: 5px 14px;
+  font-size: 11px; cursor: pointer; font-family: inherit;
+  font-weight: 500;
 }
 .aliyah-mark-btn:hover { border-color: #27500A; color: #27500A; }
 
@@ -928,12 +931,7 @@ body {
           </div>
           <button class="form-submit-btn" onclick="addAliyah()">Add</button>
         </div>
-        <div class="aliyah-table-wrap">
-          <table class="aliyah-table" id="aliyahTable">
-            <thead><tr><th>Member</th><th>Type</th><th>Date</th><th>Dedication</th><th>Amount</th><th>Status</th><th></th></tr></thead>
-            <tbody id="aliyahBody"></tbody>
-          </table>
-        </div>
+        <div class="aliyah-list" id="aliyahList"></div>
       </div>
 
       <!-- DEDICATIONS TAB -->
@@ -1509,21 +1507,26 @@ function renderAliyah() {
   var html = '';
   for (var i = 0; i < data.length; i++) {
     var a = data[i];
-    html += '<tr>';
-    html += '<td><div class="aliyah-member"><div class="aliyah-avatar" style="background:' + avatarColor(a.member) + '">' + initials(a.member) + '</div>' + esc(a.member) + '</div></td>';
-    html += '<td>' + esc(a.type) + '</td>';
-    html += '<td>' + esc(a.date) + '</td>';
-    html += '<td>' + esc(a.dedication || '\u2014') + '</td>';
-    html += '<td>' + esc(a.amount) + '</td>';
-    html += '<td><span class="aliyah-status ' + a.status + '">' + (a.status === 'paid' ? 'Paid' : 'Pending') + '</span></td>';
-    html += '<td>';
+    html += '<div class="aliyah-card">';
+    html += '<div class="aliyah-card-header">';
+    html += '<div class="aliyah-avatar" style="background:' + avatarColor(a.member) + '">' + initials(a.member) + '</div>';
+    html += '<div class="aliyah-card-meta"><div class="aliyah-card-name">' + esc(a.member) + '</div><div class="aliyah-card-date">' + esc(a.date) + '</div></div>';
+    html += '<span class="aliyah-card-type">' + esc(a.type) + '</span>';
+    html += '</div>';
+    html += '<div class="aliyah-card-body">';
+    if (a.dedication) {
+      html += '<div class="aliyah-card-row"><span class="aliyah-card-label">Dedication</span><span class="aliyah-card-value">' + esc(a.dedication) + '</span></div>';
+    }
+    html += '<div class="aliyah-card-row"><span class="aliyah-card-label">Amount</span><span class="aliyah-card-value">' + esc(a.amount) + '</span></div>';
+    html += '</div>';
+    html += '<div class="aliyah-card-footer">';
+    html += '<span class="aliyah-status ' + a.status + '">' + (a.status === 'paid' ? 'Paid' : 'Pending') + '</span>';
     if (a.status === 'pending') {
       html += '<button class="aliyah-mark-btn" onclick="markAliyahPaid(' + a.id + ')">Mark paid</button>';
     }
-    html += '</td>';
-    html += '</tr>';
+    html += '</div></div>';
   }
-  document.getElementById('aliyahBody').innerHTML = html;
+  document.getElementById('aliyahList').innerHTML = html;
 }
 
 function renderEvents() {
