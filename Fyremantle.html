@@ -4,28 +4,27 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KeepAliveNow — Member</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --purple:       #6B5CE7;
-  --purple-light: #EDE9FC;
-  --purple-dark:  #5548C4;
-  --green:        #4CAF7D;
-  --green-light:  #E8F5EE;
-  --green-dark:   #3D9268;
-  --amber:        #E5A84B;
-  --amber-light:  #FDF3E0;
-  --amber-dark:   #C98F34;
-  --red:          #E05555;
-  --red-light:    #FDEAEA;
-  --bg:           #F8F7F5;
+  --purple:       #534AB7;
+  --purple-light: #EEEDFE;
+  --purple-dark:  #3C3489;
+  --green:        #0F6E56;
+  --green-light:  #E1F5EE;
+  --green-dark:   #085041;
+  --amber:        #BA7517;
+  --amber-light:  #FAEEDA;
+  --amber-dark:   #633806;
+  --red:          #E24B4A;
+  --red-light:    #FCEBEB;
+  --bg:           #f5f4f0;
   --white:        #FFFFFF;
-  --text:         #1A1A1A;
-  --text-sec:     #6B6B6B;
-  --text-muted:   #9B9B9B;
-  --border:       #EEECEC;
+  --text:         #1a1a18;
+  --text-sec:     #888780;
+  --text-muted:   #888780;
+  --border:       #ebebeb;
   --shadow:       0 1px 3px rgba(0,0,0,.06);
   --shadow-md:    0 4px 12px rgba(0,0,0,.08);
   --radius:       12px;
@@ -33,14 +32,14 @@
   --radius-full:  9999px;
 
   /* category colors */
-  --cat-torah-bg:      #EDE9FC; --cat-torah-fg:      #6B5CE7;
-  --cat-current-bg:    #FDF3E0; --cat-current-fg:    #C98F34;
-  --cat-community-bg:  #E8F5EE; --cat-community-fg:  #3D9268;
-  --cat-politics-bg:   #F0EDED; --cat-politics-fg:   #7A7A7A;
+  --cat-torah-bg:      #EEEDFE; --cat-torah-fg:      #3C3489;
+  --cat-current-bg:    #FAEEDA; --cat-current-fg:    #633806;
+  --cat-community-bg:  #E1F5EE; --cat-community-fg:  #085041;
+  --cat-politics-bg:   #f0eeea; --cat-politics-fg:   #7A7A7A;
 }
 
 body {
-  font-family: 'Inter', -apple-system, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
@@ -53,6 +52,7 @@ body {
   min-height: 100vh;
   background: var(--bg);
   position: relative;
+  padding-bottom: 60px;
 }
 @media (max-width: 520px) {
   .shell { max-width: 100%; }
@@ -72,72 +72,176 @@ body {
   .modal { max-width: 95vw; }
 }
 
-/* ── HEADER ── */
-.header {
-  padding: 20px 20px 12px;
-  background: var(--white);
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+/* ── TOPBAR ── */
+.topbar {
+  padding: 12px 14px 10px;
   border-bottom: 1px solid var(--border);
-}
-.header-left h1 {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--text);
-  letter-spacing: -0.3px;
-}
-.header-left p {
-  font-size: 13px;
-  color: var(--text-muted);
-  margin-top: 2px;
-}
-.header-avatar {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: var(--purple);
-  color: #fff;
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  font-weight: 700;
-  flex-shrink: 0;
+  justify-content: space-between;
+  background: var(--white);
+}
+.topbar .gn { font-size: 15px; font-weight: 500; color: var(--text); }
+.topbar .gs { font-size: 10px; color: var(--text-muted); margin-top: 1px; }
+.topbar .av {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 500; flex-shrink: 0;
+  background: var(--purple-light); color: var(--purple-dark);
+}
+.group-switcher {
+  font-size: 9px; padding: 2px 18px 2px 6px; margin-top: 2px;
+  border: 1px solid var(--purple-light); border-radius: 12px;
+  background: var(--purple-light); color: var(--purple); font-weight: 500;
+  cursor: pointer; outline: none; font-family: inherit;
+  appearance: none; -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5'%3E%3Cpath d='M1 1l3 3 3-3' fill='none' stroke='%23534AB7' stroke-width='1.2'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 5px center;
+}
+.web-nav { display: none; }
+.wn, .wna {
+  font-size: 11px; padding: 4px 12px; border-radius: 20px;
+  border: none; cursor: pointer; font-family: inherit;
+}
+.wn { background: transparent; color: var(--text-muted); }
+.wna { background: var(--purple-light); color: var(--purple); font-weight: 500; }
+
+/* ── BOTTOM NAV ── */
+.bnav {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  border-top: 1px solid var(--border); padding: 7px 0 9px;
+  display: flex; align-items: center; justify-content: space-around;
+  background: var(--white); z-index: 100;
+}
+.bnav-item {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  cursor: pointer; padding: 0 4px; background: none; border: none; font-family: inherit;
+}
+.bnav-bar { width: 16px; height: 2px; border-radius: 2px; }
+.bnav-label { font-size: 8px; color: var(--text-muted); }
+.bnav-label-active { font-size: 8px; color: var(--purple); font-weight: 500; }
+.bnav-icon {
+  width: 18px; height: 18px; display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
 }
 
-/* ── TABS ── */
-.tabs {
-  display: flex;
-  gap: 8px;
-  padding: 12px 20px;
-  background: var(--white);
+/* ── TABS (hidden — replaced by bottom nav) ── */
+.tabs { display: none; }
+.tab-btn { display: none; }
+
+/* Desktop: show web nav, hide bottom nav */
+@media (min-width: 849px) {
+  .topbar { padding: 10px 20px; }
+  .topbar .gn { font-size: 14px; }
+  .topbar .gs { font-size: 11px; }
+  .topbar .av { width: 28px; height: 28px; font-size: 10px; margin-left: 8px; }
+  .web-nav { display: flex; gap: 4px; align-items: center; }
+  .bnav { display: none; }
+}
+
+/* ── PIN BANNER ── */
+.pin-banner {
+  background: var(--purple-light); padding: 5px 12px;
+  display: flex; align-items: center; gap: 5px;
   border-bottom: 1px solid var(--border);
-  justify-content: center;
-  flex-wrap: wrap;
 }
-.tab-btn {
-  border: 1.5px solid var(--border);
-  background: var(--white);
-  color: var(--text-sec);
+.pin-banner-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--purple); }
+.pin-banner-text { font-size: 10px; color: var(--purple-dark); font-weight: 500; }
+@media (min-width: 849px) {
+  .pin-banner { padding: 6px 18px; }
+  .pin-banner-text { font-size: 12px; }
+}
+
+/* ── COMPOSE BAR ── */
+.compose-bar {
+  padding: 7px 12px; border-top: 1px solid var(--border);
+  display: flex; align-items: center; gap: 7px;
+  background: var(--white); margin: 8px 20px 0;
+  border-radius: 0 0 var(--radius) var(--radius);
+}
+.compose-avatar {
+  width: 22px; height: 22px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 8px; font-weight: 500; flex-shrink: 0;
+  background: var(--purple-light); color: var(--purple-dark);
+}
+.compose-input {
+  flex: 1; font-size: 11px; padding: 5px 9px;
+  border-radius: 20px; border: 1px solid var(--border);
+  background: var(--bg); color: var(--text); outline: none;
   font-family: inherit;
-  font-size: 13px;
-  font-weight: 600;
-  padding: 7px 18px;
-  border-radius: var(--radius-full);
-  cursor: pointer;
-  transition: all .2s;
-  white-space: nowrap;
 }
-.tab-btn.active {
-  background: var(--purple);
-  color: #fff;
-  border-color: var(--purple);
+.compose-btn {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--purple); border: none; cursor: pointer;
 }
-.tab-btn:not(.active):hover {
-  border-color: var(--purple);
-  color: var(--purple);
+@media (min-width: 849px) {
+  .compose-bar { padding: 10px 18px; gap: 9px; margin: 8px 0 0; border-radius: 0; }
+  .compose-avatar { width: 28px; height: 28px; font-size: 10px; }
+  .compose-input { font-size: 13px; padding: 7px 14px; }
 }
+
+/* ── WEB TWO-COLUMN ── */
+.web-body { display: block; }
+@media (min-width: 849px) {
+  .shell { max-width: 1100px; padding-bottom: 0; }
+  .web-body {
+    display: grid; grid-template-columns: minmax(0,2.2fr) minmax(0,1fr);
+    gap: 0;
+  }
+  .web-feed { border-right: 1px solid var(--border); }
+  .web-side { padding: 14px 16px; background: #faf9f6; }
+}
+.web-side { display: none; }
+@media (min-width: 849px) { .web-side { display: block; } }
+
+/* Sidebar cards */
+.side-card {
+  background: var(--white); border-radius: 10px;
+  border: 1px solid var(--border); padding: 12px 14px; margin-bottom: 10px;
+}
+.side-title { font-size: 11px; font-weight: 500; color: var(--text-muted); margin-bottom: 10px; }
+.side-ev {
+  padding: 7px 0; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.side-ev:last-child { border-bottom: none; padding-bottom: 0; }
+.side-ev-date { text-align: center; min-width: 28px; }
+.side-ev-day { font-size: 15px; font-weight: 500; color: var(--text); line-height: 1; }
+.side-ev-mo { font-size: 9px; color: var(--text-muted); text-transform: uppercase; }
+.side-ev-info { flex: 1; }
+.side-ev-n { font-size: 12px; font-weight: 500; color: var(--text); }
+.side-ev-s { font-size: 10px; color: var(--text-muted); margin-top: 1px; }
+.side-ev-b {
+  font-size: 10px; padding: 2px 9px; border-radius: 20px;
+  border: none; cursor: pointer; font-family: inherit;
+}
+.side-ev-rsvp { background: #185FA5; color: #E6F1FB; }
+.side-ev-going { background: var(--green-light); color: var(--green-dark); font-weight: 500; }
+
+/* Membership card */
+.member-card {
+  background: var(--purple-light); border-radius: 10px;
+  padding: 12px 14px; margin-bottom: 10px;
+}
+.member-card-title { font-size: 11px; font-weight: 500; color: var(--purple); margin-bottom: 8px; }
+.member-card-row {
+  display: flex; justify-content: space-between;
+  padding: 4px 0; border-bottom: 1px solid #AFA9EC;
+}
+.member-card-row:last-of-type { border-bottom: none; }
+.member-card-l { font-size: 11px; color: var(--purple-dark); }
+.member-card-v { font-size: 11px; font-weight: 500; color: #26215C; }
+.member-card-btn {
+  width: 100%; margin-top: 9px; padding: 7px;
+  border-radius: 8px; border: none;
+  background: var(--purple); color: var(--purple-light);
+  font-size: 12px; font-weight: 500; cursor: pointer; font-family: inherit;
+}
+
+/* Yahrzeit sidebar */
+.side-yahr { font-size: 12px; color: var(--text); margin-bottom: 6px; line-height: 1.5; }
+.side-yahr-sub { font-size: 11px; color: var(--text-muted); }
 
 /* ── CONTENT AREA ── */
 .tab-content { display: none; padding: 0 0 24px; }
@@ -884,31 +988,39 @@ select.form-input {
 <body>
 
 <div class="shell">
-  <!-- HEADER -->
-  <div class="header">
-    <div class="header-left">
-      <h1 id="groupName">Fyremantle</h1>
-      <p id="groupGreeting">Good morning, Moshe</p>
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div>
+      <div class="gn" id="groupName">Kehilat Shalom</div>
+      <div class="gs" id="groupGreeting">84 members</div>
       <select class="group-switcher" onchange="switchGroup(this.value)">
         <option value="shul">Shul / Minyan</option>
         <option value="sports">Sports Team</option>
         <option value="learning">Learning Group</option>
         <option value="chavurah">Chavurah</option>
+        <option value="professional">Professional</option>
+        <option value="friends">Friends Group</option>
+        <option value="other">Other</option>
       </select>
     </div>
-    <div style="display:flex;align-items:center;gap:10px;">
-      <a onclick="copyInviteLink()" style="font-size:12px;color:var(--purple);text-decoration:none;font-weight:600;cursor:pointer;">Invite</a>
-      <div class="header-avatar">MK</div>
+    <div class="web-nav">
+      <button class="wna" data-tab="home" onclick="switchTab('home')">Feed</button>
+      <button class="wn" data-tab="events" onclick="switchTab('events')">Events</button>
+      <button class="wn" data-tab="dedications" onclick="switchTab('dedications')">Sponsors</button>
+      <button class="wn" data-tab="newsletters" onclick="switchTab('newsletters')">Newsletter</button>
+      <button class="wn" onclick="switchTab('home')">Me</button>
     </div>
+    <div class="av">MK</div>
   </div>
 
-  <!-- TABS -->
-  <div class="tabs">
-    <button class="tab-btn active" data-tab="home">Home</button>
-    <button class="tab-btn" data-tab="events">Events</button>
-    <button class="tab-btn" data-tab="newsletters">Newsletters</button>
-    <button class="tab-btn" data-tab="dedications">Dedications</button>
+  <!-- PIN BANNER -->
+  <div class="pin-banner" id="pinBanner">
+    <div class="pin-banner-dot"></div>
+    <div class="pin-banner-text">Annual campaign open through Jan 15</div>
   </div>
+
+  <div class="web-body">
+  <div class="web-feed">
 
   <!-- ═══════════════ HOME TAB ═══════════════ -->
   <div class="tab-content active" id="tab-home">
@@ -1014,8 +1126,92 @@ select.form-input {
     <button class="ded-cta" onclick="openDedicationModal()">Make a Dedication</button>
   </div>
 
+  <!-- Compose bar -->
+  <div class="compose-bar">
+    <div class="compose-avatar">MK</div>
+    <input class="compose-input" type="text" placeholder="Share something..." onclick="openPostModal()" readonly />
+    <div class="compose-btn"></div>
+  </div>
+
   <!-- FAB (new discussion) -->
   <button class="fab" onclick="openPostModal()" title="New discussion">+</button>
+
+  </div><!-- /web-feed -->
+
+  <!-- SIDEBAR (web only) -->
+  <div class="web-side" id="memberSidebar">
+    <!-- Coming up -->
+    <div class="side-card">
+      <div class="side-title">Coming up</div>
+      <div id="sideEvents">
+        <div class="side-ev">
+          <div class="side-ev-date"><div class="side-ev-day">14</div><div class="side-ev-mo">Dec</div></div>
+          <div class="side-ev-info"><div class="side-ev-n">Shabbat morning</div><div class="side-ev-s">22 attending</div></div>
+          <button class="side-ev-b side-ev-going">Going</button>
+        </div>
+        <div class="side-ev">
+          <div class="side-ev-date"><div class="side-ev-day">19</div><div class="side-ev-mo">Dec</div></div>
+          <div class="side-ev-info"><div class="side-ev-n">Thursday shiur</div><div class="side-ev-s">Tanya, chapter 4</div></div>
+          <button class="side-ev-b side-ev-rsvp">RSVP</button>
+        </div>
+        <div class="side-ev">
+          <div class="side-ev-date"><div class="side-ev-day">28</div><div class="side-ev-mo">Dec</div></div>
+          <div class="side-ev-info"><div class="side-ev-n">Chanukah party</div><div class="side-ev-s">Needs a sponsor</div></div>
+          <button class="side-ev-b side-ev-rsvp">RSVP</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Your membership -->
+    <div class="member-card">
+      <div class="member-card-title">Your membership</div>
+      <div class="member-card-row"><span class="member-card-l">Member since</span><span class="member-card-v">2019</span></div>
+      <div class="member-card-row"><span class="member-card-l">Given this year</span><span class="member-card-v">$540</span></div>
+      <div class="member-card-row"><span class="member-card-l">Events attended</span><span class="member-card-v">18</span></div>
+      <div class="member-card-row"><span class="member-card-l">Aliyos this year</span><span class="member-card-v">3</span></div>
+      <button class="member-card-btn">Become a sponsor</button>
+    </div>
+
+    <!-- Yahrzeits this week -->
+    <div class="side-card" id="sideYahrzeits">
+      <div class="side-title">Yahrzeits this week</div>
+      <div id="sideYahrList">
+        <div class="side-yahr">Yosef ben Avraham &mdash; 18 Tevet<br><span class="side-yahr-sub">Remembered by Moshe Katz</span></div>
+        <div class="side-yahr">Miriam bat Devorah &mdash; 20 Tevet<br><span class="side-yahr-sub">Remembered by Shimon Levy</span></div>
+      </div>
+    </div>
+  </div>
+
+  </div><!-- /web-body -->
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bnav" id="bottomNav">
+  <button class="bnav-item" data-tab="home" onclick="switchTab('home')">
+    <div class="bnav-icon">&#9776;</div>
+    <div class="bnav-bar" style="background:var(--purple);"></div>
+    <div class="bnav-label-active">Feed</div>
+  </button>
+  <button class="bnav-item" data-tab="events" onclick="switchTab('events')">
+    <div class="bnav-icon">&#128197;</div>
+    <div class="bnav-bar" style="background:transparent;"></div>
+    <div class="bnav-label">Events</div>
+  </button>
+  <button class="bnav-item" data-tab="dedications" onclick="switchTab('dedications')">
+    <div class="bnav-icon">&#9829;</div>
+    <div class="bnav-bar" style="background:transparent;"></div>
+    <div class="bnav-label">Sponsors</div>
+  </button>
+  <button class="bnav-item" data-tab="newsletters" onclick="switchTab('newsletters')">
+    <div class="bnav-icon">&#9993;</div>
+    <div class="bnav-bar" style="background:transparent;"></div>
+    <div class="bnav-label">Newsletter</div>
+  </button>
+  <button class="bnav-item" data-tab="me" onclick="switchTab('home')">
+    <div class="bnav-icon" style="font-size:10px;">MK</div>
+    <div class="bnav-bar" style="background:transparent;"></div>
+    <div class="bnav-label">Me</div>
+  </button>
 </div>
 
 <!-- ═══════════ POST DISCUSSION MODAL ═══════════ -->
@@ -1330,6 +1526,113 @@ var groupData = {
       { name:'Miriam bat Yaakov', date:'12 Tevet', family:'Remembered by the Friedman Family' },
       { name:'Yosef ben Avraham', date:'14 Tevet', family:'Remembered by the Nadler Family' }
     ]
+  },
+  professional: {
+    name: 'Tech Leaders NYC', greeting: 'Welcome back, Sarah',
+    tabLabel: { dedications: 'Sponsorships', newsletters: 'Digest' },
+    labels: {
+      discussions: 'Forum', dedications: 'Recent Sponsorships', yahrzeits: '', comingUp: 'Upcoming Meetups',
+      newsletter: 'Latest Digest', eventsTab: 'Meetups', newslettersTab: 'Digest',
+      dedicationsTab: 'Sponsorships', dedTabDesc: 'Sponsor a meetup, workshop, or member benefit.'
+    },
+    dedCta: 'Become a Sponsor', showYahrzeits: false,
+    dedModal: { title: 'Sponsor', types: ['Venue sponsor','Speaker sponsor','Food & drinks','Scholarship','General'], honorLabel: 'Company / org name' },
+    cats: ['Industry','Careers','Networking','Resources'],
+    catColors: { cat1: {bg:'#EEEDFE',fg:'#3C3489'}, cat2: {bg:'#E1F5EE',fg:'#085041'}, cat3: {bg:'#FAEEDA',fg:'#633806'}, cat4: {bg:'#f0eeea',fg:'#7A7A7A'} },
+    discussions: [
+      { id:1, author:'Alex Kumar', initials:'AK', color:'#0F6E56', cat:'cat1', time:'4h ago', body:'Anyone else concerned about the new AI regulation proposals? Could seriously impact startups.', link:{title:'EU AI Act \u2014 What Founders Need to Know',domain:'techcrunch.com'}, replies:3 },
+      { id:2, author:'David Park', initials:'DP', color:'#BA7517', cat:'cat2', time:'6h ago', body:'Looking for a senior backend engineer. Rust experience preferred. DM me.', link:null, replies:0 },
+      { id:3, author:'Nina Torres', initials:'NT', color:'#E24B4A', cat:'cat4', time:'2 days ago', body:'Can anyone recommend a good IP attorney? We are filing our first patent.', link:null, replies:2 }
+    ],
+    events: [
+      { id:1, name:'Monthly Meetup', detail:'6:30 PM \u00B7 Acme Corp HQ', day:15, month:'JAN', going:false },
+      { id:2, name:'AI Workshop', detail:'2:00 PM \u00B7 WeWork Chelsea', day:22, month:'JAN', going:true },
+      { id:3, name:'Happy Hour', detail:'5:30 PM \u00B7 The Brass Monkey', day:1, month:'FEB', going:false }
+    ],
+    newsletters: [
+      { id:1, date:'DEC 2024', parsha:'', title:'Tech Leaders Roundup', preview:'68 members attended our December meetup. David Park gave a great talk on scaling Rust microservices...', body:'<h3>December Meetup Recap</h3><p>68 members attended our December meetup hosted by Acme Corp. David Park gave a great talk on scaling Rust microservices.</p><h3>AI Workshop</h3><p>January 22 \u2014 hands-on workshop on building with Claude and GPT APIs. 28 spots confirmed, 12 remaining.</p><h3>Job Board</h3><p>7 new roles posted this month: 3 senior engineers, 2 product managers, 1 designer, 1 data scientist.</p>', gave:false, reports:[
+        { icon:'\uD83D\uDC65', label:'Members', value:'156 (+12 this month)' },
+        { icon:'\uD83C\uDFAF', label:'Meetup', value:'68 attended in December' },
+        { icon:'\uD83D\uDCBC', label:'Jobs', value:'7 open roles' }
+      ]}
+    ],
+    dedications: [
+      { id:1, name:'Acme Corp', initials:'AC', color:'#534AB7', type:'venue sponsor', honor:'the December meetup', time:'5 days ago' },
+      { id:2, name:'Park Ventures', initials:'PV', color:'#0F6E56', type:'speaker fees', honor:'the AI Workshop', time:'1 week ago' }
+    ],
+    yahrzeits: []
+  },
+  friends: {
+    name: 'The Friday Crew', greeting: 'Hey Jake',
+    tabLabel: { dedications: 'Group Fund', newsletters: 'Updates' },
+    labels: {
+      discussions: 'Group Chat', dedications: 'Group Fund', yahrzeits: '', comingUp: 'Plans',
+      newsletter: 'Latest Update', eventsTab: 'Plans', newslettersTab: 'Updates',
+      dedicationsTab: 'Group Fund', dedTabDesc: 'Chip in for trips, gifts, or group expenses.'
+    },
+    dedCta: 'Chip In', showYahrzeits: false,
+    dedModal: { title: 'Chip In', types: ['Trip fund','Birthday gift','Group dinner','Supplies','Other'], honorLabel: 'What\'s it for?' },
+    cats: ['Plans','Recommendations','Random','Help'],
+    catColors: { cat1: {bg:'#EEEDFE',fg:'#3C3489'}, cat2: {bg:'#E1F5EE',fg:'#085041'}, cat3: {bg:'#FAEEDA',fg:'#633806'}, cat4: {bg:'#FCEBEB',fg:'#791F1F'} },
+    discussions: [
+      { id:1, author:'Jake M.', initials:'JM', color:'#534AB7', cat:'cat1', time:'2h ago', body:'Friday dinner at Lucia\'s? 7:30 PM. Need a headcount by Thursday so I can book.', link:null, replies:4 },
+      { id:2, author:'Sophie K.', initials:'SK', color:'#0F6E56', cat:'cat2', time:'5h ago', body:'That new ramen place on 5th is incredible. We need to go as a group.', link:null, replies:1 },
+      { id:3, author:'Noah R.', initials:'NR', color:'#BA7517', cat:'cat3', time:'1 day ago', body:'Happy birthday Emma! The big 3-0. We need to do something epic.', link:null, replies:0 },
+      { id:4, author:'Emma T.', initials:'ET', color:'#E24B4A', cat:'cat4', time:'1 day ago', body:'Anyone have a truck? Need to move a couch on Saturday morning.', link:null, replies:1 }
+    ],
+    events: [
+      { id:1, name:'Friday dinner', detail:'7:30 PM \u00B7 Lucia\'s', day:20, month:'DEC', going:true },
+      { id:2, name:'Game night', detail:'8:00 PM \u00B7 Jake\'s place', day:27, month:'DEC', going:false },
+      { id:3, name:'Ski trip', detail:'All day \u00B7 Bear Mountain', day:10, month:'JAN', going:false }
+    ],
+    newsletters: [
+      { id:1, date:'DEC 14, 2024', parsha:'', title:'This Week\'s Highlights', preview:'Emma turned 30! We surprised her at Lucia\'s with a cake and way too many candles...', body:'<h3>This Week</h3><p>Emma turned 30! We surprised her at Lucia\'s with a cake and way too many candles. Photos in the group chat.</p><h3>Friday Plans</h3><p>This Friday at Lucia\'s again \u2014 7:30 PM. Jake is booking for 10. RSVP in the chat.</p><h3>Ski Trip Update</h3><p>January 10-12 at Bear Mountain. $150 deposit due by this Friday. 7 of 11 have paid.</p>', gave:false, reports:[
+        { icon:'\uD83C\uDF89', label:'This Week', value:'Emma\'s 30th + dinner' },
+        { icon:'\uD83C\uDFBF', label:'Ski Trip', value:'7 of 11 paid' },
+        { icon:'\uD83D\uDC65', label:'Last Friday', value:'8 showed up' }
+      ]}
+    ],
+    dedications: [
+      { id:1, name:'The whole crew', initials:'TC', color:'#534AB7', type:'birthday gift', honor:'Emma\'s 30th surprise', time:'2 days ago' },
+      { id:2, name:'Jake & Noah', initials:'JN', color:'#0F6E56', type:'trip fund', honor:'Sophie\'s ski deposit', time:'5 days ago' }
+    ],
+    yahrzeits: []
+  },
+  other: {
+    name: 'Greenwood HOA', greeting: 'Welcome, Tom',
+    tabLabel: { dedications: 'Community Fund', newsletters: 'Updates' },
+    labels: {
+      discussions: 'Announcements', dedications: 'Recent Contributions', yahrzeits: '', comingUp: 'Upcoming',
+      newsletter: 'Latest Update', eventsTab: 'Calendar', newslettersTab: 'Updates',
+      dedicationsTab: 'Community Fund', dedTabDesc: 'Contribute to community projects and improvements.'
+    },
+    dedCta: 'Contribute', showYahrzeits: false,
+    dedModal: { title: 'Contribute', types: ['Landscaping fund','Holiday lights','Pool repair','Playground','General'], honorLabel: 'Project or dedication' },
+    cats: ['Announcements','Maintenance','Safety','Social'],
+    catColors: { cat1: {bg:'#EEEDFE',fg:'#3C3489'}, cat2: {bg:'#FAEEDA',fg:'#633806'}, cat3: {bg:'#FCEBEB',fg:'#791F1F'}, cat4: {bg:'#E1F5EE',fg:'#085041'} },
+    discussions: [
+      { id:1, author:'Board', initials:'BD', color:'#534AB7', cat:'cat1', time:'3 days ago', body:'Q1 2025 dues ($450) are due January 15. Pay online or mail a check. Late fees apply after Jan 31.', link:null, replies:2 },
+      { id:2, author:'Tom Wilson', initials:'TW', color:'#0F6E56', cat:'cat2', time:'4h ago', body:'The streetlight on Maple Dr is out again. Third time this year. Has anyone reported it?', link:null, replies:1 },
+      { id:3, author:'Maria G.', initials:'MG', color:'#BA7517', cat:'cat3', time:'1 day ago', body:'Suspicious van parked on Oak St for 3 days. White, no plates. Has anyone else noticed?', link:null, replies:2 },
+      { id:4, author:'Lisa Park', initials:'LP', color:'#E24B4A', cat:'cat4', time:'2 days ago', body:'Planning a block party for Jan 20. Need volunteers for setup. Who\'s in?', link:null, replies:1 }
+    ],
+    events: [
+      { id:1, name:'Board meeting', detail:'7:00 PM \u00B7 Clubhouse', day:8, month:'JAN', going:false },
+      { id:2, name:'Block party', detail:'12:00 PM \u00B7 Clubhouse lawn', day:20, month:'JAN', going:true },
+      { id:3, name:'Pool cleanup day', detail:'9:00 AM \u00B7 Community pool', day:1, month:'FEB', going:false }
+    ],
+    newsletters: [
+      { id:1, date:'DEC 2024', parsha:'', title:'Greenwood Monthly', preview:'The December board meeting approved the 2025 budget. Dues remain at $450/quarter...', body:'<h3>Board Update</h3><p>The December board meeting approved the 2025 budget. Dues remain at $450/quarter. The landscaping contract expires Jan 31 \u2014 we are seeking 3 bids.</p><h3>Maintenance</h3><p>Streetlight on Maple Dr reported again (city ticket #4521). Pool heater replacement scheduled for February.</p><h3>Safety</h3><p>Reminder to lock cars and close garage doors at night. Two break-ins reported in the adjacent neighborhood.</p><h3>Block Party</h3><p>January 20 at the clubhouse. Lisa Park is organizing \u2014 sign up to volunteer in the feed.</p>', gave:false, reports:[
+        { icon:'\uD83C\uDFE0', label:'Households', value:'67 (2 new)' },
+        { icon:'\uD83D\uDCB0', label:'Fund', value:'$8,420 balance' },
+        { icon:'\uD83D\uDEE0\uFE0F', label:'Maintenance', value:'3 open tickets' }
+      ]}
+    ],
+    dedications: [
+      { id:1, name:'Tom Wilson', initials:'TW', color:'#0F6E56', type:'holiday lights', honor:'the community display', time:'5 days ago' },
+      { id:2, name:'The Park Family', initials:'PF', color:'#E24B4A', type:'pool repair', honor:'the community pool fund', time:'1 week ago' }
+    ],
+    yahrzeits: []
   }
 };
 
@@ -1579,11 +1882,7 @@ function renderYahrzeits() {
    TABS
    ══════════════════════════════════════════ */
 function switchTab(name) {
-  var btns = document.querySelectorAll('.tab-btn');
   var panels = document.querySelectorAll('.tab-content');
-  for (var i = 0; i < btns.length; i++) {
-    btns[i].classList.toggle('active', btns[i].getAttribute('data-tab') === name);
-  }
   for (var i = 0; i < panels.length; i++) {
     panels[i].classList.toggle('active', panels[i].id === 'tab-' + name);
   }
@@ -1594,6 +1893,29 @@ function switchTab(name) {
   // FAB only on Home tab
   var fab = document.querySelector('.fab');
   if (fab) fab.style.display = (name === 'home') ? '' : 'none';
+
+  /* highlight web nav pills */
+  var webBtns = document.querySelectorAll('.web-nav button');
+  for (var i = 0; i < webBtns.length; i++) {
+    var key = webBtns[i].getAttribute('data-tab');
+    webBtns[i].className = (key === name) ? 'wna' : 'wn';
+  }
+
+  /* highlight bottom nav */
+  var bnItems = document.querySelectorAll('.bnav-item');
+  for (var i = 0; i < bnItems.length; i++) {
+    var key = bnItems[i].getAttribute('data-tab');
+    var bar = bnItems[i].querySelector('.bnav-bar');
+    var lbl = bnItems[i].querySelectorAll('.bnav-label, .bnav-label-active');
+    if (key === name) {
+      if (bar) bar.style.background = 'var(--purple)';
+      for (var j = 0; j < lbl.length; j++) lbl[j].className = 'bnav-label-active';
+    } else {
+      if (bar) bar.style.background = 'transparent';
+      for (var j = 0; j < lbl.length; j++) lbl[j].className = 'bnav-label';
+    }
+  }
+
   window.scrollTo(0, 0);
 }
 

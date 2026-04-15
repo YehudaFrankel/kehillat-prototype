@@ -3,10 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KeepAliveNow — Organizer Dashboard</title>
+<title>KeepAliveNow</title>
 <style>
 /* ── Reset ─────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Role visibility ─────────────────────────────── */
+.org-only { display: none; }
+.mem-only { display: none; }
+body.role-organizer .org-only { display: initial; }
+body.role-organizer div.org-only,
+body.role-organizer span.org-only { display: block; }
+body.role-organizer .org-only-flex { display: flex; }
+body.role-organizer .org-only-grid { display: grid; }
+body.role-member .mem-only { display: initial; }
+body.role-member div.mem-only,
+body.role-member span.mem-only { display: block; }
+body.role-member .mem-only-flex { display: flex; }
 
 /* ── Tokens ────────────────────────────────────────── */
 :root {
@@ -53,17 +66,30 @@ body {
   overflow-x: hidden;
 }
 
+/* ── App shell — constrain everything to 600px ──── */
+.app-shell {
+  max-width: 600px;
+  margin: 0 auto;
+  background: var(--white);
+  min-height: 100vh;
+  box-shadow: 0 0 20px rgba(0,0,0,.06);
+}
+
 /* ── Topbar ───────────────────────────────────────── */
 .topbar {
-  padding: 12px 14px 10px;
+  padding: 16px 20px 14px;
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: space-between;
   background: var(--white);
 }
-.topbar .gn { font-size: 15px; font-weight: 500; color: var(--text); }
-.topbar .gs { font-size: 10px; color: var(--text-muted); margin-top: 1px; }
+.topbar .gn { font-size: 20px; font-weight: 600; color: var(--text); }
+.topbar .gs {
+  font-size: 13px; color: var(--green-dark); font-weight: 500;
+  margin-top: 3px; display: inline-block;
+  background: var(--green-light); padding: 2px 10px; border-radius: 12px;
+}
 .group-switcher {
   font-size: 9px; padding: 2px 18px 2px 6px; margin-top: 2px;
   border: 1px solid var(--purple-light); border-radius: 12px;
@@ -74,75 +100,49 @@ body {
   background-repeat: no-repeat; background-position: right 5px center;
 }
 .topbar .av {
-  width: 28px; height: 28px; border-radius: 50%;
+  width: 38px; height: 38px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-size: 10px; font-weight: 500; flex-shrink: 0;
+  font-size: 14px; font-weight: 600; flex-shrink: 0;
   background: var(--purple); color: var(--purple-light);
 }
 .web-nav { display: none; }
-.wn, .wna {
-  font-size: 11px; padding: 4px 12px; border-radius: 20px;
-  border: none; cursor: pointer; font-family: inherit;
-}
-.wn { background: transparent; color: var(--text-muted); }
-.wna { background: var(--purple-light); color: var(--purple); font-weight: 500; }
-.wn-dot { position: relative; }
-.wn-dot::after {
-  content: ''; position: absolute; top: 2px; right: 2px;
-  width: 6px; height: 6px; border-radius: 50%; background: var(--coral);
-}
 
-/* ── Metrics (web only) ──────────────────────────── */
-.metrics {
-  display: none;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px; padding: 10px 18px;
-  border-bottom: 1px solid var(--border); background: #faf9f6;
-}
-.met { background: var(--white); border-radius: 8px; padding: 8px 10px; border: 1px solid var(--border); }
-.met-l { font-size: 10px; color: var(--text-muted); margin-bottom: 2px; }
-.met-v { font-size: 18px; font-weight: 500; color: var(--text); }
-.met-s { font-size: 10px; color: var(--green); margin-top: 1px; }
-.met-sw { font-size: 10px; color: var(--amber-dark); margin-top: 1px; cursor: pointer; }
 
 /* ── Alert banner ────────────────────────────────── */
 .alert-banner {
-  background: var(--coral-light); border-left: 3px solid var(--coral);
-  padding: 7px 12px; display: flex; align-items: center; justify-content: space-between;
+  background: var(--amber-light); border-left: 4px solid var(--amber);
+  padding: 12px 16px; display: flex; align-items: center; justify-content: space-between;
 }
-.alert-banner-t { font-size: 10px; color: #791F1F; }
+.alert-banner-t { font-size: 14px; color: var(--amber-dark); }
 .alert-banner-b {
-  font-size: 9px; padding: 2px 8px; border-radius: 20px;
-  border: none; background: var(--coral); color: #fff; cursor: pointer;
+  font-size: 13px; padding: 6px 16px; border-radius: 20px;
+  border: none; background: var(--amber); color: #fff; cursor: pointer; font-weight: 500;
+  font-family: inherit;
 }
 
 /* ── Pin banner ──────────────────────────────────── */
 .pin-banner {
-  background: var(--purple-light); padding: 5px 12px;
-  display: flex; align-items: center; gap: 5px;
+  background: var(--purple-light); padding: 10px 16px;
+  display: flex; align-items: center; gap: 8px;
   border-bottom: 1px solid var(--border);
 }
-.pin-banner-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--purple); }
-.pin-banner-text { font-size: 10px; color: var(--purple-dark); font-weight: 500; }
+.pin-banner-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--purple); }
+.pin-banner-text { font-size: 14px; color: var(--purple-dark); font-weight: 500; }
 
 /* ── Bottom nav (mobile) ─────────────────────────── */
 .bnav {
   position: fixed; bottom: 0; left: 0; right: 0;
-  border-top: 1px solid var(--border); padding: 7px 0 9px;
+  max-width: 600px; margin: 0 auto;
+  border-top: 1px solid var(--border); padding: 14px 0 18px;
   display: flex; align-items: center; justify-content: space-around;
   background: var(--white); z-index: 100;
 }
 .bnav-item {
-  display: flex; flex-direction: column; align-items: center; gap: 2px;
-  cursor: pointer; padding: 0 4px; background: none; border: none; font-family: inherit;
+  cursor: pointer; padding: 4px 24px; background: none; border: none; font-family: inherit;
 }
-.bnav-bar { width: 16px; height: 2px; border-radius: 2px; }
-.bnav-label { font-size: 8px; color: var(--text-muted); }
-.bnav-label-active { font-size: 8px; color: var(--purple); font-weight: 500; }
-.bnav-icon {
-  width: 18px; height: 18px; display: flex; align-items: center; justify-content: center;
-  font-size: 12px; position: relative;
-}
+.bnav-bar { display: none; }
+.bnav-label { font-size: 16px; color: var(--text-muted); font-weight: 500; }
+.bnav-label-active { font-size: 16px; color: var(--purple); font-weight: 600; }
 .bnav-dot {
   width: 5px; height: 5px; border-radius: 50%; background: var(--coral);
   position: absolute; top: -2px; right: -2px;
@@ -154,21 +154,15 @@ body {
 
 /* ── Main layout ──────────────────────────────────── */
 .main {
-  max-width: 1200px;
+  max-width: 600px;
   margin: 0 auto;
-  padding: 28px 40px;
+  padding: 8px 0 140px;
 }
-.two-col {
-  display: grid;
-  grid-template-columns: 1fr minmax(0, 380px);
-  gap: 28px;
-  min-width: 0;
-}
-.two-col > * { min-width: 0; overflow: hidden; }
 
 /* ── View containers ──────────────────────────────── */
 .view { display: none; }
 .view.active { display: block; }
+.sidebar { display: none; }
 
 /* ── Card ─────────────────────────────────────────── */
 .card {
@@ -202,14 +196,14 @@ body {
 /* ── Filter pills ─────────────────────────────────── */
 .filter-pills {
   display: flex;
-  gap: 8px;
-  margin-bottom: 20px;
+  gap: 6px;
+  margin-bottom: 10px;
   flex-wrap: wrap;
 }
 .pill {
-  padding: 6px 16px;
+  padding: 8px 18px;
   border-radius: 20px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   border: 1px solid var(--border);
@@ -226,11 +220,12 @@ body {
 
 /* ── Discussion cards ─────────────────────────────── */
 .discussion {
-  padding: 16px 0;
-  border-bottom: 1px solid var(--border-light);
+  background: var(--white);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  margin: 0 8px 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.06);
 }
-.discussion:first-of-type { padding-top: 8px; }
-.discussion:last-of-type { border-bottom: none; }
 .discussion.removing {
   opacity: 0;
   transform: translateY(-10px);
@@ -248,17 +243,17 @@ body {
 .discussion-top {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  margin-bottom: 8px;
+  gap: 8px;
+  margin-bottom: 4px;
 }
 .avatar {
-  width: 36px;
-  height: 36px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
   color: #fff;
   flex-shrink: 0;
@@ -272,54 +267,54 @@ body {
   gap: 6px;
 }
 .discussion-author {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
   color: var(--text);
 }
 .cat-badge {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
-  padding: 2px 8px;
+  padding: 3px 10px;
   border-radius: 20px;
   text-transform: uppercase;
   letter-spacing: 0.02em;
 }
 .discussion-time {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--text-muted);
   margin-top: 1px;
 }
 .discussion-body {
-  font-size: 14px;
+  font-size: 15px;
   color: var(--text);
-  line-height: 1.55;
-  margin: 0 0 8px 46px;
+  line-height: 1.5;
+  margin: 0 0 6px 50px;
 }
 .discussion-link-preview {
-  margin: 0 0 8px 46px;
+  margin: 0 0 6px 50px;
   border-left: 3px solid var(--purple);
   padding: 8px 12px;
   background: var(--bg);
   border-radius: 0 6px 6px 0;
 }
 .discussion-link-title {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--text);
 }
 .discussion-link-domain {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--text-muted);
-  margin-top: 1px;
+  margin-top: 2px;
 }
 .discussion-footer {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin: 0 0 0 46px;
+  margin: 0 0 0 50px;
 }
 .discussion-replies {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-muted);
   margin-right: auto;
 }
@@ -332,50 +327,178 @@ body {
   font-family: inherit;
 }
 .disc-btn.reply-btn {
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   background: var(--white);
   color: var(--text);
-  padding: 3px 14px;
+  padding: 6px 18px;
   border-radius: 20px;
+  font-size: 13px;
 }
 .disc-btn.reply-btn:hover { border-color: var(--purple); color: var(--purple); }
 .disc-btn.pin-btn {
-  border: none; background: none; padding: 0;
-  color: var(--purple);
+  border: none; background: none; padding: 2px 0;
+  color: var(--purple); font-size: 13px;
 }
 .disc-btn.remove-btn {
-  border: none; background: none; padding: 0;
-  color: var(--text-muted);
+  border: none; background: none; padding: 2px 0;
+  color: var(--text-muted); font-size: 13px;
 }
 .disc-btn.pin-active { color: var(--amber-dark); }
 .disc-btn.pin-btn:hover, .disc-btn.remove-btn:hover { text-decoration: underline; }
 
+/* ── Welcome card (Jennifer) ──────────────────────── */
+.welcome-card {
+  background: linear-gradient(135deg, var(--purple-light) 0%, #E1F5EE 100%);
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+  margin: 0 8px 10px;
+}
+.welcome-card-title {
+  font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 4px;
+}
+.welcome-card-text {
+  font-size: 14px; color: var(--text-muted); line-height: 1.5;
+}
+.welcome-card-text b { color: var(--text); font-weight: 600; }
+
+/* ── Dedication feed card (Carol) ────────────────── */
+.ded-feed-card {
+  background: linear-gradient(135deg, #f0faf5 0%, #f8fdf9 100%);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  margin: 0 8px 10px;
+  border-left: 4px solid var(--green);
+  box-shadow: 0 2px 8px rgba(15,110,86,.08);
+}
+.ded-feed-top {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 10px;
+}
+.ded-feed-avatar {
+  width: 42px; height: 42px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; font-weight: 600; color: #fff; flex-shrink: 0;
+}
+.ded-feed-label {
+  font-size: 12px; font-weight: 600; color: var(--green);
+  text-transform: uppercase; letter-spacing: .3px;
+}
+.ded-feed-name { font-size: 16px; font-weight: 600; color: var(--text); }
+.ded-feed-time { font-size: 13px; color: var(--text-muted); }
+.ded-feed-body {
+  font-size: 16px; color: var(--text); line-height: 1.55;
+  margin-bottom: 12px; font-style: italic;
+}
+.ded-feed-type {
+  color: var(--green); font-weight: 600; font-style: normal;
+}
+.ded-feed-footer {
+  display: flex; align-items: center; gap: 12px;
+}
+.ded-feed-responses { font-size: 14px; color: var(--text-muted); }
+.ded-feed-respond {
+  font-size: 14px; font-weight: 600; color: var(--green);
+  border: 1.5px solid var(--green); background: transparent;
+  padding: 6px 20px; border-radius: 20px; cursor: pointer; font-family: inherit;
+  transition: all .15s;
+}
+.ded-feed-respond:hover { background: var(--green); color: #fff; }
+
+/* ── Dedication modal (Carol's moment) ───────────── */
+.ded-modal-inner { padding: 28px; }
+.ded-modal-heart { font-size: 28px; text-align: center; margin-bottom: 8px; }
+.ded-modal-title { font-size: 20px; font-weight: 600; color: var(--text); text-align: center; margin-bottom: 4px; }
+.ded-modal-sub { font-size: 14px; color: var(--text-muted); text-align: center; margin-bottom: 20px; }
+.ded-modal-label { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 6px; }
+.ded-modal-input {
+  width: 100%; font-size: 16px; padding: 12px 14px;
+  border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+  font-family: inherit; outline: none; background: var(--white); color: var(--text);
+  margin-bottom: 16px;
+}
+.ded-modal-input:focus { border-color: var(--green); }
+.ded-modal-occasions {
+  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;
+}
+.ded-occasion {
+  padding: 8px 16px; border-radius: 20px; font-size: 14px;
+  border: 1.5px solid var(--border); background: var(--white);
+  color: var(--text); cursor: pointer; font-family: inherit; transition: all .15s;
+}
+.ded-occasion.selected { border-color: var(--green); background: var(--green-light); color: var(--green-dark); font-weight: 500; }
+.ded-modal-textarea {
+  width: 100%; font-size: 16px; padding: 14px;
+  border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+  font-family: inherit; outline: none; min-height: 120px; resize: vertical;
+  background: var(--white); color: var(--text); margin-bottom: 20px;
+}
+.ded-modal-textarea:focus { border-color: var(--green); }
+.ded-modal-textarea::placeholder { color: var(--text-muted); }
+.ded-modal-send {
+  width: 100%; padding: 14px; border-radius: var(--radius-sm);
+  border: none; background: var(--green); color: #fff;
+  font-size: 16px; font-weight: 600; cursor: pointer; font-family: inherit;
+}
+.ded-modal-send:hover { background: var(--green-dark); }
+.ded-modal-cancel {
+  width: 100%; padding: 10px; border: none; background: none;
+  font-size: 14px; color: var(--text-muted); cursor: pointer;
+  font-family: inherit; margin-top: 8px;
+}
+
+/* ── Dedication reply modal ──────────────────────── */
+.ded-reply-quote {
+  background: linear-gradient(135deg, #f0faf5 0%, #f8fdf9 100%);
+  border-left: 3px solid var(--green); padding: 12px 16px;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  margin-bottom: 16px;
+}
+.ded-reply-who { font-size: 13px; font-weight: 600; color: var(--green); margin-bottom: 2px; }
+.ded-reply-text { font-size: 14px; color: var(--text); font-style: italic; }
+
+/* ── Make a dedication CTA ───────────────────────── */
+.ded-cta-card {
+  background: var(--green-light);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  margin: 4px 8px 10px;
+  display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer;
+}
+.ded-cta-text { font-size: 14px; color: var(--green-dark); font-weight: 500; }
+.ded-cta-btn {
+  font-size: 14px; font-weight: 600; color: #fff;
+  background: var(--green); border: none;
+  padding: 8px 20px; border-radius: 20px; cursor: pointer; font-family: inherit;
+}
+
 /* ── Compose bar ─────────────────────────────────── */
 .compose-bar {
-  padding: 7px 12px;
+  position: fixed; bottom: 56px; left: 0; right: 0;
+  max-width: 600px; margin: 0 auto;
+  padding: 10px 14px;
   border-top: 1px solid var(--border);
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 10px;
   background: var(--white);
-  margin-top: 8px;
+  z-index: 99;
 }
 .compose-avatar {
-  width: 22px; height: 22px; border-radius: 50%;
+  width: 36px; height: 36px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-size: 8px; font-weight: 500; flex-shrink: 0;
+  font-size: 13px; font-weight: 600; flex-shrink: 0;
   background: var(--purple); color: var(--purple-light);
 }
 .compose-input {
-  flex: 1; font-size: 11px; padding: 5px 9px;
-  border-radius: 20px; border: 1px solid var(--border);
+  flex: 1; font-size: 15px; padding: 10px 16px;
+  border-radius: 24px; border: 1px solid var(--border);
   background: var(--bg); color: var(--text); outline: none;
   font-family: inherit;
 }
 .compose-btn {
-  font-size: 12px; padding: 7px 16px; border-radius: 20px;
+  font-size: 14px; padding: 10px 20px; border-radius: 24px;
   border: none; background: var(--purple); color: var(--purple-light);
-  cursor: pointer; font-weight: 500; font-family: inherit;
+  cursor: pointer; font-weight: 600; font-family: inherit;
   display: none;
 }
 
@@ -900,6 +1023,89 @@ table.aliyah-table {
   transform: translateX(-50%) translateY(0);
 }
 
+/* ── Membership card (member sidebar) ─────────────── */
+.member-card {
+  background: var(--purple-light); border-radius: 10px;
+  padding: 12px 14px; margin-bottom: 10px;
+}
+.member-card-title { font-size: 11px; font-weight: 500; color: var(--purple); margin-bottom: 8px; }
+.member-card-row {
+  display: flex; justify-content: space-between;
+  padding: 4px 0; border-bottom: 1px solid #AFA9EC;
+}
+.member-card-row:last-of-type { border-bottom: none; }
+.member-card-l { font-size: 11px; color: var(--purple-dark); }
+.member-card-v { font-size: 11px; font-weight: 500; color: #26215C; }
+.member-card-btn {
+  width: 100%; margin-top: 9px; padding: 7px;
+  border-radius: 8px; border: none;
+  background: var(--purple); color: var(--purple-light);
+  font-size: 12px; font-weight: 500; cursor: pointer; font-family: inherit;
+}
+
+/* ── Yahrzeit sidebar ────────────────────────────── */
+.side-yahr { font-size: 12px; color: var(--text); margin-bottom: 6px; line-height: 1.5; }
+.side-yahr-sub { font-size: 11px; color: var(--text-muted); }
+
+/* ── Role switcher pill ──────────────────────────── */
+.role-toggle {
+  font-size: 9px; padding: 2px 10px; margin-left: 6px;
+  border-radius: 12px; border: 1px solid var(--green-light);
+  background: var(--green-light); color: var(--green-dark);
+  font-weight: 500; cursor: pointer; font-family: inherit;
+}
+
+/* ── Sidebar menu (mobile) ───────────────────────── */
+.sidebar-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.3);
+  z-index: 199; display: none;
+}
+.sidebar-overlay.open { display: block; }
+.sidebar-menu {
+  position: fixed; top: 0; right: -300px; width: 300px;
+  height: 100%; background: var(--white); z-index: 200;
+  box-shadow: -4px 0 24px rgba(0,0,0,.12);
+  transition: right .25s ease; padding: 24px;
+  overflow-y: auto;
+}
+.sidebar-menu.open { right: 0; }
+.sidebar-menu-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 8px; padding-bottom: 16px; border-bottom: 1px solid var(--border);
+}
+.sidebar-menu-header-left {}
+.sidebar-menu-title { font-size: 18px; font-weight: 600; color: var(--text); }
+.sidebar-menu-sub { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+.sidebar-menu-close {
+  width: 36px; height: 36px; border-radius: 50%; border: none;
+  background: var(--bg); color: var(--text-muted); font-size: 20px;
+  cursor: pointer; font-family: inherit;
+}
+.sidebar-menu-close:hover { background: var(--border); }
+.sidebar-menu-section { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; padding: 16px 8px 6px; }
+.sidebar-menu-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 12px; border-radius: var(--radius-sm);
+  cursor: pointer; border: none; background: none;
+  font-family: inherit; font-size: 16px; font-weight: 500;
+  color: var(--text); width: 100%; text-align: left;
+  transition: background .15s;
+}
+.sidebar-menu-item:hover { background: var(--bg); }
+.sidebar-menu-item.active { background: var(--purple-light); color: var(--purple); }
+.sidebar-menu-icon { font-size: 18px; width: 28px; text-align: center; color: var(--purple); }
+.sidebar-divider { height: 1px; background: var(--border); margin: 8px 0; }
+.sidebar-menu .group-switcher {
+  width: 100%; font-size: 14px; padding: 10px 28px 10px 12px;
+  margin-bottom: 10px; border-radius: var(--radius-sm);
+}
+.sidebar-menu .role-toggle {
+  width: 100%; font-size: 14px; padding: 10px 12px;
+  margin: 0; text-align: center; border-radius: var(--radius-sm);
+}
+@media (min-width: 849px) {
+}
+
 /* ── Newsletter modal (full-screen, matches Fyremantle.html) ── */
 #newsletterModal.open { align-items: stretch; background: var(--white); }
 .nl-modal {
@@ -975,35 +1181,6 @@ table.aliyah-table {
 }
 
 /* ── Responsive ───────────────────────────────────── */
-/* Desktop: show web nav + metrics, hide bottom nav */
-@media (min-width: 849px) {
-  .topbar { padding: 10px 20px; }
-  .topbar .gn { font-size: 14px; }
-  .topbar .gs { font-size: 11px; }
-  .topbar .av { width: 28px; height: 28px; font-size: 10px; margin-left: 8px; }
-  .web-nav { display: flex; gap: 4px; align-items: center; }
-  .wn, .wna { font-size: 11px; }
-  .metrics { display: grid; }
-  .alert-banner { padding: 8px 18px; }
-  .alert-banner-t { font-size: 12px; }
-  .alert-banner-b { font-size: 11px; padding: 3px 10px; }
-  .pin-banner { padding: 6px 18px; }
-  .pin-banner-text { font-size: 12px; }
-  .bnav { display: none; }
-  .compose-bar { padding: 10px 18px; gap: 9px; }
-  .compose-avatar { width: 28px; height: 28px; font-size: 10px; }
-  .compose-input { font-size: 13px; padding: 7px 14px; }
-  .compose-btn { display: inline-block; }
-  .feed-event-card { padding: 9px 11px; border-radius: 8px; }
-  .feed-event-name { font-size: 13px; }
-  .feed-event-sub { font-size: 11px; }
-  .feed-event-btn { font-size: 11px; padding: 4px 12px; }
-}
-@media (max-width: 960px) {
-  .main { padding: 20px; }
-  .two-col { grid-template-columns: 1fr; }
-  .inline-form-grid { grid-template-columns: 1fr 1fr; }
-}
 @media (max-width: 520px) {
   .main { padding: 12px; }
   .main { padding-bottom: 60px; }
@@ -1036,44 +1213,30 @@ table.aliyah-table {
 </style>
 </head>
 <body>
+<div class="app-shell">
 
 <!-- ── Topbar ──────────────────────────────────────── -->
 <div class="topbar">
   <div>
     <div class="gn" id="adminGroupName">Kehilat Shalom</div>
-    <div class="gs" id="adminGroupSub">84 members &middot; organizer</div>
-    <select class="group-switcher" onchange="switchAdminGroup(this.value)">
-      <option value="shul">Shul / Minyan</option>
-      <option value="sports">Sports Team</option>
-      <option value="learning">Learning Group</option>
-      <option value="chavurah">Chavurah</option>
-      <option value="professional">Professional</option>
-      <option value="friends">Friends Group</option>
-      <option value="other">Other</option>
-    </select>
+    <div class="gs" id="adminGroupSub">84 members</div>
   </div>
   <div class="web-nav">
     <button class="wna" data-tab-key="discussions" onclick="switchTab('discussions')">Feed</button>
     <button class="wn" data-tab-key="events" onclick="switchTab('events')">Events</button>
     <button class="wn" data-tab-key="dedications" onclick="switchTab('dedications')">Sponsors</button>
     <button class="wn" data-tab-key="aliyah" onclick="switchTab('aliyah')">Aliyos</button>
-    <button class="wn" data-tab-key="manage" onclick="switchTab('manage')">Members</button>
+    <button class="wn org-only" data-tab-key="manage" onclick="switchTab('manage')">Members</button>
+    <button class="wn mem-only" onclick="switchTab('discussions')">Me</button>
   </div>
-  <div class="av" id="adminAvatar">DL</div>
+  <div class="av" id="adminAvatar" onclick="toggleSidebar()" style="cursor:pointer;">DL</div>
 </div>
 
-<!-- ── Metrics (web) ─────────────────────────────────── -->
-<div class="metrics" id="metricsBar">
-  <div class="met"><div class="met-l" id="metL1">Members</div><div class="met-v" id="metV1">84</div><div class="met-s" id="metS1">+3 this month</div></div>
-  <div class="met"><div class="met-l" id="metL2">Contributions</div><div class="met-v" id="metV2">$2,340</div><div class="met-s" id="metS2">+$480 this week</div></div>
-  <div class="met"><div class="met-l" id="metL3">Active discussions</div><div class="met-v" id="metV3">8</div><div class="met-s" id="metS3">31 replies today</div></div>
-  <div class="met"><div class="met-l" id="metL4">Dues pending</div><div class="met-v" id="metV4">11</div><div class="met-sw" id="metS4" onclick="openModal('sendReminderModal')">Send reminder</div></div>
-</div>
 
 <!-- ── Alert banner ──────────────────────────────────── -->
-<div class="alert-banner" id="alertBanner">
-  <div class="alert-banner-t" id="alertText">Shabbat dinner needs a sponsor &mdash; Dec 28</div>
-  <button class="alert-banner-b" onclick="openModal('askSponsorModal')">Act</button>
+<div class="alert-banner org-only-flex" id="alertBanner">
+  <div class="alert-banner-t" id="alertText">Shabbat dinner still needs a sponsor &mdash; can you help?</div>
+  <button class="alert-banner-b" onclick="openModal('askSponsorModal')">Reach out</button>
 </div>
 
 <!-- ── Pin banner ────────────────────────────────────── -->
@@ -1088,73 +1251,36 @@ table.aliyah-table {
 <!-- ═══ DISCUSSIONS VIEW ═══ -->
 <div class="view active" id="viewDiscussions">
 
-<div class="two-col">
-  <div class="discussions-col">
-    <div class="card">
-      <!-- Filter pills -->
-      <div class="filter-pills" id="filterPills">
-        <span class="pill active" data-filter="all">All</span>
-        <span class="pill" data-filter="torah">Torah</span>
-        <span class="pill" data-filter="current">Current events</span>
-        <span class="pill" data-filter="community">Community</span>
-        <span class="pill" data-filter="needs">Needs response</span>
-      </div>
-
-      <!-- Discussions list -->
-      <div id="discussionsList"></div>
-
-      <!-- Compose bar -->
-      <div class="compose-bar">
-        <div class="compose-avatar">DL</div>
-        <input class="compose-input" id="composeInput" type="text" placeholder="Post an announcement..." onclick="openModal('postModal')" readonly />
-        <button class="compose-btn">Post</button>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="sidebar">
-    <!-- Needs attention -->
-    <div class="card">
-      <div class="side-title">Needs attention</div>
-      <div class="attention-item attn-red">
-        <div class="attention-title">Shabbat dinner needs sponsor</div>
-        <div class="attention-sub">Dec 28 &mdash; 6 days away</div>
-        <button class="attention-btn" id="btnAskSponsor" onclick="askSponsor(this)">Ask last year's sponsor</button>
-      </div>
-      <div class="attention-item attn-amber">
-        <div class="attention-title">11 dues unpaid</div>
-        <div class="attention-sub">Renewal closes Jan 15</div>
-        <button class="attention-btn" onclick="openModal('sendReminderModal')">Send reminder</button>
-      </div>
-      <div class="attention-item attn-purple">
-        <div class="attention-title">3 member requests</div>
-        <div class="attention-sub">Waiting since Dec 10</div>
-        <button class="attention-btn" onclick="openModal('requestsModal')">Review requests</button>
-      </div>
-    </div>
-
-    <!-- Coming up -->
-    <div class="card">
-      <div class="side-title">Coming up</div>
-      <div class="event-item">
-        <div class="event-date-circle"><div class="event-date-day">14</div><div class="event-date-mo">Dec</div></div>
-        <div class="event-info"><div class="event-name">Shabbat morning</div><div class="event-confirmed">22 confirmed</div></div>
-        <button class="event-manage-btn">Manage</button>
-      </div>
-      <div class="event-item">
-        <div class="event-date-circle"><div class="event-date-day">19</div><div class="event-date-mo">Dec</div></div>
-        <div class="event-info"><div class="event-name">Thursday shiur</div><div class="event-confirmed">14 confirmed</div></div>
-        <button class="event-manage-btn">Manage</button>
-      </div>
-      <div class="event-item">
-        <div class="event-date-circle"><div class="event-date-day">28</div><div class="event-date-mo">Dec</div></div>
-        <div class="event-info"><div class="event-name">Chanukah party</div><div class="event-confirmed warning">No sponsor yet</div></div>
-        <button class="event-manage-btn">Manage</button>
-      </div>
-    </div>
-  </div>
+<!-- Filter pills -->
+<div class="filter-pills" id="filterPills" style="padding:0 8px 10px;">
+  <span class="pill active" data-filter="all">All</span>
+  <span class="pill" data-filter="torah">Torah</span>
+  <span class="pill" data-filter="current">Current events</span>
+  <span class="pill" data-filter="community">Community</span>
+  <span class="pill" data-filter="needs">Questions</span>
 </div>
+
+<!-- Welcome card (Jennifer's moment — new members see this) -->
+<div class="welcome-card" id="welcomeCard">
+  <div class="welcome-card-title">Welcome! You're in.</div>
+  <div class="welcome-card-text">You just joined a community that's been going strong. <b>84 members</b> are here. Scroll down &mdash; there's a lot of life here.</div>
+</div>
+
+<!-- Discussions list -->
+<div id="discussionsList"></div>
+
+<!-- Make a dedication (Carol's moment) -->
+<div class="ded-cta-card" onclick="openModal('dedModal')">
+  <span class="ded-cta-text">Honor someone special</span>
+  <button class="ded-cta-btn">Make a Dedication</button>
+</div>
+
+<!-- Feed footer — the weight of time -->
+<div style="text-align:center;padding:24px 16px 8px;font-size:13px;color:var(--text-muted);line-height:1.6;">
+  You've seen the recent highlights.<br>
+  This group has been going since 2022. &#10084;
+</div>
+
 
 </div>
 
@@ -1247,6 +1373,17 @@ table.aliyah-table {
     <span class="card-title" id="dedCardTitle">Submitted Dedications</span>
   </div>
   <div id="dedicationsList"></div>
+</div>
+</div>
+
+<!-- ═══ NEWSLETTER VIEW ═══ -->
+<div class="view" id="viewNewsletter">
+<div class="card">
+  <div class="card-header">
+    <span class="card-title">Newsletters</span>
+  </div>
+  <div id="newsletterArchive" style="padding:0 4px;"></div>
+  <div style="text-align:center;padding:16px 0 8px;font-size:13px;color:var(--text-muted);">That's everything so far.</div>
 </div>
 </div>
 
@@ -1429,33 +1566,95 @@ KeepAliveNow</textarea>
   </div>
 </div>
 
-<!-- ── Bottom nav (mobile) ──────────────────────────── -->
+</div><!-- /app-shell -->
+
+<!-- ── Compose bar (fixed) ─────────────────────────── -->
+<div class="compose-bar">
+  <div class="compose-avatar">DL</div>
+  <input class="compose-input" id="composeInput" type="text" placeholder="What's on your mind?" onclick="openModal('postModal')" readonly />
+  <button class="compose-btn">Post</button>
+</div>
+
+<!-- ── Bottom nav (3 text tabs) ─────────────────────── -->
 <div class="bnav" id="bottomNav">
   <button class="bnav-item" data-tab-key="discussions" onclick="switchTab('discussions')">
-    <div class="bnav-icon">&#9776;</div>
     <div class="bnav-bar" style="background:var(--purple);"></div>
     <div class="bnav-label-active">Feed</div>
   </button>
   <button class="bnav-item" data-tab-key="events" onclick="switchTab('events')">
-    <div class="bnav-icon">&#128197;</div>
     <div class="bnav-bar" style="background:transparent;"></div>
     <div class="bnav-label">Events</div>
   </button>
-  <button class="bnav-item" data-tab-key="dedications" onclick="switchTab('dedications')">
-    <div class="bnav-icon">&#9829;</div>
-    <div class="bnav-bar" style="background:transparent;"></div>
-    <div class="bnav-label">Sponsors</div>
-  </button>
-  <button class="bnav-item" data-tab-key="aliyah" onclick="switchTab('aliyah')">
-    <div class="bnav-icon">&#9734;</div>
-    <div class="bnav-bar" style="background:transparent;"></div>
-    <div class="bnav-label">Aliyos</div>
-  </button>
-  <button class="bnav-item" data-tab-key="manage" onclick="switchTab('manage')">
-    <div class="bnav-icon" style="position:relative;">&#128101;<div class="bnav-dot"></div></div>
-    <div class="bnav-bar" style="background:transparent;"></div>
-    <div class="bnav-label">Members</div>
-  </button>
+</div>
+
+<!-- ── Sidebar menu (mobile) ──────────────────────── -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<div class="sidebar-menu" id="sidebarMenu">
+  <div class="sidebar-menu-header">
+    <div class="sidebar-menu-header-left">
+      <div class="sidebar-menu-title" id="sidebarTitle">Kehilat Shalom</div>
+      <div class="sidebar-menu-sub" id="sidebarSub">84 members</div>
+    </div>
+    <button class="sidebar-menu-close" onclick="toggleSidebar()">&times;</button>
+  </div>
+  <button class="sidebar-menu-item" onclick="sidebarNav('discussions')">Feed</button>
+  <button class="sidebar-menu-item" onclick="sidebarNav('events')">Events</button>
+  <button class="sidebar-menu-item" onclick="sidebarNav('dedications')">Sponsors</button>
+  <button class="sidebar-menu-item org-only" onclick="sidebarNav('aliyah')">Aliyos</button>
+  <button class="sidebar-menu-item mem-only" onclick="sidebarNav('newsletter')">Newsletter</button>
+  <button class="sidebar-menu-item org-only" onclick="sidebarNav('manage')">Members</button>
+  <div class="sidebar-divider"></div>
+  <select class="group-switcher" onchange="switchAdminGroup(this.value)">
+    <option value="shul">Shul / Minyan</option>
+    <option value="sports">Sports Team</option>
+    <option value="learning">Learning Group</option>
+    <option value="chavurah">Chavurah</option>
+    <option value="professional">Professional</option>
+    <option value="friends">Friends Group</option>
+    <option value="other">Other</option>
+  </select>
+  <button class="role-toggle" id="sidebarRoleToggle" onclick="switchRole();toggleSidebar();">Switch to member</button>
+</div>
+
+<!-- Dedication modal (Carol's moment) -->
+<div class="modal-overlay" id="dedModal">
+  <div class="modal" style="max-width:480px;">
+    <div class="ded-modal-inner">
+      <div class="ded-modal-heart">&#10084;</div>
+      <div class="ded-modal-title">Honor Someone Special</div>
+      <div class="ded-modal-sub">Dedicate a moment to someone who matters</div>
+      <div class="ded-modal-label">Who are you thinking of?</div>
+      <input class="ded-modal-input" id="dedHonorWho" type="text" placeholder="Their name" />
+      <div class="ded-modal-label">What's the occasion?</div>
+      <div class="ded-modal-occasions" id="dedOccasions">
+        <button class="ded-occasion" onclick="selectOccasion(this)">Anniversary</button>
+        <button class="ded-occasion" onclick="selectOccasion(this)">In memory</button>
+        <button class="ded-occasion" onclick="selectOccasion(this)">Thank you</button>
+        <button class="ded-occasion" onclick="selectOccasion(this)">Milestone</button>
+        <button class="ded-occasion" onclick="selectOccasion(this)">Just because</button>
+      </div>
+      <div class="ded-modal-label">Your message</div>
+      <textarea class="ded-modal-textarea" id="dedMessage" placeholder="Write from the heart..."></textarea>
+      <button class="ded-modal-send" onclick="submitDedication()">Send with love &#10084;</button>
+      <button class="ded-modal-cancel" onclick="closeModal('dedModal')">Maybe later</button>
+    </div>
+  </div>
+</div>
+
+<!-- Dedication reply modal -->
+<div class="modal-overlay" id="dedReplyModal">
+  <div class="modal" style="max-width:480px;">
+    <div class="ded-modal-inner">
+      <div class="ded-reply-quote">
+        <div class="ded-reply-who" id="dedReplyWho">Carol honored Patricia</div>
+        <div class="ded-reply-text" id="dedReplyText"></div>
+      </div>
+      <div class="ded-modal-label">Your response</div>
+      <textarea class="ded-modal-textarea" id="dedReplyBody" placeholder="This means so much..." style="min-height:80px;"></textarea>
+      <button class="ded-modal-send" onclick="submitDedResponse()">Send response</button>
+      <button class="ded-modal-cancel" onclick="closeModal('dedReplyModal')">Cancel</button>
+    </div>
+  </div>
 </div>
 
 <!-- Toast -->
@@ -1490,7 +1689,11 @@ var adminGroups = {
       { id:2, pinned:false, author:'Rabbi Goldberg', initials:'RG', color:'#4CAF7D', category:'torah', time:'2 hours ago', body:'Fascinating article about Parshat Vayeshev and modern community building.', link:{title:'Torah and Community',domain:'torahinsights.org'}, replies:[{author:'Noa F.',initials:'NF',color:'#E07B6B',text:'Beautiful piece. Will discuss at shiur?',time:'1 hour ago'}] },
       { id:3, pinned:false, author:'Miriam Schwartz', initials:'MS', color:'#E07B6B', category:'current', time:'5 hours ago', body:'Has anyone seen the new documentary about Jewish communities in the South?', link:null, replies:[] },
       { id:4, pinned:false, author:'Avi Stern', initials:'AS', color:'#E5A84B', category:'community', time:'1 day ago', body:'Youth group needs volunteers for Chanukah party setup Dec 28, 3 PM.', link:null, replies:[{author:'Rachel G.',initials:'RG',color:'#6B5CE7',text:'Count me in!',time:'22 hours ago'}] },
-      { id:5, pinned:false, author:'Noa Friedman', initials:'NF', color:'#E07B6B', category:'needs', time:'3 days ago', body:'We need someone to coordinate the kiddush schedule for January. Any volunteers?', link:null, replies:[{author:'Sarah L.',initials:'SL',color:'#4CAF7D',text:'I might be able to help.',time:'2 days ago'}] }
+      { id:5, pinned:false, author:'Noa Friedman', initials:'NF', color:'#E07B6B', category:'needs', time:'3 days ago', body:'We need someone to coordinate the kiddush schedule for January. Any volunteers?', link:null, replies:[{author:'Sarah L.',initials:'SL',color:'#4CAF7D',text:'I might be able to help.',time:'2 days ago'}] },
+      { id:6, pinned:false, author:'Sarah Levy', initials:'SL', color:'#4CAF7D', category:'torah', time:'2 weeks ago', body:'The shiur on Hilchot Shabbat last Tuesday was incredible. 38 people showed up! Rabbi David really brought it to life.', link:null, replies:[{author:'Avi S.',initials:'AS',color:'#E5A84B',text:'Best one yet.',time:'2 weeks ago'}] },
+      { id:7, pinned:false, author:'Eli Rosen', initials:'ER', color:'#6B5CE7', category:'community', time:'3 weeks ago', body:'Welcome to the three new families who joined this month: the Goldbergs, Fischers, and Levis. Looking forward to seeing you at kiddush!', link:null, replies:[{author:'Miriam S.',initials:'MS',color:'#E07B6B',text:'Welcome!! So glad you are here.',time:'3 weeks ago'},{author:'David C.',initials:'DC',color:'#4CAF7D',text:'We should do a welcome dinner.',time:'3 weeks ago'}] },
+      { id:8, pinned:false, author:'Rachel Green', initials:'RG', color:'#E5A84B', category:'current', time:'1 month ago', body:'Anyone interested in carpooling to the regional Shabbaton next month? We have 3 spots in our car.', link:null, replies:[{author:'Noa F.',initials:'NF',color:'#E07B6B',text:'Yes please! Count us in.',time:'1 month ago'}] },
+      { id:9, pinned:false, author:'David Cohen', initials:'DC', color:'#4CAF7D', category:'community', time:'3 months ago', body:'Just want to say thank you to everyone who came to the food drive. Over 500 pounds collected for local families. This kehillah is special.', link:null, replies:[{author:'Rabbi G.',initials:'RG',color:'#6B5CE7',text:'Proud of this community.',time:'3 months ago'},{author:'Eli R.',initials:'ER',color:'#E5A84B',text:'Incredible turnout.',time:'3 months ago'}] }
     ],
     aliyahData: [
       { member:'David Cohen', initials:'DC', color:'#6B5CE7', type:'Shishi', date:'Dec 14', dedication:'Refuah shleimah for Miriam bat Sarah', amount:'$180', status:'paid' },
@@ -1822,6 +2025,7 @@ var adminGroups = {
 
 /* ── Active data ─────────────────────────────────── */
 var currentAdminGroup = 'shul';
+var currentRole = 'organizer';
 var discussions = adminGroups.shul.discussions;
 var aliyahData = adminGroups.shul.aliyahData;
 var dedications = adminGroups.shul.dedications;
@@ -1840,19 +2044,14 @@ function switchAdminGroup(type) {
 
   /* topbar */
   document.getElementById('adminGroupName').textContent = g.name;
-
-  /* metrics bar */
-  document.getElementById('metL1').textContent = g.stats.s1;
-  document.getElementById('metV1').textContent = g.stats.v1;
-  document.getElementById('metS1').textContent = g.stats.sub1;
-  document.getElementById('metL2').textContent = g.stats.s2;
-  document.getElementById('metV2').textContent = g.stats.v2;
-  document.getElementById('metS2').textContent = g.stats.sub2;
-  document.getElementById('metL3').textContent = g.stats.s3;
-  document.getElementById('metV3').textContent = g.stats.v3;
-  document.getElementById('metS3').textContent = g.stats.sub3;
-  document.getElementById('metL4').textContent = g.stats.s4;
-  document.getElementById('metV4').textContent = g.stats.v4;
+  var sideTitle = document.getElementById('sidebarTitle');
+  if (sideTitle) sideTitle.textContent = g.name;
+  var sideSub = document.getElementById('sidebarSub');
+  if (sideSub) sideSub.textContent = g.stats.v1 + ' members';
+  var welcomeTitle = document.querySelector('.welcome-card-title');
+  if (welcomeTitle) welcomeTitle.textContent = 'Welcome to ' + g.name + '!';
+  var welcomeText = document.querySelector('.welcome-card-text');
+  if (welcomeText) welcomeText.innerHTML = 'Scroll down to see what\'s been happening. <b>' + g.stats.v1 + ' members</b> are here. Jump in whenever you\'re ready.';
 
   /* vocab — update all labeled elements */
   var v = g.vocab;
@@ -1954,6 +2153,102 @@ function catLabel(cat) {
 }
 function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
+/* ── Dedication functions ─────────────────────────── */
+function selectOccasion(btn) {
+  var btns = document.querySelectorAll('.ded-occasion');
+  for (var i = 0; i < btns.length; i++) btns[i].classList.remove('selected');
+  btn.classList.add('selected');
+}
+
+function submitDedication() {
+  var who = document.getElementById('dedHonorWho').value.trim();
+  var msg = document.getElementById('dedMessage').value.trim();
+  if (!who || !msg) { showToast('Please fill in who and your message'); return; }
+  closeModal('dedModal');
+  showToast('Your dedication has been shared \u2764');
+  document.getElementById('dedHonorWho').value = '';
+  document.getElementById('dedMessage').value = '';
+  var btns = document.querySelectorAll('.ded-occasion');
+  for (var i = 0; i < btns.length; i++) btns[i].classList.remove('selected');
+}
+
+function openDedReply(member, text) {
+  document.getElementById('dedReplyWho').textContent = member + ' made this dedication';
+  document.getElementById('dedReplyText').textContent = '\u201C' + text + '\u201D';
+  document.getElementById('dedReplyBody').value = '';
+  openModal('dedReplyModal');
+}
+
+function submitDedResponse() {
+  var body = document.getElementById('dedReplyBody').value.trim();
+  if (!body) return;
+  closeModal('dedReplyModal');
+  showToast('Your response has been sent \u2764');
+}
+
+function renderNewsletterArchive() {
+  var g = adminGroups[currentAdminGroup];
+  var nl = g.newsletter;
+  var el = document.getElementById('newsletterArchive');
+  if (!nl) { el.innerHTML = '<p style="font-size:14px;color:var(--text-muted);padding:8px 0;">No newsletters yet.</p>'; return; }
+  var html = '';
+  html += '<div class="feed-nl-card" onclick="openNewsletterReview()" style="margin:0 0 12px;">';
+  html += '<div class="feed-nl-label">' + esc(nl.date) + '</div>';
+  html += '<div class="feed-nl-title">' + esc(nl.title) + '</div>';
+  if (nl.reports && nl.reports.length) {
+    html += '<div class="reports-strip">';
+    for (var i = 0; i < nl.reports.length; i++) {
+      var rp = nl.reports[i];
+      html += '<span class="report-chip"><span class="report-chip-icon">' + rp.icon + '</span>';
+      html += '<span class="report-chip-label">' + esc(rp.label) + '</span>';
+      html += '<span class="report-chip-value">' + esc(rp.value) + '</span></span>';
+    }
+    html += '</div>';
+  }
+  html += '<div class="feed-nl-preview">' + esc(nl.body.replace(/<[^>]+>/g, '').substring(0, 150)) + '...</div>';
+  html += '<span class="feed-nl-badge">Tap to read</span>';
+  html += '</div>';
+  el.innerHTML = html;
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebarMenu').classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('open');
+}
+
+function sidebarNav(tab) {
+  toggleSidebar();
+  switchTab(tab);
+}
+
+function switchRole() {
+  currentRole = (currentRole === 'organizer') ? 'member' : 'organizer';
+  document.body.className = 'role-' + currentRole;
+  var btn = document.getElementById('roleToggle');
+  if (btn) btn.textContent = (currentRole === 'organizer') ? 'Switch to member' : 'Switch to organizer';
+  var sbtn = document.getElementById('sidebarRoleToggle');
+  if (sbtn) sbtn.textContent = (currentRole === 'organizer') ? 'Switch to member' : 'Switch to organizer';
+  var sub = document.getElementById('adminGroupSub');
+  if (sub) {
+    var g = adminGroups[currentAdminGroup];
+    sub.textContent = (currentRole === 'organizer')
+      ? (g.stats.v1 + ' members \u00B7 organizer')
+      : (g.stats.v1 + ' members');
+  }
+  var compose = document.getElementById('composeInput');
+  if (compose) {
+    var v = adminGroups[currentAdminGroup].vocab;
+    compose.placeholder = (currentRole === 'organizer') ? v.composePlaceholder : 'Share something...';
+  }
+  /* re-apply feed-only visibility */
+  var onFeed = document.querySelector('#viewDiscussions.active');
+  document.getElementById('alertBanner').style.display = (onFeed && currentRole === 'organizer') ? '' : 'none';
+  renderDiscussions();
+}
+
+/* init role on load */
+document.body.className = 'role-organizer';
+
 function renderDiscussions() {
   var el = document.getElementById('discussionsList');
   var g = adminGroups[currentAdminGroup];
@@ -1996,10 +2291,13 @@ function renderDiscussions() {
     html += '<div class="discussion-footer">';
     html += '<span class="discussion-replies">' + (d.replies.length > 0 ? d.replies.length + ' replies' : '') + '</span>';
     html += '<button class="disc-btn reply-btn" onclick="toggleReply(' + d.id + ')">Reply</button>';
-    html += '<div class="org-acts">';
-    html += '<button class="disc-btn pin-btn' + (d.pinned ? ' pin-active' : '') + '" onclick="togglePin(' + d.id + ')">' + (d.pinned ? 'Unpin' : 'Pin') + '</button>';
-    html += '<button class="disc-btn remove-btn" onclick="removeDiscussion(' + d.id + ')">Remove</button>';
-    html += '</div></div>';
+    if (currentRole === 'organizer') {
+      html += '<div class="org-acts">';
+      html += '<button class="disc-btn pin-btn' + (d.pinned ? ' pin-active' : '') + '" onclick="togglePin(' + d.id + ')">' + (d.pinned ? 'Unpin' : 'Pin') + '</button>';
+      html += '<button class="disc-btn remove-btn" onclick="removeDiscussion(' + d.id + ')">Remove</button>';
+      html += '</div>';
+    }
+    html += '</div>';
 
     // Reply thread
     html += '<div class="reply-thread" id="replies-' + d.id + '">';
@@ -2019,6 +2317,24 @@ function renderDiscussions() {
     html += '</div>';
 
     html += '</div>';
+
+    /* inject dedication card after 1st discussion (Carol's moment) */
+    if (i === 0 && g.dedications && g.dedications.length > 0) {
+      var ded = g.dedications[0];
+      html += '<div class="ded-feed-card">';
+      html += '<div class="ded-feed-top">';
+      html += '<div class="ded-feed-avatar" style="background:' + ded.color + '">' + esc(ded.initials) + '</div>';
+      html += '<div>';
+      html += '<div class="ded-feed-label">&#10084; Dedication</div>';
+      html += '<div class="ded-feed-name">' + esc(ded.member) + '</div>';
+      html += '<div class="ded-feed-time">' + esc(ded.date) + '</div>';
+      html += '</div></div>';
+      html += '<div class="ded-feed-body">\u201C' + esc(ded.text) + '\u201D</div>';
+      html += '<div class="ded-feed-footer">';
+      html += '<span class="ded-feed-responses">7 responses</span>';
+      html += '<button class="ded-feed-respond" onclick="openDedReply(\'' + esc(ded.member) + '\',\'' + esc(ded.text).replace(/'/g, "\\'") + '\')">Respond</button>';
+      html += '</div></div>';
+    }
 
     /* inject inline newsletter card after 3rd discussion */
     if (i === 2 && g.newsletter) {
@@ -2041,7 +2357,7 @@ function renderDiscussions() {
         html += '</div>';
       }
       html += '<div class="feed-nl-preview">' + esc(nl.body.replace(/<[^>]+>/g, '').substring(0, 120)) + '...</div>';
-      html += '<span class="feed-nl-badge">&#9998; Tap to review and send</span>';
+      html += '<span class="feed-nl-badge">&#9998; This week\'s highlights, ready for your ' + nl.members + ' members</span>';
       html += '</div></div>';
     }
 
@@ -2236,9 +2552,14 @@ function switchTab(tab) {
   var views = document.querySelectorAll('.view');
   for (var i = 0; i < views.length; i++) views[i].classList.remove('active');
 
-  /* show/hide feed-only banners */
-  document.getElementById('alertBanner').style.display = (tab === 'discussions') ? '' : 'none';
-  document.getElementById('pinBanner').style.display = (tab === 'discussions') ? '' : 'none';
+  /* show/hide feed-only elements */
+  var isFeed = (tab === 'discussions');
+  document.getElementById('alertBanner').style.display = (isFeed && currentRole === 'organizer') ? '' : 'none';
+  document.getElementById('pinBanner').style.display = isFeed ? '' : 'none';
+  var welcome = document.getElementById('welcomeCard');
+  if (welcome) welcome.style.display = isFeed ? '' : 'none';
+  var compose = document.querySelector('.compose-bar');
+  if (compose) compose.style.display = isFeed ? '' : 'none';
 
   /* show the target view */
   if (tab === 'discussions') {
@@ -2250,6 +2571,9 @@ function switchTab(tab) {
     document.getElementById('viewAliyah').classList.add('active');
   } else if (tab === 'dedications') {
     document.getElementById('viewDedications').classList.add('active');
+  } else if (tab === 'newsletter') {
+    document.getElementById('viewNewsletter').classList.add('active');
+    renderNewsletterArchive();
   } else if (tab === 'manage') {
     document.getElementById('viewManage').classList.add('active');
     renderRequests('memberRequests');
@@ -2628,7 +2952,7 @@ function addNlChip() {
 }
 
 function copyAdminInviteLink() {
-  var url = window.location.href.replace('FyremantleAdmin.html', 'FyremantleSignup.html');
+  var url = window.location.href.replace('FyremantleApp.html', 'FyremantleSignup.html');
   var btn = document.getElementById('btnCopyInvite');
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(url).then(function() {
