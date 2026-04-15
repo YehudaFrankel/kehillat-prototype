@@ -1188,9 +1188,9 @@ var adminGroups = {
       { id: 7, author: 'Noam Stern', time: '3d ago', cat: 'community', body: 'Volunteers needed for the youth Shabbat program this Saturday. We need 3 more group leaders for the ages 6\u20138 group. It\'s a rewarding experience \u2014 please reach out if you can help!', replies: [{author:'Daniel P.',text:'I can lead a group this week.'}], pinned: false }
     ],
     events: [
-      { name: 'Shabbat morning', date: 'Dec 14', day: '14', month: 'Dec', confirmed: 22 },
-      { name: 'Thursday shiur', date: 'Dec 19', day: '19', month: 'Dec', confirmed: 14 },
-      { name: 'Chanukah party', date: 'Dec 28', day: '28', month: 'Dec', confirmed: null, noSponsor: true }
+      { name: 'Shabbat morning', date: 'Dec 14', day: '14', month: 'Dec', confirmed: 22, desc: 'Regular Shabbat morning services followed by kiddush in the social hall.' },
+      { name: 'Thursday shiur', date: 'Dec 19', day: '19', month: 'Dec', confirmed: 14, desc: 'Tanya chapter 4 with Rabbi Friedman. Open to all levels.' },
+      { name: 'Chanukah party', date: 'Dec 28', day: '28', month: 'Dec', confirmed: null, noSponsor: true, desc: 'Annual Chanukah party with latkes, donuts, and menorah lighting. Families welcome.' }
     ],
     aliyahData: [
       { id: 1, member: 'Ari Goldman', type: 'Shlishi', date: 'Dec 14', dedication: 'In honor of my son\'s bar mitzvah', amount: '$180', status: 'paid' },
@@ -1243,9 +1243,9 @@ var adminGroups = {
       { id: 104, author: 'League Update', time: '2d ago', cat: 'community', body: 'Spring season registration is now open! We\'re expanding to 6 teams this season. Registration fee is $50 per player. Deadline is February 1.', replies: [], pinned: false }
     ],
     events: [
-      { name: 'Sunday game', date: 'Dec 22', day: '22', month: 'Dec', confirmed: 16 },
-      { name: 'Thursday pickup', date: 'Dec 26', day: '26', month: 'Dec', confirmed: 8 },
-      { name: 'Season opener', date: 'Jan 12', day: '12', month: 'Jan', confirmed: null, noSponsor: false }
+      { name: 'Sunday game', date: 'Dec 22', day: '22', month: 'Dec', confirmed: 16, desc: 'Home game vs. Hapoel FC. Meet at the field by 9:30 AM.' },
+      { name: 'Thursday pickup', date: 'Dec 26', day: '26', month: 'Dec', confirmed: 8, desc: 'Casual pickup game. All skill levels welcome.' },
+      { name: 'Season opener', date: 'Jan 12', day: '12', month: 'Jan', confirmed: null, noSponsor: false, desc: 'First official game of the spring season. Jerseys required.' }
     ],
     aliyahData: [],
     dedications: [
@@ -1744,7 +1744,7 @@ function manageEvent(idx) {
   var e = g().events[idx];
   document.getElementById('eventName').value = e.name;
   document.getElementById('eventDate').value = '2025-12-' + (e.day.length === 1 ? '0' + e.day : e.day);
-  document.getElementById('eventDesc').value = '';
+  document.getElementById('eventDesc').value = e.desc || '';
   var info = '';
   if (e.confirmed) info = e.confirmed + ' confirmed RSVPs';
   if (e.noSponsor) info += (info ? ' · ' : '') + 'No sponsor yet';
