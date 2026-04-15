@@ -681,6 +681,7 @@ var groupData = {
   shul: {
     name:'Kehillat Shalom', members:84,
     pin:'Annual campaign open through Jan 15',
+    tabLabels:['Feed','Events','Sponsors','Newsletter','Me'],
     categories:['All','Torah','Current events','Community','Politics'],
     discussions:[
       {id:1,author:'Yosef G.',initials:'YG',avBg:'#FAEEDA',avColor:'#633806',cat:'Torah',catBg:'#E1F5EE',catColor:'#085041',time:'2h',body:'Interesting piece on the Rambam\'s approach to tefillah. He frames kavanah not as a feeling but as a cognitive act \u2014 directing the mind toward meaning, not mood.',link:{title:'The Rambam on daily prayer',url:'torahmusings.com'},replies:[{author:'Sarah K.',text:'Such a meaningful perspective, thank you for sharing.'},{author:'Michael R.',text:'Would love to discuss this further at the Thursday shiur.'},{author:'Leah P.',text:'This connects beautifully to what we learned last week.'},{author:'Avi T.',text:'Shared this with my chavrusa \u2014 great find.'}]},
@@ -715,6 +716,7 @@ var groupData = {
   sports: {
     name:'Maccabi Mets', members:24,
     pin:'Season opener Jan 20 \u2014 sign up now',
+    tabLabels:['Feed','Events','Sponsors','Highlights','Me'],
     categories:['All','Game day','Training','Off-field','Highlights'],
     discussions:[
       {id:101,author:'Avi T.',initials:'AT',avBg:'#E6F1FB',avColor:'#0C447C',cat:'Game day',catBg:'#FAEEDA',catColor:'#633806',time:'3h',body:'Great game yesterday. Defense was solid in the second half. Let\'s keep that energy for next week.',link:null,replies:[{author:'Danny F.',text:'Agreed! The second half was our best yet.'},{author:'Yoni B.',text:'Let\'s run that same formation next game.'}]},
@@ -741,6 +743,7 @@ var groupData = {
   learning: {
     name:'Daf Yomi Chevra', members:18,
     pin:'Siyum on Maseches Bava Metzia next Thursday',
+    tabLabels:['Feed','Events','Sponsors','Resources','Me'],
     categories:['All','Gemara','Halacha','Mussar','Resources'],
     discussions:[
       {id:201,author:'Reb Chaim S.',initials:'CS',avBg:'#FAEEDA',avColor:'#633806',cat:'Gemara',catBg:'#E1F5EE',catColor:'#085041',time:'1h',body:'Today\'s daf had an incredible Tosafos on the sugya of shomer. Anyone want to go through it again tonight?',link:null,replies:[{author:'Eli W.',text:'Count me in. The Rashba there is also worth looking at.'},{author:'Dovid M.',text:'I can join at 9 PM if that works.'}]},
@@ -765,6 +768,7 @@ var groupData = {
   professional: {
     name:'Jewish Tech Network', members:45,
     pin:'Networking dinner Feb 6 \u2014 RSVP open',
+    tabLabels:['Feed','Events','Sponsors','Directory','Me'],
     categories:['All','Jobs','Mentorship','Industry','Social'],
     discussions:[
       {id:301,author:'Ari G.',initials:'AG',avBg:'#E6F1FB',avColor:'#0C447C',cat:'Jobs',catBg:'#E1F5EE',catColor:'#085041',time:'2h',body:'My company is hiring a senior full-stack developer. Remote-friendly, competitive salary. DM me if interested or if you know someone.',link:{title:'Senior Full-Stack Developer',url:'jewishtech.jobs'},replies:[{author:'Shira L.',text:'Just shared with a few people in my network.'},{author:'Noam B.',text:'What\'s the tech stack? React + Node?'},{author:'Ari G.',text:'Yes, React/Next.js frontend, Node + PostgreSQL backend.'}]},
@@ -789,6 +793,7 @@ var groupData = {
   friends: {
     name:'College Crew', members:12,
     pin:'Pesach trip planning starts now!',
+    tabLabels:['Feed','Events','Sponsors','Photos','Me'],
     categories:['All','Hangouts','Trips','Updates','Photos'],
     discussions:[
       {id:401,author:'Jake M.',initials:'JM',avBg:'#EAF3DE',avColor:'#27500A',cat:'Trips',catBg:'#E6F1FB',catColor:'#0C447C',time:'3h',body:'So who\'s actually in for the Pesach trip? Need a headcount by next week to book the house. Thinking Scottsdale or Miami.',link:null,replies:[{author:'Benny S.',text:'I\'m in! Scottsdale gets my vote.'},{author:'Tali R.',text:'Miami please! Way more to do.'},{author:'Yoni F.',text:'Either works for me. Just lock it in!'}]},
@@ -874,23 +879,29 @@ function renderTabContent(name){
 function switchGroup(type){
   currentGroup=type;
   closeModal('groupModal');
-  document.getElementById('topbarName').textContent=G().name;
-  document.getElementById('topbarSub').textContent=G().members+' members';
-  document.getElementById('pinText').textContent=G().pin;
+  var gd=G();
+  document.getElementById('topbarName').textContent=gd.name;
+  document.getElementById('topbarSub').textContent=gd.members+' members';
+  document.getElementById('pinText').textContent=gd.pin;
+
+  // Update nav tab labels
+  var labels=gd.tabLabels||['Feed','Events','Sponsors','Newsletter','Me'];
+  var topBtns=document.querySelectorAll('#topbarNav button');
+  for(var i=0;i<5&&i<topBtns.length;i++) topBtns[i].textContent=labels[i];
+  var navLabels=document.querySelectorAll('.nav-label');
+  for(var i=0;i<5&&i<navLabels.length;i++) navLabels[i].textContent=labels[i];
 
   // reset rendered
   renderedTabs={feed:false,events:false,sponsors:false,newsletter:false,me:false};
   currentFilter='All';
 
   renderFeed();renderedTabs.feed=true;
-  // re-render current tab if not feed
   if(currentTab!=='feed'){
     renderTabContent(currentTab);
     renderedTabs[currentTab]=true;
   }
-  // sidebar
   renderSidebar();
-  toast('Switched to '+G().name);
+  toast('Switched to '+gd.name);
 }
 
 /* ── category filter ── */
