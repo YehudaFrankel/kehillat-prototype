@@ -655,7 +655,10 @@ input,textarea{font-family:inherit;border:none;outline:none}
     </div>
     <div class="modal-body">
       <button class="modal-pill" style="display:block;width:100%;text-align:left;margin-bottom:6px;padding:10px 14px" onclick="switchGroup('shul')">Kehillat Shalom</button>
-      <button class="modal-pill" style="display:block;width:100%;text-align:left;padding:10px 14px" onclick="switchGroup('sports')">Maccabi Mets</button>
+      <button class="modal-pill" style="display:block;width:100%;text-align:left;margin-bottom:6px;padding:10px 14px" onclick="switchGroup('sports')">Maccabi Mets</button>
+      <button class="modal-pill" style="display:block;width:100%;text-align:left;margin-bottom:6px;padding:10px 14px" onclick="switchGroup('learning')">Daf Yomi Chevra</button>
+      <button class="modal-pill" style="display:block;width:100%;text-align:left;margin-bottom:6px;padding:10px 14px" onclick="switchGroup('professional')">Jewish Tech Network</button>
+      <button class="modal-pill" style="display:block;width:100%;text-align:left;padding:10px 14px" onclick="switchGroup('friends')">College Crew</button>
     </div>
   </div>
 </div>
@@ -732,6 +735,75 @@ var groupData = {
     dedications:[
       {id:'sd1',name:'Avi T.',type:'Event sponsorship',honoree:'Season opener BBQ',amount:200},
       {id:'sd2',name:'Danny F.',type:'General gift',honoree:'New jerseys fund',amount:150}
+    ],
+    yahrzeits:[]
+  },
+  learning: {
+    name:'Daf Yomi Chevra', members:18,
+    pin:'Siyum on Maseches Bava Metzia next Thursday',
+    categories:['All','Gemara','Halacha','Mussar','Resources'],
+    discussions:[
+      {id:201,author:'Reb Chaim S.',initials:'CS',avBg:'#FAEEDA',avColor:'#633806',cat:'Gemara',catBg:'#E1F5EE',catColor:'#085041',time:'1h',body:'Today\'s daf had an incredible Tosafos on the sugya of shomer. Anyone want to go through it again tonight?',link:null,replies:[{author:'Eli W.',text:'Count me in. The Rashba there is also worth looking at.'},{author:'Dovid M.',text:'I can join at 9 PM if that works.'}]},
+      {id:202,author:'Eli W.',initials:'EW',avBg:'#E1F5EE',avColor:'#085041',cat:'Halacha',catBg:'#FAEEDA',catColor:'#633806',time:'4h',body:'Quick shaila: if you accidentally skipped a day of daf yomi, is it better to double up the next day or just continue from where you are?',link:null,replies:[{author:'Reb Chaim S.',text:'Most poskim say just continue and make it up when you can.'},{author:'Yaakov R.',text:'Rav Schachter has a great teshuva on this.'},{author:'Dovid M.',text:'I always double up. It keeps the momentum going.'}]},
+      {id:203,author:'Yaakov R.',initials:'YR',avBg:'#E6F1FB',avColor:'#0C447C',cat:'Resources',catBg:'#EEEDFE',catColor:'#3C3489',time:'1d',body:'Found an excellent resource for the upcoming masechta. ArtScroll has a new digital companion with charts and diagrams.',link:{title:'ArtScroll Digital Companion',url:'artscroll.com'},replies:[{author:'Eli W.',text:'This looks really helpful, thanks!'}]},
+      {id:204,author:'Dovid M.',initials:'DM',avBg:'#EEEDFE',avColor:'#3C3489',cat:'Mussar',catBg:'#FAECE7',catColor:'#712B13',time:'2d',body:'The Mesillas Yesharim we covered last week on zerizus really hit home. Been trying to apply it to my morning routine.',link:null,replies:[{author:'Reb Chaim S.',text:'That perek is life-changing when you really internalize it.'},{author:'Yaakov R.',text:'Agreed. Small changes compound over time.'}]}
+    ],
+    events:[
+      {id:'le1',day:'21',mon:'Jan',name:'Daily Daf Shiur',sub:'6:15 AM \u00b7 Beis Medrash',going:true},
+      {id:'le2',day:'30',mon:'Jan',name:'Siyum Bava Metzia',sub:'7:30 PM \u00b7 Main hall \u00b7 Seudah to follow',going:false},
+      {id:'le3',day:'5',mon:'Feb',name:'Guest Speaker: Rav Dovid Cohen',sub:'8:00 PM \u00b7 Beis Medrash',going:false}
+    ],
+    newsletters:[
+      {id:'ln1',date:'Jan 12, 2026',label:'Weekly Learning Recap',title:'Bava Metzia 87-93',excerpt:'Key sugyos covered this week: hashavas aveidah cases, shomer obligations, and the famous machlokes Rashi-Tosafos.',chips:[{text:'7 dafim',bg:'#E6F1FB',color:'#0C447C'},{text:'Siyum in 18 days',bg:'#EAF3DE',color:'#27500A'}],body:'<p>This week we covered some of the most practical sugyos in Bava Metzia. The discussion on shomer chinam vs. shomer sachar has direct halachic implications.</p><p>Reminder: the siyum is in 18 days. Please RSVP so we can plan the seudah.</p>'},
+      {id:'ln2',date:'Jan 5, 2026',label:'Weekly Learning Recap',title:'Bava Metzia 80-86',excerpt:'Hilchos sechirus, the rights of workers, and a deep dive into the Rambam\'s shita.',chips:[{text:'7 dafim',bg:'#E6F1FB',color:'#0C447C'}],body:'<p>A packed week of learning. The sugya on po\'alim and their rights generated excellent discussion at the shiur.</p>'}
+    ],
+    dedications:[
+      {id:'ld1',name:'Eli W.',type:'Siyum sponsorship',honoree:'Siyum Bava Metzia seudah',amount:250}
+    ],
+    yahrzeits:[]
+  },
+  professional: {
+    name:'Jewish Tech Network', members:45,
+    pin:'Networking dinner Feb 6 \u2014 RSVP open',
+    categories:['All','Jobs','Mentorship','Industry','Social'],
+    discussions:[
+      {id:301,author:'Ari G.',initials:'AG',avBg:'#E6F1FB',avColor:'#0C447C',cat:'Jobs',catBg:'#E1F5EE',catColor:'#085041',time:'2h',body:'My company is hiring a senior full-stack developer. Remote-friendly, competitive salary. DM me if interested or if you know someone.',link:{title:'Senior Full-Stack Developer',url:'jewishtech.jobs'},replies:[{author:'Shira L.',text:'Just shared with a few people in my network.'},{author:'Noam B.',text:'What\'s the tech stack? React + Node?'},{author:'Ari G.',text:'Yes, React/Next.js frontend, Node + PostgreSQL backend.'}]},
+      {id:302,author:'Shira L.',initials:'SL',avBg:'#FAECE7',avColor:'#712B13',cat:'Mentorship',catBg:'#FAEEDA',catColor:'#633806',time:'5h',body:'Looking for a mentor in product management. I have 3 years of dev experience and want to transition. Anyone willing to chat?',link:null,replies:[{author:'Dov K.',text:'Happy to chat. I made that transition 5 years ago.'},{author:'Noam B.',text:'Also recommend the Reforge PM course \u2014 really solid.'}]},
+      {id:303,author:'Dov K.',initials:'DK',avBg:'#EAF3DE',avColor:'#27500A',cat:'Industry',catBg:'#EEEDFE',catColor:'#3C3489',time:'1d',body:'Interesting thread on AI regulation in the EU. This will definitely impact how we build products going forward. Worth keeping an eye on.',link:{title:'EU AI Act: What developers need to know',url:'techcrunch.com'},replies:[{author:'Ari G.',text:'Already seeing clients ask about compliance.'},{author:'Shira L.',text:'The classification system is going to be a headache.'}]},
+      {id:304,author:'Noam B.',initials:'NB',avBg:'#FAEEDA',avColor:'#633806',cat:'Social',catBg:'#FAECE7',catColor:'#712B13',time:'2d',body:'Had a great time at last month\'s meetup. Really valuable connections. Who\'s coming to the February dinner?',link:null,replies:[{author:'Dov K.',text:'Wouldn\'t miss it!'},{author:'Ari G.',text:'I\'ll be there. Bringing a colleague too if that\'s OK.'}]}
+    ],
+    events:[
+      {id:'pe1',day:'6',mon:'Feb',name:'Networking Dinner',sub:'7:00 PM \u00b7 Clubhouse Restaurant',going:false},
+      {id:'pe2',day:'13',mon:'Feb',name:'Lunch & Learn: AI in Fintech',sub:'12:30 PM \u00b7 WeWork Midtown',going:false},
+      {id:'pe3',day:'27',mon:'Feb',name:'Hackathon: Build for Good',sub:'10:00 AM \u2013 6:00 PM \u00b7 JCC Tech Hub',going:true}
+    ],
+    newsletters:[
+      {id:'pn1',date:'Jan 15, 2026',label:'Industry Roundup',title:'January tech digest',excerpt:'Top job postings, upcoming events, member spotlight, and industry trends from the Jewish tech world.',chips:[{text:'8 jobs',bg:'#E6F1FB',color:'#0C447C'},{text:'3 events',bg:'#EAF3DE',color:'#27500A'},{text:'45 members',bg:'#FAEEDA',color:'#633806'}],body:'<p>Welcome to the January roundup! This month we have 8 new job postings from member companies, including roles at startups and enterprise firms.</p><p>Member spotlight: Shira L. successfully transitioned from engineering to product management. Read her story inside.</p>'},
+      {id:'pn2',date:'Dec 15, 2025',label:'Industry Roundup',title:'Year in review',excerpt:'2025 highlights: 12 members placed in new roles, 6 meetups hosted, and the community grew by 40%.',chips:[{text:'12 placements',bg:'#E6F1FB',color:'#0C447C'},{text:'40% growth',bg:'#EAF3DE',color:'#27500A'}],body:'<p>What a year! The Jewish Tech Network grew from 32 to 45 members. We hosted 6 in-person meetups and facilitated 12 successful job placements.</p><p>Looking ahead to 2026: more events, a mentorship program launch, and our first hackathon.</p>'}
+    ],
+    dedications:[
+      {id:'pd1',name:'Dov K.',type:'Event sponsorship',honoree:'February networking dinner',amount:500}
+    ],
+    yahrzeits:[]
+  },
+  friends: {
+    name:'College Crew', members:12,
+    pin:'Pesach trip planning starts now!',
+    categories:['All','Hangouts','Trips','Updates','Photos'],
+    discussions:[
+      {id:401,author:'Jake M.',initials:'JM',avBg:'#EAF3DE',avColor:'#27500A',cat:'Trips',catBg:'#E6F1FB',catColor:'#0C447C',time:'3h',body:'So who\'s actually in for the Pesach trip? Need a headcount by next week to book the house. Thinking Scottsdale or Miami.',link:null,replies:[{author:'Benny S.',text:'I\'m in! Scottsdale gets my vote.'},{author:'Tali R.',text:'Miami please! Way more to do.'},{author:'Yoni F.',text:'Either works for me. Just lock it in!'}]},
+      {id:402,author:'Benny S.',initials:'BS',avBg:'#FAEEDA',avColor:'#633806',cat:'Hangouts',catBg:'#E1F5EE',catColor:'#085041',time:'1d',body:'Dinner this Thursday? That new steakhouse on Main Street has great reviews. Thinking 8 PM.',link:null,replies:[{author:'Jake M.',text:'Down! Reserve for 6?'},{author:'Tali R.',text:'Can\'t make Thursday but have fun!'}]},
+      {id:403,author:'Tali R.',initials:'TR',avBg:'#FAECE7',avColor:'#712B13',cat:'Updates',catBg:'#FAEEDA',catColor:'#633806',time:'3d',body:'Big news \u2014 just got engaged! Will share more details soon but wanted you guys to be the first to know.',link:null,replies:[{author:'Jake M.',text:'MAZAL TOV!! So happy for you!'},{author:'Benny S.',text:'Amazing news!! When\'s the party?'},{author:'Yoni F.',text:'Incredible! Mazal tov to both of you!'},{author:'Dani L.',text:'Best news ever! L\'chaim!!'}]}
+    ],
+    events:[
+      {id:'fe1',day:'20',mon:'Jan',name:'Group Dinner',sub:'8:00 PM \u00b7 Main Street Steakhouse',going:false},
+      {id:'fe2',day:'14',mon:'Apr',name:'Pesach Trip',sub:'Scottsdale or Miami \u00b7 TBD',going:false}
+    ],
+    newsletters:[
+      {id:'fn1',date:'Jan 1, 2026',label:'Monthly Roundup',title:'January crew update',excerpt:'Birthdays, group dinner recap, Pesach trip planning, and Tali\'s big news!',chips:[{text:'2 birthdays',bg:'#FAEEDA',color:'#633806'},{text:'1 engagement',bg:'#FAECE7',color:'#712B13'}],body:'<p>Happy new year, crew! December was packed \u2014 the group dinner at Izzy\'s was a blast (even if Jake showed up 45 minutes late).</p><p>Huge mazal tov to Tali on her engagement! Planning a group l\'chaim soon.</p><p>Pesach trip poll is live \u2014 vote by Jan 15.</p>'}
+    ],
+    dedications:[
+      {id:'fd1',name:'The Crew',type:'Group gift',honoree:'Tali\'s engagement',amount:360}
     ],
     yahrzeits:[]
   }
@@ -1056,7 +1128,13 @@ function submitPost(){
     'Community':{bg:'#EEEDFE',c:'#3C3489'},'Politics':{bg:'#FAECE7',c:'#712B13'},
     'Game day':{bg:'#FAEEDA',c:'#633806'},'Training':{bg:'#E1F5EE',c:'#085041'},
     'Off-field':{bg:'#EEEDFE',c:'#3C3489'},'Highlights':{bg:'#E6F1FB',c:'#0C447C'},
-    'Sponsored':{bg:'#EAF3DE',c:'#27500A'}
+    'Sponsored':{bg:'#EAF3DE',c:'#27500A'},
+    'Gemara':{bg:'#E1F5EE',c:'#085041'},'Halacha':{bg:'#FAEEDA',c:'#633806'},
+    'Mussar':{bg:'#FAECE7',c:'#712B13'},'Resources':{bg:'#EEEDFE',c:'#3C3489'},
+    'Jobs':{bg:'#E1F5EE',c:'#085041'},'Mentorship':{bg:'#FAEEDA',c:'#633806'},
+    'Industry':{bg:'#EEEDFE',c:'#3C3489'},'Social':{bg:'#FAECE7',c:'#712B13'},
+    'Hangouts':{bg:'#E1F5EE',c:'#085041'},'Trips':{bg:'#E6F1FB',c:'#0C447C'},
+    'Updates':{bg:'#FAEEDA',c:'#633806'},'Photos':{bg:'#EEEDFE',c:'#3C3489'}
   };
   var cc=catColors[selectedPostCat]||{bg:'#EEEDFE',c:'#3C3489'};
   G().discussions.unshift({

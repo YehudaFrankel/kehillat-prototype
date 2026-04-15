@@ -805,9 +805,13 @@ body {
     <button class="topbar-nav-btn" onclick="switchBottomTab('sponsors')">Sponsors</button>
     <button class="topbar-nav-btn" onclick="switchBottomTab('aliyos')">Aliyos</button>
     <button class="topbar-nav-btn" onclick="switchBottomTab('members')">Members<span class="topbar-nav-dot"></span></button>
+    <button class="topbar-nav-btn" onclick="openModal('groupSwitcherModal')" style="margin-left:4px;font-size:12px;">Switch group</button>
     <div class="topbar-avatar" style="margin-left:8px;">DL</div>
   </div>
-  <div class="topbar-avatar" id="mobileAvatar" style="display:flex;">DL</div>
+  <div style="display:flex;align-items:center;gap:6px;">
+    <button class="topbar-nav-btn" id="mobileSwitchBtn" onclick="openModal('groupSwitcherModal')" style="font-size:11px;padding:5px 10px;">Switch</button>
+    <div class="topbar-avatar" id="mobileAvatar" style="display:flex;">DL</div>
+  </div>
 </div>
 
 <!-- METRICS BAR (desktop only) -->
@@ -1140,6 +1144,35 @@ David Levine</textarea>
   </div>
 </div>
 
+<!-- GROUP SWITCHER MODAL -->
+<div class="modal-overlay" id="groupSwitcherModal">
+  <div class="modal-box" style="max-width:380px;">
+    <div class="modal-title">Switch group <span style="flex:1;"></span><button class="modal-close" onclick="closeModal('groupSwitcherModal')">&times;</button></div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <button onclick="switchAdminGroup('shul');closeModal('groupSwitcherModal');" class="group-switch-btn" style="display:flex;align-items:center;gap:10px;width:100%;padding:12px 14px;border:1px solid #e8e6de;border-radius:8px;background:#fff;cursor:pointer;text-align:left;font-family:inherit;font-size:14px;font-weight:500;color:#1a1a18;transition:background .15s;">
+        <span style="width:32px;height:32px;border-radius:50%;background:#534AB7;color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">KS</span>
+        <span>Kehillat Shalom <span style="font-size:11px;color:#888780;font-weight:400;">&middot; 84 members</span></span>
+      </button>
+      <button onclick="switchAdminGroup('sports');closeModal('groupSwitcherModal');" class="group-switch-btn" style="display:flex;align-items:center;gap:10px;width:100%;padding:12px 14px;border:1px solid #e8e6de;border-radius:8px;background:#fff;cursor:pointer;text-align:left;font-family:inherit;font-size:14px;font-weight:500;color:#1a1a18;transition:background .15s;">
+        <span style="width:32px;height:32px;border-radius:50%;background:#185FA5;color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">ML</span>
+        <span>Maccabee League <span style="font-size:11px;color:#888780;font-weight:400;">&middot; 32 members</span></span>
+      </button>
+      <button onclick="switchAdminGroup('learning');closeModal('groupSwitcherModal');" class="group-switch-btn" style="display:flex;align-items:center;gap:10px;width:100%;padding:12px 14px;border:1px solid #e8e6de;border-radius:8px;background:#fff;cursor:pointer;text-align:left;font-family:inherit;font-size:14px;font-weight:500;color:#1a1a18;transition:background .15s;">
+        <span style="width:32px;height:32px;border-radius:50%;background:#085041;color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">DY</span>
+        <span>Daf Yomi Chevra <span style="font-size:11px;color:#888780;font-weight:400;">&middot; 18 members</span></span>
+      </button>
+      <button onclick="switchAdminGroup('professional');closeModal('groupSwitcherModal');" class="group-switch-btn" style="display:flex;align-items:center;gap:10px;width:100%;padding:12px 14px;border:1px solid #e8e6de;border-radius:8px;background:#fff;cursor:pointer;text-align:left;font-family:inherit;font-size:14px;font-weight:500;color:#1a1a18;transition:background .15s;">
+        <span style="width:32px;height:32px;border-radius:50%;background:#854F0B;color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">JT</span>
+        <span>Jewish Tech Network <span style="font-size:11px;color:#888780;font-weight:400;">&middot; 45 members</span></span>
+      </button>
+      <button onclick="switchAdminGroup('friends');closeModal('groupSwitcherModal');" class="group-switch-btn" style="display:flex;align-items:center;gap:10px;width:100%;padding:12px 14px;border:1px solid #e8e6de;border-radius:8px;background:#fff;cursor:pointer;text-align:left;font-family:inherit;font-size:14px;font-weight:500;color:#1a1a18;transition:background .15s;">
+        <span style="width:32px;height:32px;border-radius:50%;background:#712B13;color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">CC</span>
+        <span>College Crew <span style="font-size:11px;color:#888780;font-weight:400;">&middot; 12 members</span></span>
+      </button>
+    </div>
+  </div>
+</div>
+
 <script>
 /* ======================================================
    DATA
@@ -1264,6 +1297,137 @@ var adminGroups = {
       title: 'Game day recap',
       chips: ['Team Aleph wins 72-68','Spring registration open','6 new signups'],
       body: '<h3>Game Recap</h3><p>An exciting game this week with Team Aleph edging out Team Bet 72-68. MVP honors go to Jake R. with 24 points.</p><hr><h3>League News</h3><p>Spring season registration is open! We\'re adding a 6th team due to demand. Sign up before February 1.</p>'
+    }
+  },
+  learning: {
+    name: 'Daf Yomi Chevra',
+    members: 18,
+    role: 'organizer',
+    stats: {
+      members: '18', membersChange: '+2 this month',
+      contributions: '$320', contribChange: '+$60 this week',
+      discussions: '6', discChange: '9 replies today',
+      pending: '2', pendingAction: 'Send reminder'
+    },
+    pinText: 'Winter zman schedule updated',
+    alertMobile: 'Need a maggid shiur for next week',
+    alertDesktop: 'Need a maggid shiur for next week \u2014 Rabbi Weiss is unavailable',
+    alertBtnMobile: 'Act',
+    alertBtnDesktop: 'Ask backup maggidei shiur',
+    discussions: [
+      { id: 301, author: 'Rabbi Goldstein', time: '2h ago', cat: 'torah', body: 'Today\'s daf (Bava Metzia 38b) raises a fascinating question about the responsibilities of a shomer. The Rashba\'s approach differs significantly from Tosafot \u2014 worth reviewing both before tomorrow\'s shiur.', replies: [{author:'Yossi M.',text:'The Rashba\'s logic here is really compelling. Can we spend extra time on it tomorrow?'}], pinned: true },
+      { id: 302, author: 'Avi Schwartz', time: '6h ago', cat: 'community', body: 'Looking for a chavrusa for the afternoon seder, Sunday through Thursday 2\u20133pm. Currently learning Mesechet Gittin. Willing to adjust to a different masechta if needed.', replies: [{author:'Dov K.',text:'I\'m interested \u2014 I\'ve been wanting to start Gittin. Let\'s talk after tomorrow\'s shiur.'}], pinned: false },
+      { id: 303, author: 'Shmuel Berger', time: '1d ago', cat: 'events', body: 'Siyum planning update: we\'re finishing Mesechet Bava Metzia in approximately 3 weeks. Looking for someone to sponsor the siyum seudah. Please reach out if interested!', replies: [{author:'Eli R.',text:'Mazel tov to everyone! I might be able to help with sponsorship.'}], isEvent: true, noSponsor: true },
+      { id: 304, author: 'Menachem Fine', time: '2d ago', cat: 'current', body: 'Has anyone tried the new Artscroll digital Gemara app? The search feature is incredible for finding parallel sugyos. Would love to hear others\' experiences before I recommend it to the group.', replies: [{author:'Yossi M.',text:'I\'ve been using it for a month \u2014 highly recommend.'},{author:'Avi Schwartz',text:'The cross-references are great but I still prefer the physical volume.'}], pinned: false }
+    ],
+    events: [
+      { name: 'Daily daf shiur', date: 'Dec 16', day: '16', month: 'Dec', confirmed: 14, desc: 'Regular morning daf yomi shiur at 6:15 AM. Currently learning Bava Metzia.' },
+      { name: 'Siyum celebration', date: 'Jan 8', day: '8', month: 'Jan', confirmed: null, noSponsor: true, desc: 'Siyum on Mesechet Bava Metzia. Seudah to follow. Sponsor needed.' },
+      { name: 'Guest lecturer', date: 'Jan 15', day: '15', month: 'Jan', confirmed: 12, desc: 'Special shiur by Rav Asher Weiss on contemporary halachic applications of Bava Metzia.' }
+    ],
+    aliyahData: [],
+    dedications: [
+      { type: 'Siyum sponsorship', from: 'Schwartz Family', text: 'In honor of the chevra completing Bava Metzia together', amount: '$200', date: 'Jan 8' }
+    ],
+    memberRequests: [
+      { id: 301, name: 'Dovid Lerner', date: 'Dec 13' }
+    ],
+    attentionItems: [
+      { label: 'Need maggid shiur for next week', sub: 'Rabbi Weiss unavailable Dec 23\u201327', btnText: 'Ask backup list', color: 'red', action: 'sponsorModal' },
+      { label: 'Siyum needs sponsor', sub: 'Jan 8 \u2014 3 weeks away', btnText: 'Send request', color: 'amber', action: 'sponsorModal' },
+      { label: '2 dues pending', sub: 'Winter zman fees', btnText: 'Send reminder', color: 'purple', action: 'reminderModal' }
+    ],
+    newsletter: {
+      label: 'Dec 15 \u2014 Weekly Learning Recap',
+      title: 'Weekly learning recap',
+      chips: ['5 dafim completed','Siyum in 3 weeks','New chavrusa match','14 avg attendance'],
+      body: '<h3>This Week\'s Learning</h3><p>We covered Bava Metzia dafim 34\u201338 this week. Rabbi Goldstein highlighted the sugya on shomer responsibilities which generated excellent discussion. Average attendance was 14 members per shiur.</p><hr><h3>Chavrusa Board</h3><p>Avi Schwartz is looking for an afternoon chavrusa for Gittin \u2014 reach out if interested. Dov K. has already expressed interest.</p><hr><h3>Upcoming</h3><p>Siyum on Bava Metzia estimated for January 8. We still need a sponsor for the seudah. Guest shiur by Rav Asher Weiss on January 15.</p>'
+    }
+  },
+  professional: {
+    name: 'Jewish Tech Network',
+    members: 45,
+    role: 'organizer',
+    stats: {
+      members: '45', membersChange: '+7 this month',
+      contributions: '$1,800', contribChange: '+$350 this week',
+      discussions: '5', discChange: '18 replies today',
+      pending: '4', pendingAction: 'Send reminder'
+    },
+    pinText: 'Annual networking dinner registration open',
+    alertMobile: 'Keynote speaker confirmation needed',
+    alertDesktop: 'Keynote speaker confirmation needed \u2014 dinner is in 2 weeks',
+    alertBtnMobile: 'Act',
+    alertBtnDesktop: 'Follow up with speaker',
+    discussions: [
+      { id: 401, author: 'Rachel Stein', time: '3h ago', cat: 'community', body: 'Just heard back from the CTO at Fivetran \u2014 she\'s interested in speaking at our annual dinner but needs confirmation by Friday. Her topic would be "Building Inclusive Engineering Teams." Should we lock it in?', replies: [{author:'Avi L.',text:'Absolutely \u2014 that\'s a great topic and a big name.'},{author:'Moshe D.',text:'Let\'s confirm ASAP before she gets another offer.'}], pinned: true },
+      { id: 402, author: 'Josh Freedman', time: '8h ago', cat: 'current', body: 'Hiring alert: my company (Series B fintech) is looking for a senior backend engineer. Remote-friendly, competitive comp. DM me for details. Would love to hire from within the network!', replies: [{author:'Dani K.',text:'Sending you a DM \u2014 I know someone perfect for this.'}], pinned: false },
+      { id: 403, author: 'Tamar Levy', time: '1d ago', cat: 'community', body: 'Starting a mentorship program for junior devs in the network. If you\'re a senior engineer or manager willing to meet monthly with a mentee, please sign up. We already have 8 mentees waiting.', replies: [{author:'Ben G.',text:'Love this idea. Count me in as a mentor.'},{author:'Sarah W.',text:'Can product managers participate too?'}], pinned: false },
+      { id: 404, author: 'Network Update', time: '3d ago', cat: 'events', body: 'Lunch & Learn next Thursday: "From Side Project to Startup" with Ari Katz, founder of DataSync. He\'ll share how he went from a weekend hack to a $20M company. RSVP required \u2014 space limited to 30.', replies: [{author:'Moshe D.',text:'Already RSVP\'d. Ari\'s story is incredible.'}], isEvent: true }
+    ],
+    events: [
+      { name: 'Annual networking dinner', date: 'Jan 9', day: '9', month: 'Jan', confirmed: 38, desc: 'Keynote speaker TBD. Cocktail hour at 6:30 PM, dinner at 7:30 PM. Business casual.' },
+      { name: 'Lunch & Learn', date: 'Dec 26', day: '26', month: 'Dec', confirmed: 22, desc: '"From Side Project to Startup" with Ari Katz, founder of DataSync.' },
+      { name: 'Tech Talk Tuesday', date: 'Jan 7', day: '7', month: 'Jan', confirmed: 15, desc: 'Lightning talks \u2014 5 speakers, 10 minutes each. Topic: AI in production.' }
+    ],
+    aliyahData: [],
+    dedications: [
+      { type: 'Dinner sponsor', from: 'Freedman Ventures', text: 'Proud to support the Jewish Tech Network annual dinner', amount: '$500', date: 'Jan 9' }
+    ],
+    memberRequests: [
+      { id: 401, name: 'Ilana Rubin', date: 'Dec 11' },
+      { id: 402, name: 'Ezra Novak', date: 'Dec 14' }
+    ],
+    attentionItems: [
+      { label: 'Keynote speaker unconfirmed', sub: 'Dinner is Jan 9 \u2014 2 weeks away', btnText: 'Follow up', color: 'red', action: 'sponsorModal' },
+      { label: '4 membership dues pending', sub: 'Annual renewal', btnText: 'Send reminder', color: 'amber', action: 'reminderModal' },
+      { label: '2 member requests', sub: 'Waiting since Dec 11', btnText: 'Review requests', color: 'purple', action: 'requestsModal' }
+    ],
+    newsletter: {
+      label: 'Dec 18 \u2014 Industry Updates',
+      title: 'Network pulse',
+      chips: ['45 members strong','Annual dinner Jan 9','3 job postings','Mentorship launching'],
+      body: '<h3>Industry Corner</h3><p>Exciting week in tech \u2014 three members shared job openings within the network. Josh Freedman\'s fintech is hiring senior backend engineers, and two other startups are looking for product and design talent.</p><hr><h3>Mentorship Program</h3><p>Tamar Levy is launching a mentorship program pairing senior engineers with junior devs. 8 mentees are already signed up. If you\'re a senior IC or manager willing to meet monthly, sign up on the network board.</p><hr><h3>Upcoming Events</h3><p>Lunch & Learn on Dec 26 with Ari Katz. Annual networking dinner on January 9 \u2014 keynote speaker pending confirmation. Tech Talk Tuesday returns January 7.</p>'
+    }
+  },
+  friends: {
+    name: 'College Crew',
+    members: 12,
+    role: 'organizer',
+    stats: {
+      members: '12', membersChange: '+0 this month',
+      contributions: '$180', contribChange: '+$30 this week',
+      discussions: '3', discChange: '5 replies today',
+      pending: '0', pendingAction: 'None'
+    },
+    pinText: 'Group trip planning \u2014 vote on destination',
+    alertMobile: 'Trip deposit deadline this Friday',
+    alertDesktop: 'Trip deposit deadline this Friday \u2014 4 people haven\'t paid yet',
+    alertBtnMobile: 'Act',
+    alertBtnDesktop: 'Remind unpaid members',
+    discussions: [
+      { id: 501, author: 'Jake Rosen', time: '4h ago', cat: 'events', body: 'Trip destination poll results so far: Miami (5 votes), Cancun (4 votes), Austin (3 votes). Voting closes Thursday night. Deposit of $150 per person is due Friday regardless of destination. Let\'s lock this in!', replies: [{author:'Benny S.',text:'Switching my vote to Miami \u2014 more kosher food options.'},{author:'Dani W.',text:'Austin would be amazing but I\'m good with whatever the group picks.'}], pinned: true, isEvent: true },
+      { id: 502, author: 'Ari Levin', time: '1d ago', cat: 'community', body: 'Who\'s free for dinner this Thursday? Thinking that new sushi place on Main Street. Last time we went the omakase was incredible. Need a headcount by tomorrow so I can make a reservation.', replies: [{author:'Jake Rosen',text:'I\'m in. 7:30 works for me.'}], pinned: false },
+      { id: 503, author: 'Benny Stern', time: '3d ago', cat: 'current', body: 'Can\'t believe it\'s been 5 years since graduation. We should do something special for the anniversary \u2014 maybe a reunion weekend? Open to ideas from everyone.', replies: [{author:'Dani W.',text:'Love this idea. Maybe combine it with the trip?'},{author:'Ari Levin',text:'A reunion weekend would be epic. Let\'s plan it for spring.'}], pinned: false }
+    ],
+    events: [
+      { name: 'Thursday dinner', date: 'Dec 19', day: '19', month: 'Dec', confirmed: 7, desc: 'Dinner at Sakura Sushi on Main Street. Reservation for 8 at 7:30 PM.' },
+      { name: 'Group trip', date: 'Feb 14', day: '14', month: 'Feb', confirmed: 8, desc: 'Destination TBD \u2014 voting in progress. Deposit due Dec 20.' }
+    ],
+    aliyahData: [],
+    dedications: [
+      { type: 'Birthday gift', from: 'The Crew', text: 'Happy 27th birthday Dani! Here\'s to another great year.', amount: '$120', date: 'Dec 22' }
+    ],
+    memberRequests: [],
+    attentionItems: [
+      { label: 'Trip deposit due Friday', sub: '4 members unpaid', btnText: 'Remind unpaid', color: 'red', action: 'reminderModal' },
+      { label: 'Destination vote closing', sub: 'Thursday night', btnText: 'Send final reminder', color: 'amber', action: 'reminderModal' }
+    ],
+    newsletter: {
+      label: 'Dec 14 \u2014 Monthly Roundup',
+      title: 'Crew update',
+      chips: ['Trip vote open','Thursday dinner','5-year reunion idea','12 strong'],
+      body: '<h3>Trip Planning</h3><p>We\'re finally doing it! Group trip voting is live \u2014 Miami, Cancun, and Austin are the finalists. Vote by Thursday night and get your $150 deposit in by Friday. 8 of 12 members have confirmed so far.</p><hr><h3>Catching Up</h3><p>Great dinner last week at Bistro 88 \u2014 9 of us made it out. Benny floated the idea of a 5-year reunion weekend this spring. Let\'s keep the momentum going.</p><hr><h3>Birthdays</h3><p>Happy birthday to Dani W. on December 22! Group gift collection is open \u2014 Venmo Ari by Thursday.</p>'
     }
   }
 };
