@@ -764,7 +764,7 @@ body {
 @media (min-width: 850px) {
   .topbar { padding: 0 24px; }
   .topbar-nav { display: flex; }
-  .bottom-nav { max-width: 1200px; left: 50%; transform: translateX(-50%); }
+  .bottom-nav { display: none; }
   .compose-bar {
     position: static;
     border-top: none;
@@ -1200,6 +1200,7 @@ var adminGroups = {
     name: 'Kehillat Shalom',
     members: 84,
     role: 'organizer',
+    tabLabels: ['Feed','Events','Sponsors','Aliyos','Members'],
     stats: {
       members: '84', membersChange: '+3 this month',
       contributions: '$2,340', contribChange: '+$480 this week',
@@ -1258,6 +1259,7 @@ var adminGroups = {
     name: 'Maccabee League',
     members: 32,
     role: 'organizer',
+    tabLabels: ['Feed','Events','Sponsors','Stats','Roster'],
     stats: {
       members: '32', membersChange: '+5 this month',
       contributions: '$840', contribChange: '+$120 this week',
@@ -1303,6 +1305,7 @@ var adminGroups = {
     name: 'Daf Yomi Chevra',
     members: 18,
     role: 'organizer',
+    tabLabels: ['Feed','Events','Sponsors','Resources','Members'],
     stats: {
       members: '18', membersChange: '+2 this month',
       contributions: '$320', contribChange: '+$60 this week',
@@ -1348,6 +1351,7 @@ var adminGroups = {
     name: 'Jewish Tech Network',
     members: 45,
     role: 'organizer',
+    tabLabels: ['Feed','Events','Sponsors','Directory','Resources'],
     stats: {
       members: '45', membersChange: '+7 this month',
       contributions: '$1,800', contribChange: '+$350 this week',
@@ -1394,6 +1398,7 @@ var adminGroups = {
     name: 'College Crew',
     members: 12,
     role: 'organizer',
+    tabLabels: ['Feed','Events','Sponsors','Photos','Members'],
     stats: {
       members: '12', membersChange: '+0 this month',
       contributions: '$180', contribChange: '+$30 this week',
@@ -1472,6 +1477,20 @@ function switchAdminGroup(type) {
   document.getElementById('metDisc').textContent = gd.stats.discussions;
   document.getElementById('metDiscChange').textContent = gd.stats.discChange;
   document.getElementById('metPending').textContent = gd.stats.pending;
+
+  // Update nav tab labels
+  var labels = gd.tabLabels || ['Feed','Events','Sponsors','Aliyos','Members'];
+  var dbtns = document.querySelectorAll('.topbar-nav-btn');
+  for (var i = 0; i < 5 && i < dbtns.length; i++) {
+    var hasDot = dbtns[i].querySelector('.topbar-nav-dot');
+    dbtns[i].textContent = labels[i];
+    if (hasDot) dbtns[i].appendChild(hasDot);
+  }
+  var bbtns = document.querySelectorAll('.bottom-nav-btn');
+  for (var i = 0; i < 5 && i < bbtns.length; i++) {
+    var spans = bbtns[i].querySelectorAll('span');
+    if (spans.length > 0) spans[spans.length - 1].textContent = labels[i];
+  }
 
   renderSidebarAttention();
   renderSidebarComing();
