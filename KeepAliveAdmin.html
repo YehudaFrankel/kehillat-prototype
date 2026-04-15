@@ -1603,7 +1603,19 @@ function renderDiscussions() {
     html += '<div class="feed-body">' + esc(d.body) + '</div>';
 
     if (d.isNewsletter) {
-      html += '<div class="nl-badge" onclick="openNewsletterModal()">Tap to review and send</div>';
+      var nl = g().newsletter;
+      html += '<div style="background:#EEEDFE;border-radius:10px;padding:12px 14px;margin-bottom:8px;cursor:pointer;" onclick="openNewsletterModal()">';
+      html += '<div style="font-size:11px;color:#534AB7;font-weight:600;margin-bottom:3px;">' + esc(nl.label) + '</div>';
+      html += '<div style="font-size:15px;font-weight:600;color:#26215C;margin-bottom:4px;">' + esc(nl.title) + ' &mdash; ready to review</div>';
+      if (nl.chips && nl.chips.length) {
+        html += '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px;">';
+        for (var c = 0; c < nl.chips.length; c++) {
+          html += '<span style="font-size:10px;font-weight:600;padding:3px 8px;border-radius:20px;background:#534AB7;color:#EEEDFE;">' + esc(nl.chips[c]) + '</span>';
+        }
+        html += '</div>';
+      }
+      html += '<div style="font-size:10px;font-weight:600;color:#534AB7;">Tap to review and send</div>';
+      html += '</div>';
     }
     if (d.isEvent && d.noSponsor) {
       html += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">';
