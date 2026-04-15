@@ -60,7 +60,25 @@ body {
 .header {
   background: #6B5CE7;
   border-bottom: none;
-  padding: 24px 40px 0;
+  padding: 14px 16px;
+}
+.header-slim {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.header-subtitle {
+  font-size: 12px;
+  color: rgba(255,255,255,.7);
+  margin-top: 1px;
+}
+.header-expanded { display: none; }
+.stats-row { display: none; }
+@media(min-width:961px){
+  .header { padding: 24px 40px 0; }
+  .header-expanded { display: block; }
+  .stats-row { display: flex; }
+  .header-slim .header-title { font-size: 28px; }
 }
 .header-top {
   display: flex;
@@ -999,17 +1017,19 @@ table.aliyah-table {
 
 <!-- ── Header ──────────────────────────────────────── -->
 <div class="header">
-  <div class="header-label" id="adminLabel">ORGANIZER DASHBOARD</div>
-  <div class="header-top">
+  <div class="header-slim">
     <div>
       <div class="header-title" id="adminGroupName">Kehilat Shalom</div>
-      <select style="font-size:11px;padding:5px 24px 5px 10px;border:1px solid var(--purple-light);border-radius:20px;background:var(--purple-light);color:var(--purple);font-weight:600;cursor:pointer;outline:none;margin-top:4px;appearance:none;-webkit-appearance:none;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%236B5CE7' stroke-width='1.5'/%3E%3C/svg%3E&quot;);background-repeat:no-repeat;background-position:right 8px center;" onchange="switchAdminGroup(this.value)">
-        <option value="shul">Shul / Minyan</option>
-        <option value="sports">Sports Team</option>
-        <option value="learning">Learning Group</option>
-        <option value="chavurah">Chavurah</option>
-      </select>
+      <div class="header-subtitle" id="adminSubtitle">84 members &middot; organizer</div>
     </div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <button onclick="switchAdminGroup(currentAdminGroup==='shul'?'sports':currentAdminGroup==='sports'?'learning':currentAdminGroup==='learning'?'chavurah':'shul')" style="background:rgba(255,255,255,.2);border:none;color:#fff;font-size:11px;padding:5px 12px;border-radius:20px;cursor:pointer;font-family:inherit;">Switch</button>
+      <div style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.2);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;">DL</div>
+    </div>
+  </div>
+  <!-- Desktop-only expanded header -->
+  <div class="header-expanded">
+    <div class="header-label" id="adminLabel">ORGANIZER DASHBOARD</div>
     <div class="header-right">
       <span class="badge-members">84 members</span>
       <button class="btn-new-event" onclick="openModal('newEventModal')">+ New event</button>
