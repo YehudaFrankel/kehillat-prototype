@@ -1307,12 +1307,11 @@ table.aliyah-table {
 
 <!-- ═══ DEDICATIONS VIEW ═══ -->
 <div class="view" id="viewDedications">
-<div class="card">
-  <div class="card-header">
-    <span class="card-title" id="dedCardTitle">Submitted Dedications</span>
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px 8px;">
+    <span style="font-size:18px;font-weight:600;color:var(--text);" id="dedCardTitle">Sponsorships</span>
+    <a class="card-link" onclick="openModal('dedModal')" style="font-size:14px;">+ New</a>
   </div>
   <div id="dedicationsList"></div>
-</div>
 </div>
 
 <!-- ═══ NEWSLETTER VIEW ═══ -->
@@ -2527,13 +2526,24 @@ function renderDedications() {
   var html = '';
   for (var i = 0; i < dedications.length; i++) {
     var d = dedications[i];
-    html += '<div class="dedication-card">';
-    html += '<div class="ded-top"><div><div class="ded-member">' + esc(d.member) + '</div>';
-    html += '<div class="ded-date">' + esc(d.date) + '</div></div>';
-    html += '<span class="status-badge ' + d.status + '">' + (d.status === 'paid' ? 'Paid' : 'Unpaid') + '</span></div>';
-    html += '<div class="ded-text">' + esc(d.text) + '</div>';
+    var statusColor = d.status === 'paid' ? 'var(--green)' : 'var(--amber)';
+    var statusText = d.status === 'paid' ? '\u2714 Paid' : 'Unpaid';
+    html += '<div style="background:var(--white);border-radius:var(--radius-sm);padding:12px 14px;margin:0 8px 8px;box-shadow:0 1px 3px rgba(0,0,0,.06);">';
+    html += '<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:4px;">';
+    html += '<div><div style="font-size:15px;font-weight:600;">' + esc(d.member) + '</div>';
+    html += '<div style="font-size:13px;color:var(--text-muted);">' + esc(d.date) + '</div></div>';
+    html += '<div style="font-size:12px;font-weight:500;color:' + statusColor + ';">' + statusText + '</div>';
+    html += '</div>';
+    html += '<div style="font-size:14px;color:var(--text);line-height:1.4;">' + esc(d.text) + '</div>';
+    if (d.status !== 'paid' && isAdmin()) {
+      html += '<div style="margin-top:6px;">';
+      html += '<button onclick="showToast(\'Bill sent!\')" style="font-size:13px;color:var(--purple);background:none;border:none;cursor:pointer;font-family:inherit;font-weight:500;padding:0;">Send bill</button>';
+      html += ' \u00B7 <button onclick="showToast(\'Marked as paid\')" style="font-size:13px;color:var(--green);background:none;border:none;cursor:pointer;font-family:inherit;font-weight:500;padding:0;">Mark paid</button>';
+      html += '</div>';
+    }
     html += '</div>';
   }
+  if (dedications.length === 0) html = '<div style="padding:16px;text-align:center;color:var(--text-muted);font-size:14px;">No sponsorships yet.</div>';
   el.innerHTML = html;
 }
 
