@@ -486,25 +486,36 @@ body {
   max-height: 240px; object-fit: cover; display: block;
 }
 .post-photo-placeholder {
-  width: 100%; height: 180px; border-radius: var(--radius-sm);
+  width: 100%; height: 160px; border-radius: var(--radius-sm);
   margin: 8px 0; display: flex; align-items: center; justify-content: center;
-  font-size: 14px; color: var(--text-muted);
+  font-size: 13px; color: rgba(0,0,0,.35);
+  background: linear-gradient(135deg, #e8e4df 0%, #d5cfc6 40%, #c9c2b8 100%);
+  position: relative; overflow: hidden;
+}
+.post-photo-placeholder::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,.08) 100%);
 }
 
-/* ── Search bar ──────────────────────────────────── */
-.search-bar {
-  display: none; padding: 8px 14px;
-  background: var(--white); border-bottom: 1px solid var(--border);
-  position: fixed; top: 70px; left: 0; right: 0;
-  max-width: 600px; margin: 0 auto; z-index: 100;
+/* ── Search (inline in topbar) ────────────────────── */
+.search-overlay {
+  display: none; position: fixed; top: 0; left: 0; right: 0;
+  max-width: 600px; margin: 0 auto;
+  background: var(--white); padding: 16px 14px;
+  align-items: center; gap: 8px; z-index: 102;
+  border-bottom: 1px solid var(--border);
 }
-.search-bar.open { display: block; }
+.search-overlay.open { display: flex; }
 .search-input {
-  width: 100%; font-size: 15px; padding: 10px 14px;
+  flex: 1; font-size: 16px; padding: 8px 14px;
   border: 1.5px solid var(--border); border-radius: 24px;
   font-family: inherit; outline: none; background: var(--bg);
 }
 .search-input:focus { border-color: var(--purple); }
+.search-close {
+  font-size: 18px; background: none; border: none;
+  cursor: pointer; color: var(--text-muted); padding: 4px;
+}
 
 /* ── Quick actions (above compose) ────────────────── */
 .quick-actions {
@@ -1297,11 +1308,11 @@ table.aliyah-table {
     <button onclick="toggleSearch()" style="font-size:18px;background:none;border:none;cursor:pointer;color:var(--text-muted);padding:4px;">&#128269;</button>
     <div class="av" id="adminAvatar" onclick="toggleSidebar()" style="cursor:pointer;">DL</div>
   </div>
-</div>
-
-<!-- Search bar -->
-<div class="search-bar" id="searchBar">
-  <input class="search-input" id="searchInput" type="text" placeholder="Search posts..." oninput="searchPosts(this.value)" />
+  <!-- Search overlay (inside topbar) -->
+  <div class="search-overlay" id="searchOverlay">
+    <input class="search-input" id="searchInput" type="text" placeholder="Search posts..." oninput="searchPosts(this.value)" />
+    <button class="search-close" onclick="toggleSearch()">&times;</button>
+  </div>
 </div>
 
 
@@ -2238,9 +2249,9 @@ function pickAliyahMember(name) {
 
 /* ── Search ───────────────────────────────────────── */
 function toggleSearch() {
-  var bar = document.getElementById('searchBar');
-  bar.classList.toggle('open');
-  if (bar.classList.contains('open')) {
+  var overlay = document.getElementById('searchOverlay');
+  overlay.classList.toggle('open');
+  if (overlay.classList.contains('open')) {
     document.getElementById('searchInput').focus();
   } else {
     document.getElementById('searchInput').value = '';
@@ -2452,7 +2463,7 @@ function renderDiscussions() {
     html += '<div class="discussion-body">' + esc(d.body) + '</div>';
 
     if (d.photo) {
-      html += '<div class="post-photo-placeholder" style="background:' + d.photo + ';margin-left:50px;">';
+      html += '<div class="post-photo-placeholder" style="margin-left:50px;">';
       html += '&#128247; ' + esc(d.photoLabel || 'Photo');
       html += '</div>';
     }
