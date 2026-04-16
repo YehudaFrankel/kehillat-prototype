@@ -336,18 +336,21 @@ body {
 }
 .org-menu button:hover { background: var(--bg); }
 .disc-btn {
-  font-size: 12px;
-  font-weight: 500;
+  font-size: 13px;
+  font-weight: 600;
   cursor: pointer;
   transition: all .15s;
   font-family: inherit;
-}
-.disc-btn.reply-btn {
   border: none;
   background: none;
-  color: var(--green-dark);
-  padding: 2px 0;
-  font-size: 12px;
+  padding: 6px 16px;
+  border-radius: 20px;
+}
+.disc-btn.reply-btn {
+  background: var(--purple-light);
+  color: var(--purple);
+  padding: 6px 16px;
+  font-size: 13px;
 }
 .disc-btn.reply-btn:hover { border-color: var(--purple); color: var(--purple); }
 .disc-btn.pin-btn {
@@ -2803,24 +2806,27 @@ function renderAliyah() {
   var html = '';
   for (var i = 0; i < aliyahData.length; i++) {
     var a = aliyahData[i];
-    var statusColor = a.status === 'paid' ? 'var(--green)' : a.status === 'unpaid' ? 'var(--amber)' : 'var(--coral)';
+    var statusBg = a.status === 'paid' ? 'var(--green-light)' : a.status === 'unpaid' ? 'var(--amber-light)' : 'var(--coral-light)';
+    var statusFg = a.status === 'paid' ? 'var(--green-dark)' : a.status === 'unpaid' ? 'var(--amber-dark)' : 'var(--coral)';
     var statusText = a.status === 'paid' ? '\u2714 Paid' : a.status === 'unpaid' ? 'Unpaid' : 'Partial \u2014 ' + esc(a.partialNote);
-    html += '<div style="background:var(--white);border-radius:var(--radius-sm);padding:12px 14px;margin:0 8px 8px;box-shadow:0 1px 3px rgba(0,0,0,.06);">';
-    html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">';
-    html += '<div style="display:flex;align-items:center;gap:10px;">';
-    html += '<div style="width:36px;height:36px;border-radius:50%;background:' + a.color + ';color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;">' + esc(a.initials) + '</div>';
-    html += '<div><div style="font-size:15px;font-weight:600;">' + esc(a.member) + '</div>';
-    html += '<div style="font-size:13px;color:var(--text-muted);">' + esc(a.type) + ' \u00B7 ' + esc(a.date) + '</div></div>';
+    html += '<div class="discussion">';
+    html += '<div class="discussion-top">';
+    html += '<div class="avatar" style="background:' + a.color + '">' + esc(a.initials) + '</div>';
+    html += '<div class="discussion-meta" style="flex:1;">';
+    html += '<div class="discussion-meta-row">';
+    html += '<span class="discussion-author">' + esc(a.member) + '</span>';
+    html += '<span style="font-size:15px;font-weight:700;color:var(--text);margin-left:auto;">' + esc(a.amount) + '</span>';
     html += '</div>';
-    html += '<div style="text-align:right;">';
-    html += '<div style="font-size:15px;font-weight:600;">' + esc(a.amount) + '</div>';
-    html += '<div style="font-size:12px;font-weight:500;color:' + statusColor + ';">' + statusText + '</div>';
+    html += '<div class="discussion-meta-row">';
+    html += '<span class="discussion-time">' + esc(a.type) + ' \u00B7 ' + esc(a.date) + '</span>';
+    html += '<span class="cat-badge" style="background:' + statusBg + ';color:' + statusFg + ';margin-left:auto;">' + statusText + '</span>';
+    html += '</div>';
     html += '</div></div>';
-    if (a.dedication) html += '<div style="font-size:13px;color:var(--text-muted);margin-top:2px;margin-left:46px;">' + esc(a.dedication) + '</div>';
+    if (a.dedication) html += '<div class="discussion-body" style="font-style:italic;color:var(--text-muted);">' + esc(a.dedication) + '</div>';
     if (a.status !== 'paid' && isAdmin()) {
-      html += '<div class="discussion-footer" style="margin-left:46px;">';
+      html += '<div class="discussion-footer">';
       html += '<button class="disc-btn reply-btn" onclick="openNotifyMember(\'' + esc(a.member) + '\',\'' + esc(a.amount) + '\')">Notify member</button>';
-      html += '<button class="disc-btn" onclick="markPaid(' + i + ')" style="color:var(--green);">Mark paid</button>';
+      html += '<button class="disc-btn reply-btn" onclick="markPaid(' + i + ')" style="background:var(--green-light);color:var(--green-dark);">Mark paid</button>';
       html += '</div>';
     }
     html += '</div>';
@@ -2852,8 +2858,8 @@ function renderDedications() {
     html += '<div class="discussion-body">' + esc(d.text) + '</div>';
     if (d.status !== 'paid' && isAdmin()) {
       html += '<div class="discussion-footer">';
-      html += '<button class="disc-btn reply-btn" onclick="showToast(\'Notification sent!\')">Notify member</button>';
-      html += '<button class="disc-btn" onclick="showToast(\'Marked as paid\')" style="color:var(--green);">Mark paid</button>';
+      html += '<button class="disc-btn reply-btn" onclick="openNotifyMember(\'' + esc(d.member) + '\',\'sponsorship\')">Notify member</button>';
+      html += '<button class="disc-btn reply-btn" onclick="showToast(\'Marked as paid\')" style="background:var(--green-light);color:var(--green-dark);">Mark paid</button>';
       html += '</div>';
     }
     html += '</div>';
