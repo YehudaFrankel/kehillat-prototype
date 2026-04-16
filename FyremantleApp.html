@@ -8,20 +8,7 @@
 /* ── Reset ─────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ── Role visibility ─────────────────────────────── */
-.org-only { display: none !important; }
-.mem-only { display: none !important; }
-body.role-organizer .org-only { display: initial !important; }
-body.role-organizer div.org-only { display: block !important; }
-body.role-organizer span.org-only { display: block !important; }
-body.role-organizer button.org-only { display: flex !important; }
-body.role-organizer .org-only-flex { display: flex !important; }
-body.role-organizer .org-only-grid { display: grid !important; }
-body.role-member .mem-only { display: initial !important; }
-body.role-member div.mem-only { display: block !important; }
-body.role-member span.mem-only { display: block !important; }
-body.role-member button.mem-only { display: flex !important; }
-body.role-member .mem-only-flex { display: flex !important; }
+/* ── Role visibility — controlled by JS applyRole() ── */
 
 /* ── Tokens ────────────────────────────────────────── */
 :root {
@@ -2159,6 +2146,9 @@ function catLabel(cat) {
 }
 function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
+/* ── Admin guard ──────────────────────────────────── */
+function isAdmin() { return currentRole === 'organizer'; }
+
 /* ── Dedication functions ─────────────────────────── */
 function selectOccasion(btn) {
   var btns = document.querySelectorAll('.ded-occasion');
@@ -2227,36 +2217,47 @@ function sidebarNav(tab) {
   switchTab(tab);
 }
 
-function switchRole() {
-  currentRole = (currentRole === 'organizer') ? 'member' : 'organizer';
+function applyRole() {
   var isOrg = (currentRole === 'organizer');
 
-  /* brute force — toggle every org-only and mem-only element */
+  /* toggle every org-only and mem-only element */
   var orgEls = document.querySelectorAll('.org-only, .org-only-flex, .org-only-grid');
   for (var i = 0; i < orgEls.length; i++) orgEls[i].style.display = isOrg ? '' : 'none';
   var memEls = document.querySelectorAll('.mem-only, .mem-only-flex');
   for (var i = 0; i < memEls.length; i++) memEls[i].style.display = isOrg ? 'none' : '';
 
-  /* update toggle buttons */
+  /* toggle buttons */
   var btn = document.getElementById('roleToggle');
   if (btn) btn.textContent = isOrg ? 'Switch to member' : 'Switch to organizer';
   var sbtn = document.getElementById('sidebarRoleToggle');
   if (sbtn) sbtn.textContent = isOrg ? 'Switch to member' : 'Switch to organizer';
 
-  /* update subtitle */
+  /* subtitle */
   var sub = document.getElementById('adminGroupSub');
   if (sub) sub.textContent = adminGroups[currentAdminGroup].stats.v1 + ' members';
 
-  /* update compose placeholder */
+  /* compose */
   var compose = document.getElementById('composeInput');
   if (compose) compose.placeholder = isOrg ? 'What\'s on your mind?' : 'Share something with the group...';
 
-  /* force back to Feed tab */
+  /* newsletter: editable for org, read-only for member */
+  var nlTitle = document.getElementById('nlTitle');
+  var nlDate = document.getElementById('nlDate');
+  var nlBody = document.getElementById('nlBody');
+  if (nlTitle) nlTitle.setAttribute('contenteditable', isOrg);
+  if (nlDate) nlDate.setAttribute('contenteditable', isOrg);
+  if (nlBody) nlBody.setAttribute('contenteditable', isOrg);
+  var nlActions = document.querySelector('.nl-actions');
+  if (nlActions) nlActions.style.display = isOrg ? '' : 'none';
+}
+
+function switchRole() {
+  currentRole = (currentRole === 'organizer') ? 'member' : 'organizer';
+  applyRole();
   switchTab('discussions');
 }
 
-/* init role on load */
-document.body.className = 'role-organizer';
+/* init role on load — runs after all HTML is parsed */
 
 function renderDiscussions() {
   var el = document.getElementById('discussionsList');
@@ -2494,9 +2495,13 @@ function openNewsletterReview() {
   /* count */
   document.getElementById('nlCount').textContent = nl.members + ' members will receive this';
 
-  /* reset send button */
-  var sendBtn = document.getElementById('btnSendNewsletter');
-  if (sendBtn) sendBtn.textContent = 'Send newsletter';
+  /* role-based: organizer can edit + send, member is read-only */
+  var isOrg = (currentRole === 'organizer');
+  document.getElementById('nlTitle').setAttribute('contenteditable', isOrg ? 'true' : 'false');
+  document.getElementById('nlDate').setAttribute('contenteditable', isOrg ? 'true' : 'false');
+  document.getElementById('nlBody').setAttribute('contenteditable', isOrg ? 'true' : 'false');
+  var nlActions = document.querySelector('.nl-actions');
+  if (nlActions) nlActions.style.display = isOrg ? '' : 'none';
 
   openModal('newsletterModal');
 }
@@ -2624,6 +2629,7 @@ document.getElementById('filterPills').addEventListener('click', function(e) {
 
 // Pin/Unpin
 function togglePin(id) {
+  if (!isAdmin()) return;
   for (var i = 0; i < discussions.length; i++) {
     if (discussions[i].id === id) {
       discussions[i].pinned = !discussions[i].pinned;
@@ -2637,7 +2643,7 @@ function togglePin(id) {
 
 // Remove
 function removeDiscussion(id) {
-  /* confirm replaced with immediate action + undo via toast */
+  if (!isAdmin()) return;
   var el = document.querySelector('.discussion[data-id="' + id + '"]');
   if (el) {
     el.classList.add('removing');
@@ -2703,9 +2709,11 @@ function submitPost() {
 
 // Ask sponsor
 function askSponsor(btn) {
+  if (!isAdmin()) return;
   openModal('askSponsorModal');
 }
 function sendSponsorAsk() {
+  if (!isAdmin()) return;
   closeModal('askSponsorModal');
   var btn = document.getElementById('btnAskSponsor');
   btn.textContent = 'Message sent';
@@ -2715,6 +2723,7 @@ function sendSponsorAsk() {
 
 // Send reminder
 function sendReminder() {
+  if (!isAdmin()) return;
   closeModal('sendReminderModal');
   showToast('Dues reminder sent to 11 members');
 }
@@ -2732,6 +2741,7 @@ function submitEvent() {
 
 // Newsletter
 function sendNewsletter() {
+  if (!isAdmin()) return;
   var g = adminGroups[currentAdminGroup];
   var count = g.newsletter.members;
   closeModal('newsletterModal');
@@ -2745,6 +2755,7 @@ function sendNewsletter() {
 
 // Aliyah
 function markPaid(idx) {
+  if (!isAdmin()) return;
   aliyahData[idx].status = 'paid';
   renderAliyah();
   showToast(aliyahData[idx].member + ' marked as paid');
@@ -2756,6 +2767,7 @@ function toggleAddRow() {
 }
 
 function saveAliyah() {
+  if (!isAdmin()) return;
   var member = document.getElementById('newMember').value.trim();
   var type = document.getElementById('newType').value;
   var date = document.getElementById('newDate').value;
@@ -2784,6 +2796,7 @@ function saveAliyah() {
 
 // Member requests
 function approveRequest(targetId, idx) {
+  if (!isAdmin()) return;
   var el = document.getElementById('req-' + targetId + '-' + idx);
   if (el) {
     el.style.opacity = '0.5';
@@ -2797,6 +2810,7 @@ function approveRequest(targetId, idx) {
   }
 }
 function declineRequest(targetId, idx) {
+  if (!isAdmin()) return;
   /* confirm replaced with immediate action + toast */
   var name = memberRequests[idx].name;
   memberRequests.splice(idx, 1);
@@ -2976,6 +2990,7 @@ function copyAdminInviteLink() {
 }
 
 function sendBulkInvites() {
+  if (!isAdmin()) return;
   var text = document.getElementById('importList').value.trim();
   if (!text) { showToast('Paste some emails or phone numbers first'); return; }
   var lines = text.split('\n');
@@ -2997,6 +3012,7 @@ function updateImportCount() {
 }
 
 function sendSingleInvite() {
+  if (!isAdmin()) return;
   var input = document.getElementById('singleInvite');
   var val = input.value.trim();
   if (!val) { showToast('Enter an email or phone number'); return; }
@@ -3023,6 +3039,7 @@ function showToast(msg) {
 }
 
 /* ── INIT ─────────────────────────────────────────── */
+applyRole();
 renderDiscussions();
 renderAliyah();
 renderDedications();
