@@ -1298,73 +1298,11 @@ table.aliyah-table {
 
 <!-- ═══ ALIYAH VIEW ═══ -->
 <div class="view" id="viewAliyah">
-<div class="card">
-  <div class="card-header">
-    <span class="card-title">Aliyah / Entry Management</span>
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px 8px;">
+    <span style="font-size:18px;font-weight:600;color:var(--text);" id="aliyahViewTitle">Aliyos</span>
+    <a class="card-link" onclick="openModal('aliyahModal')" style="font-size:14px;" id="addRowTrigger">+ Record aliyah</a>
   </div>
-  <div class="aliyah-table-wrap">
-    <table class="aliyah-table">
-      <thead>
-        <tr>
-          <th>Member</th>
-          <th>Aliyah type</th>
-          <th>Date</th>
-          <th>Dedicated to</th>
-          <th>Amount</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody id="aliyahBody"></tbody>
-    </table>
-  </div>
-  <div class="add-row-trigger" id="addRowTrigger" onclick="toggleAddRow()">+ Add an aliyah</div>
-  <div class="inline-form" id="addAliyahForm">
-    <div class="inline-form-grid">
-      <div>
-        <label>Member</label>
-        <input type="text" id="newMember" placeholder="Start typing..." list="membersList">
-        <datalist id="membersList">
-          <option value="David Cohen">
-          <option value="Sarah Levy">
-          <option value="Rachel Green">
-          <option value="Moshe Katz">
-          <option value="Avi Stern">
-          <option value="Noa Friedman">
-          <option value="Eli Rosen">
-        </datalist>
-      </div>
-      <div>
-        <label>Aliyah type</label>
-        <select id="newType">
-          <option value="">Select...</option>
-          <option>Shishi</option>
-          <option>Maftir</option>
-          <option>Shlishi</option>
-          <option>Revi'i</option>
-          <option>Chamishi</option>
-        </select>
-      </div>
-      <div>
-        <label>Date</label>
-        <input type="date" id="newDate">
-      </div>
-      <div>
-        <label>Dedicated to</label>
-        <input type="text" id="newDedication" placeholder="Optional">
-      </div>
-      <div>
-        <label>Amount</label>
-        <input type="text" id="newAmount" placeholder="$0">
-      </div>
-    </div>
-    <div class="inline-form-actions">
-      <button class="btn-save-entry" onclick="saveAliyah()">Save entry</button>
-      <button class="btn-cancel-entry" onclick="toggleAddRow()">Cancel</button>
-    </div>
-    <div class="inline-form-note">Member will see this in their history</div>
-  </div>
-</div>
+  <div id="aliyahBody"></div>
 </div>
 
 <!-- ═══ DEDICATIONS VIEW ═══ -->
@@ -1424,62 +1362,34 @@ table.aliyah-table {
 
 <!-- ═══ MANAGE VIEW ═══ -->
 <div class="view" id="viewManage">
-<div class="two-col">
-  <div>
-    <div class="card">
-      <div class="card-header">
-        <span class="card-title" id="manageRequestsTitle">Member Requests</span>
-      </div>
-      <div id="memberRequests"></div>
+
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px 8px;">
+    <span style="font-size:18px;font-weight:600;color:var(--text);" id="manageViewTitle">Members</span>
+    <span style="font-size:14px;color:var(--text-muted);">84 members</span>
+  </div>
+
+  <!-- Invite -->
+  <div style="background:var(--white);border-radius:var(--radius-sm);margin:0 8px 8px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,.06);">
+    <button onclick="copyAdminInviteLink()" id="btnCopyInvite" style="width:100%;padding:12px;font-size:15px;border:none;border-radius:var(--radius-sm);background:var(--purple);color:#fff;cursor:pointer;font-weight:600;font-family:inherit;margin-bottom:8px;">Copy invite link</button>
+    <div style="font-size:13px;color:var(--text-muted);text-align:center;margin-bottom:12px;">Share via WhatsApp, text, or email</div>
+    <div style="display:flex;gap:8px;">
+      <input id="singleInvite" type="text" placeholder="Email or phone" style="flex:1;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-size:15px;font-family:inherit;outline:none;" />
+      <button onclick="sendSingleInvite()" style="padding:10px 18px;border-radius:var(--radius-sm);border:none;background:var(--purple-light);color:var(--purple);font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;">Invite</button>
     </div>
-  </div>
-  <div>
-    <div class="card">
-      <div class="card-header">
-        <span class="card-title">Quick Actions</span>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:10px;">
-        <button class="attention-btn" onclick="openModal('sendReminderModal')" style="text-align:left;">Send dues reminder</button>
-        <button class="attention-btn" onclick="openNewEvent()" style="text-align:left;">Create new event</button>
-        <button class="attention-btn" onclick="openNewsletterReview()" style="text-align:left;">Review newsletter</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Invite Members -->
-<div class="card" style="margin-top:16px;">
-  <div class="card-header">
-    <span class="card-title">Invite Members</span>
-  </div>
-
-  <!-- Primary: Share link -->
-  <div style="text-align:center; padding:20px 0 16px;">
-    <button class="btn-primary" onclick="copyAdminInviteLink()" id="btnCopyInvite" style="padding:12px 32px; font-size:14px; border:none; border-radius:10px; background:var(--purple); color:#fff; cursor:pointer; font-weight:600; font-family:inherit;">Copy invite link</button>
-    <p style="font-size:12px; color:var(--text-muted); margin-top:10px;">Share via WhatsApp, text, or email — members join with one tap</p>
-  </div>
-
-  <div style="border-top:1px solid var(--border); padding:16px 0 0;">
-    <!-- Secondary: Import -->
-    <div style="padding:0 20px;">
-      <p style="font-size:13px; font-weight:600; color:var(--text); margin-bottom:8px;">Import from spreadsheet</p>
-      <textarea id="importList" rows="3" placeholder="Paste emails or phone numbers, one per line" oninput="updateImportCount()" style="width:100%; border:1px solid var(--border); border-radius:8px; padding:10px; font-size:13px; font-family:inherit; resize:vertical; outline:none;"></textarea>
-      <div style="display:flex; align-items:center; gap:10px; margin-top:8px;">
-        <button class="attention-btn" onclick="sendBulkInvites()" style="font-size:13px;">Send invites</button>
-        <span id="importCount" style="font-size:12px; color:var(--text-muted);"></span>
-      </div>
-    </div>
-
-    <!-- Tertiary: Add one -->
-    <div style="padding:16px 20px 4px; border-top:1px solid var(--border); margin-top:16px;">
-      <p style="font-size:12px; color:var(--text-muted); margin-bottom:6px;">Or add individually</p>
-      <div style="display:flex; gap:8px;">
-        <input id="singleInvite" type="text" placeholder="Email or phone number" style="flex:1; border:1px solid var(--border); border-radius:8px; padding:8px 12px; font-size:13px; font-family:inherit; outline:none;">
-        <button class="attention-btn" onclick="sendSingleInvite()" style="font-size:13px; flex-shrink:0;">Send</button>
+    <div style="margin-top:10px;">
+      <a onclick="document.getElementById('bulkImport').style.display=document.getElementById('bulkImport').style.display==='none'?'block':'none'" style="font-size:13px;color:var(--purple);cursor:pointer;">Import multiple from spreadsheet</a>
+      <div id="bulkImport" style="display:none;margin-top:8px;">
+        <textarea id="importList" rows="3" placeholder="Paste emails or phone numbers, one per line" oninput="updateImportCount()" style="width:100%;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:10px;font-size:14px;font-family:inherit;resize:vertical;outline:none;"></textarea>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:6px;">
+          <button onclick="sendBulkInvites()" style="padding:8px 16px;border-radius:var(--radius-sm);border:none;background:var(--purple);color:#fff;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;">Send invites</button>
+          <span id="importCount" style="font-size:13px;color:var(--text-muted);"></span>
+        </div>
       </div>
     </div>
   </div>
-</div>
+
+  <!-- Pending requests -->
+  <div id="memberRequests" style="padding:0 8px;"></div>
 
 </div>
 
@@ -2586,23 +2496,29 @@ function renderAliyah() {
   var html = '';
   for (var i = 0; i < aliyahData.length; i++) {
     var a = aliyahData[i];
-    var statusClass = a.status;
-    var statusText = a.status === 'paid' ? 'Paid' : a.status === 'unpaid' ? 'Unpaid' : 'Partial &mdash; ' + esc(a.partialNote);
-    html += '<tr>';
-    html += '<td><div class="aliyah-member"><div class="aliyah-avatar" style="background:' + a.color + '">' + esc(a.initials) + '</div>' + esc(a.member) + '</div></td>';
-    html += '<td>' + esc(a.type) + '</td>';
-    html += '<td>' + esc(a.date) + '</td>';
-    html += '<td>' + esc(a.dedication || '&mdash;') + '</td>';
-    html += '<td>' + esc(a.amount) + '</td>';
-    html += '<td><span class="status-badge ' + statusClass + '">' + statusText + '</span></td>';
-    html += '<td>';
-    if (a.status !== 'paid') {
-      html += '<button class="table-action" onclick="markPaid(' + i + ')">Mark paid</button>';
+    var statusColor = a.status === 'paid' ? 'var(--green)' : a.status === 'unpaid' ? 'var(--amber)' : 'var(--coral)';
+    var statusText = a.status === 'paid' ? '\u2714 Paid' : a.status === 'unpaid' ? 'Unpaid' : 'Partial \u2014 ' + esc(a.partialNote);
+    html += '<div style="background:var(--white);border-radius:var(--radius-sm);padding:12px 14px;margin:0 8px 8px;box-shadow:0 1px 3px rgba(0,0,0,.06);">';
+    html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">';
+    html += '<div style="display:flex;align-items:center;gap:10px;">';
+    html += '<div style="width:36px;height:36px;border-radius:50%;background:' + a.color + ';color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;">' + esc(a.initials) + '</div>';
+    html += '<div><div style="font-size:15px;font-weight:600;">' + esc(a.member) + '</div>';
+    html += '<div style="font-size:13px;color:var(--text-muted);">' + esc(a.type) + ' \u00B7 ' + esc(a.date) + '</div></div>';
+    html += '</div>';
+    html += '<div style="text-align:right;">';
+    html += '<div style="font-size:15px;font-weight:600;">' + esc(a.amount) + '</div>';
+    html += '<div style="font-size:12px;font-weight:500;color:' + statusColor + ';">' + statusText + '</div>';
+    html += '</div></div>';
+    if (a.dedication) html += '<div style="font-size:13px;color:var(--text-muted);margin-top:2px;margin-left:46px;">' + esc(a.dedication) + '</div>';
+    if (a.status !== 'paid' && isAdmin()) {
+      html += '<div style="margin-top:6px;margin-left:46px;">';
+      html += '<button onclick="markPaid(' + i + ')" style="font-size:13px;color:var(--purple);background:none;border:none;cursor:pointer;font-family:inherit;font-weight:500;padding:0;">Send bill</button>';
+      html += ' &middot; <button onclick="markPaid(' + i + ')" style="font-size:13px;color:var(--green);background:none;border:none;cursor:pointer;font-family:inherit;font-weight:500;padding:0;">Mark paid</button>';
+      html += '</div>';
     }
-    /* View button removed — no detail view in prototype */
-    html += '</td>';
-    html += '</tr>';
+    html += '</div>';
   }
+  if (aliyahData.length === 0) html = '<div style="padding:16px;text-align:center;color:var(--text-muted);font-size:14px;">No aliyos recorded yet.</div>';
   el.innerHTML = html;
 }
 
@@ -2736,20 +2652,21 @@ function openEventDetail(idx) {
 function renderRequests(targetId) {
   var el = document.getElementById(targetId);
   var html = '';
-  for (var i = 0; i < memberRequests.length; i++) {
-    var m = memberRequests[i];
-    html += '<div class="request-item" id="req-' + targetId + '-' + i + '">';
-    html += '<div class="request-info">';
-    html += '<div class="avatar" style="background:' + m.color + ';width:32px;height:32px;font-size:12px;">' + esc(m.initials) + '</div>';
-    html += '<div class="request-text"><div class="request-name">' + esc(m.name) + '</div>';
-    html += '<div class="request-email">' + esc(m.email) + '</div></div></div>';
-    html += '<div class="request-actions">';
-    html += '<button class="btn-approve" onclick="approveRequest(\'' + targetId + '\',' + i + ')">Approve</button>';
-    html += '<button class="btn-decline" onclick="declineRequest(\'' + targetId + '\',' + i + ')">Decline</button>';
-    html += '</div></div>';
-  }
-  if (memberRequests.length === 0) {
-    html = '<p style="font-size:14px;color:var(--text-muted);padding:8px 0;">No pending requests.</p>';
+  if (memberRequests.length > 0) {
+    html += '<div style="font-size:14px;font-weight:600;color:var(--text);padding:12px 8px 6px;">Pending (' + memberRequests.length + ')</div>';
+    for (var i = 0; i < memberRequests.length; i++) {
+      var m = memberRequests[i];
+      html += '<div style="background:var(--white);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:6px;box-shadow:0 1px 3px rgba(0,0,0,.06);display:flex;align-items:center;justify-content:space-between;gap:10px;">';
+      html += '<div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0;">';
+      html += '<div class="avatar" style="background:' + m.color + ';width:36px;height:36px;font-size:13px;">' + esc(m.initials) + '</div>';
+      html += '<div style="min-width:0;"><div style="font-size:15px;font-weight:500;">' + esc(m.name) + '</div>';
+      html += '<div style="font-size:12px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + esc(m.email) + '</div></div>';
+      html += '</div>';
+      html += '<div style="display:flex;gap:6px;flex-shrink:0;">';
+      html += '<button onclick="approveRequest(\'' + targetId + '\',' + i + ')" style="padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;background:var(--green-light);color:var(--green-dark);border:1px solid var(--green);font-family:inherit;">Approve</button>';
+      html += '<button onclick="declineRequest(\'' + targetId + '\',' + i + ')" style="padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;background:var(--white);color:var(--text-muted);border:1px solid var(--border);font-family:inherit;">Decline</button>';
+      html += '</div></div>';
+    }
   }
   el.innerHTML = html;
 }
