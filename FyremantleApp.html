@@ -9,17 +9,19 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 /* ── Role visibility ─────────────────────────────── */
-.org-only { display: none; }
-.mem-only { display: none; }
-body.role-organizer .org-only { display: initial; }
-body.role-organizer div.org-only,
-body.role-organizer span.org-only { display: block; }
-body.role-organizer .org-only-flex { display: flex; }
-body.role-organizer .org-only-grid { display: grid; }
-body.role-member .mem-only { display: initial; }
-body.role-member div.mem-only,
-body.role-member span.mem-only { display: block; }
-body.role-member .mem-only-flex { display: flex; }
+.org-only { display: none !important; }
+.mem-only { display: none !important; }
+body.role-organizer .org-only { display: initial !important; }
+body.role-organizer div.org-only { display: block !important; }
+body.role-organizer span.org-only { display: block !important; }
+body.role-organizer button.org-only { display: flex !important; }
+body.role-organizer .org-only-flex { display: flex !important; }
+body.role-organizer .org-only-grid { display: grid !important; }
+body.role-member .mem-only { display: initial !important; }
+body.role-member div.mem-only { display: block !important; }
+body.role-member span.mem-only { display: block !important; }
+body.role-member button.mem-only { display: flex !important; }
+body.role-member .mem-only-flex { display: flex !important; }
 
 /* ── Tokens ────────────────────────────────────────── */
 :root {
