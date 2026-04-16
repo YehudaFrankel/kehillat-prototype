@@ -1259,7 +1259,7 @@ table.aliyah-table {
 @media (min-width: 849px) {
 }
 
-/* ── Newsletter modal (full-screen, matches Fyremantle.html) ── */
+/* ── Newsletter modal (full-screen, full-screen) ── */
 #newsletterModal.open { align-items: stretch; background: var(--white); }
 .nl-modal {
   width: 100%; max-width: 100%; max-height: 100%; padding: 0;
@@ -3376,7 +3376,7 @@ function addNlChip() {
 }
 
 function copyAdminInviteLink() {
-  var url = window.location.href.replace('FyremantleApp.html', 'FyremantleSignup.html');
+  var url = window.location.href.replace('KeepAliveNowApp.html', 'KeepAliveNowSignup.html');
   var btn = document.getElementById('btnCopyInvite');
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(url).then(function() {

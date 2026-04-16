@@ -911,11 +911,11 @@ function showToast(msg) {
 
 function goDashboard() {
   showToast('Welcome! Your community is live.');
-  setTimeout(function() { window.location.href = 'FyremantleApp.html'; }, 1800);
+  setTimeout(function() { window.location.href = 'KeepAliveNowApp.html'; }, 1800);
 }
 
 function copyOnboardInviteLink() {
-  var url = window.location.href.replace('FyremantleOnboard.html', 'FyremantleSignup.html');
+  var url = window.location.href.replace('KeepAliveNowOnboard.html', 'KeepAliveNowSignup.html');
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(url).then(function() {
       showToast('Invite link copied! Share it in WhatsApp or text.');
@@ -926,7 +926,7 @@ function copyOnboardInviteLink() {
 }
 
 function shareLink() {
-  var url = window.location.href.replace('FyremantleOnboard.html', 'FyremantleSignup.html');
+  var url = window.location.href.replace('KeepAliveNowOnboard.html', 'KeepAliveNowSignup.html');
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(url).then(function() {
       showToast('Invite link copied!');
