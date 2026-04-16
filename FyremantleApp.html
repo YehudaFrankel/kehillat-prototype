@@ -413,32 +413,32 @@ body {
 .ded-feed-respond:hover { border-color: var(--purple); color: var(--purple); }
 
 /* ── Dedication modal (Carol's moment) ───────────── */
-.ded-modal-inner { padding: 28px; }
+.ded-modal-inner { padding: 20px; }
 .ded-modal-heart { font-size: 28px; text-align: center; margin-bottom: 8px; }
 .ded-modal-title { font-size: 20px; font-weight: 600; color: var(--text); text-align: center; margin-bottom: 4px; }
 .ded-modal-sub { font-size: 14px; color: var(--text-muted); text-align: center; margin-bottom: 20px; }
-.ded-modal-label { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 6px; }
+.ded-modal-label { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
 .ded-modal-input {
-  width: 100%; font-size: 16px; padding: 12px 14px;
+  width: 100%; font-size: 15px; padding: 10px 12px;
   border: 1.5px solid var(--border); border-radius: var(--radius-sm);
   font-family: inherit; outline: none; background: var(--white); color: var(--text);
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 .ded-modal-input:focus { border-color: var(--green); }
 .ded-modal-occasions {
-  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;
+  display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px;
 }
 .ded-occasion {
-  padding: 8px 16px; border-radius: 20px; font-size: 14px;
+  padding: 6px 14px; border-radius: 20px; font-size: 13px;
   border: 1.5px solid var(--border); background: var(--white);
   color: var(--text); cursor: pointer; font-family: inherit; transition: all .15s;
 }
 .ded-occasion.selected { border-color: var(--green); background: var(--green-light); color: var(--green-dark); font-weight: 500; }
 .ded-modal-textarea {
-  width: 100%; font-size: 16px; padding: 14px;
+  width: 100%; font-size: 15px; padding: 10px 12px;
   border: 1.5px solid var(--border); border-radius: var(--radius-sm);
-  font-family: inherit; outline: none; min-height: 120px; resize: vertical;
-  background: var(--white); color: var(--text); margin-bottom: 20px;
+  font-family: inherit; outline: none; min-height: 80px; resize: vertical;
+  background: var(--white); color: var(--text); margin-bottom: 12px;
 }
 .ded-modal-textarea:focus { border-color: var(--green); }
 .ded-modal-textarea::placeholder { color: var(--text-muted); }
@@ -490,14 +490,14 @@ body {
 }
 .quick-actions.open { display: flex; }
 .quick-action-btn {
-  flex: 1; padding: 12px 8px; border-radius: var(--radius-sm);
+  flex: 1; padding: 8px 6px; border-radius: var(--radius-sm);
   border: 1.5px solid var(--border); background: var(--white);
-  font-size: 13px; font-weight: 500; color: var(--text);
+  font-size: 12px; font-weight: 500; color: var(--text);
   cursor: pointer; font-family: inherit; text-align: center;
   transition: all .15s;
 }
 .quick-action-btn:hover { border-color: var(--purple); color: var(--purple); }
-.quick-action-btn .qa-icon { font-size: 18px; display: block; margin-bottom: 4px; }
+.quick-action-btn .qa-icon { font-size: 16px; display: block; margin-bottom: 2px; }
 
 /* ── Compose bar ─────────────────────────────────── */
 .compose-bar {
@@ -1607,7 +1607,7 @@ KeepAliveNow</textarea>
 <div class="quick-actions" id="quickActions">
   <button class="quick-action-btn" onclick="closeQuickActions();openModal('postModal')"><span class="qa-icon">&#9998;</span>Post</button>
   <button class="quick-action-btn" onclick="closeQuickActions();openModal('dedModal')"><span class="qa-icon">&#10084;</span>Sponsorship</button>
-  <button class="quick-action-btn org-only" onclick="closeQuickActions();switchTab('aliyah')"><span class="qa-icon">&#9733;</span>Aliyah</button>
+  <button class="quick-action-btn org-only" onclick="closeQuickActions();openModal('aliyahModal')"><span class="qa-icon">&#9733;</span>Aliyah</button>
 </div>
 
 <!-- ── Compose bar (fixed) ─────────────────────────── -->
@@ -1698,6 +1698,46 @@ KeepAliveNow</textarea>
       </div>
       <button class="ded-modal-send" onclick="submitDedication()" style="background:var(--green);">Pay &amp; submit sponsorship</button>
       <button class="ded-modal-cancel" onclick="closeModal('dedModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Aliyah modal (simple) -->
+<div class="modal-overlay" id="aliyahModal">
+  <div class="modal" style="max-width:480px;">
+    <div class="ded-modal-inner">
+      <div style="font-size:24px;text-align:center;margin-bottom:6px;">&#9733;</div>
+      <div class="ded-modal-title">Record an Aliyah</div>
+      <div class="ded-modal-label">Who got the aliyah?</div>
+      <input class="ded-modal-input" type="text" placeholder="Start typing a name..." />
+      <div class="ded-modal-label">Which aliyah?</div>
+      <div class="ded-modal-occasions">
+        <button class="ded-occasion" onclick="selectOccasion(this)">Cohen</button>
+        <button class="ded-occasion" onclick="selectOccasion(this)">Levi</button>
+        <button class="ded-occasion" onclick="selectOccasion(this)">Shlishi</button>
+        <button class="ded-occasion" onclick="selectOccasion(this)">Revi'i</button>
+        <button class="ded-occasion" onclick="selectOccasion(this)">Chamishi</button>
+        <button class="ded-occasion" onclick="selectOccasion(this)">Shishi</button>
+        <button class="ded-occasion" onclick="selectOccasion(this)">Maftir</button>
+      </div>
+      <div class="ded-modal-label">Dedicated to (optional)</div>
+      <input class="ded-modal-input" type="text" placeholder="In honor of..." />
+      <div class="ded-modal-label">Amount</div>
+      <div style="display:flex;gap:6px;margin-bottom:12px;">
+        <button class="ded-occasion" onclick="selectAmount(this,'36')">$36</button>
+        <button class="ded-occasion" onclick="selectAmount(this,'72')">$72</button>
+        <button class="ded-occasion" onclick="selectAmount(this,'180')">$180</button>
+        <button class="ded-occasion" onclick="selectAmount(this,'360')">$360</button>
+        <input class="ded-modal-input" type="text" placeholder="Other" style="width:70px;margin:0;padding:6px 8px;font-size:13px;" />
+      </div>
+      <div class="ded-modal-label">Card details</div>
+      <input class="ded-modal-input" type="text" placeholder="Card number" style="margin-bottom:6px;letter-spacing:1px;" />
+      <div style="display:flex;gap:6px;margin-bottom:14px;">
+        <input class="ded-modal-input" type="text" placeholder="MM / YY" style="flex:1;margin:0;" />
+        <input class="ded-modal-input" type="text" placeholder="CVC" style="width:80px;margin:0;" />
+      </div>
+      <button class="ded-modal-send" onclick="closeModal('aliyahModal');showToast('Aliyah recorded!')" style="background:var(--purple);">Pay &amp; record aliyah</button>
+      <button class="ded-modal-cancel" onclick="closeModal('aliyahModal')">Cancel</button>
     </div>
   </div>
 </div>
