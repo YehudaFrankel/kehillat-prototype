@@ -498,24 +498,47 @@ body {
 
 /* ── Search (inline in topbar) ────────────────────── */
 .search-overlay {
-  display: none; position: fixed; top: 62px; left: 0; right: 0;
+  display: none; position: fixed; top: 50px; left: 0; right: 0;
   max-width: 600px; margin: 0 auto;
-  background: var(--white); padding: 10px 14px;
-  align-items: center; gap: 8px; z-index: 100;
-  border-bottom: 1px solid var(--border);
-  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  background: var(--wa-teal); padding: 4px 10px 6px;
+  align-items: center; gap: 6px; z-index: 100;
 }
 .search-overlay.open { display: flex; }
 .search-input {
-  flex: 1; font-size: 16px; padding: 8px 14px;
-  border: 1.5px solid var(--border); border-radius: 24px;
-  font-family: inherit; outline: none; background: var(--bg);
+  flex: 1; font-size: 14px; padding: 7px 12px;
+  border: none; border-radius: 20px;
+  font-family: inherit; outline: none; background: rgba(255,255,255,.9); color: var(--text);
 }
-.search-input:focus { border-color: var(--purple); }
 .search-close {
-  font-size: 18px; background: none; border: none;
-  cursor: pointer; color: var(--text-muted); padding: 4px;
+  font-size: 16px; background: none; border: none;
+  cursor: pointer; color: rgba(255,255,255,.7); padding: 4px;
 }
+
+/* ── Reactions ────────────────────────────────────── */
+.reaction-bar { display: flex; gap: 4px; margin-top: 2px; }
+.react-btn {
+  font-size: 16px; background: none; border: none; cursor: pointer; padding: 2px 4px;
+  opacity: .4; transition: all .15s;
+}
+.react-btn:hover { opacity: .7; }
+.react-btn.reacted { opacity: 1; }
+.react-count { font-size: 11px; color: var(--text-muted); margin-left: 2px; }
+
+/* ── Voice note button ───────────────────────────── */
+.mic-btn {
+  width: 36px; height: 36px; border-radius: 50%; border: none;
+  background: none; color: var(--text-muted); font-size: 20px;
+  cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+}
+.mic-btn:hover { color: var(--green); }
+
+/* ── Bookmark ────────────────────────────────────── */
+.bookmark-btn {
+  font-size: 14px; background: none; border: none; cursor: pointer;
+  color: var(--text-muted); padding: 2px; opacity: .5;
+}
+.bookmark-btn:hover { opacity: .8; }
+.bookmark-btn.saved { opacity: 1; color: var(--amber); }
 
 /* ── Status stories ───────────────────────────────── */
 .status-strip {
@@ -1387,6 +1410,16 @@ table.aliyah-table {
 
 </div>
 
+<!-- ═══ SAVED VIEW ═══ -->
+<div class="view" id="viewSaved">
+  <div style="padding:16px 14px 8px;">
+    <span style="font-size:18px;font-weight:600;color:var(--text);">Saved</span>
+  </div>
+  <div style="padding:24px 14px;text-align:center;color:var(--text-muted);font-size:14px;">
+    No saved posts yet.<br>Tap the bookmark icon on any post to save it here.
+  </div>
+</div>
+
 <!-- ═══ STATUS VIEW ═══ -->
 <div class="view" id="viewStatus">
   <div style="padding:16px 14px 8px;">
@@ -1692,10 +1725,11 @@ KeepAliveNow</textarea>
 
 <!-- ── Compose bar (fixed) ─────────────────────────── -->
 <div class="compose-bar">
-  <button onclick="toggleQuickActions()" style="font-size:22px;background:none;border:none;cursor:pointer;padding:4px;color:var(--purple);font-weight:700;">+</button>
+  <button onclick="toggleQuickActions()" style="font-size:20px;background:none;border:none;cursor:pointer;padding:4px;color:var(--text-muted);">+</button>
   <input class="compose-input" id="composeInput" type="text" placeholder="What's on your mind?" onclick="openModal('postModal')" readonly />
-  <button onclick="showToast('Photo added!')" style="font-size:18px;background:none;border:none;cursor:pointer;padding:4px;color:var(--text-muted);">&#128247;</button>
-  <button class="compose-btn" onclick="openModal('postModal')">Post</button>
+  <button onclick="showToast('Photo added!')" style="font-size:16px;background:none;border:none;cursor:pointer;padding:2px;color:var(--text-muted);">&#128247;</button>
+  <button class="mic-btn" onclick="showToast('Recording...')">&#127908;</button>
+  <button class="compose-btn" onclick="openModal('postModal')">&#10148;</button>
 </div>
 
 <!-- ── Bottom nav (3 tabs) ──────────────────────────── -->
@@ -1725,6 +1759,7 @@ KeepAliveNow</textarea>
     <button class="sidebar-menu-close" onclick="toggleSidebar()">&times;</button>
   </div>
   <button class="sidebar-menu-item" onclick="sidebarNav('settings')">Settings</button>
+  <button class="sidebar-menu-item" onclick="sidebarNav('saved')">Saved</button>
   <button class="sidebar-menu-item" onclick="sidebarNav('dedications')">Sponsors</button>
   <button class="sidebar-menu-item" onclick="sidebarNav('newsletter')">Newsletter</button>
   <button class="sidebar-menu-item org-only" onclick="sidebarNav('aliyah')">Aliyos</button>
@@ -2365,6 +2400,15 @@ function pickAliyahMember(name) {
   document.getElementById('aliyahMemberList').style.display = 'none';
 }
 
+/* ── Reactions + Bookmark ─────────────────────────── */
+function toggleReact(btn) {
+  btn.classList.toggle('reacted');
+}
+function toggleBookmark(btn) {
+  btn.classList.toggle('saved');
+  showToast(btn.classList.contains('saved') ? 'Saved!' : 'Removed from saved');
+}
+
 /* ── Status viewer ────────────────────────────────── */
 var statusData = [
   { name: 'Avi Stern', initials: 'AS', color: '#E5A84B', text: 'Setting up for kiddush! \uD83D\uDD6F\uFE0F', time: '2 hours ago' },
@@ -2619,6 +2663,13 @@ function renderDiscussions() {
       html += '<div class="discussion-link-domain">' + esc(d.link.domain) + '</div>';
       html += '</div>';
     }
+
+    /* reactions */
+    html += '<div class="reaction-bar">';
+    html += '<button class="react-btn" onclick="toggleReact(this)">&#10084;</button>';
+    html += '<button class="react-btn" onclick="toggleReact(this)">&#128077;</button>';
+    html += '<button class="bookmark-btn" onclick="toggleBookmark(this)" title="Save">&#128278;</button>';
+    html += '</div>';
 
     html += '<div class="discussion-footer">';
     html += '<span class="discussion-replies">' + (d.replies.length > 0 ? d.replies.length + ' replies' : '') + '</span>';
@@ -2923,6 +2974,8 @@ function switchTab(tab) {
   /* show the target view */
   if (tab === 'discussions') {
     document.getElementById('viewDiscussions').classList.add('active');
+  } else if (tab === 'saved') {
+    document.getElementById('viewSaved').classList.add('active');
   } else if (tab === 'status') {
     document.getElementById('viewStatus').classList.add('active');
   } else if (tab === 'events') {
