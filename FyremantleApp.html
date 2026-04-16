@@ -63,7 +63,7 @@ body {
   background: var(--bg);
   min-height: 100vh;
   box-shadow: 0 0 20px rgba(0,0,0,.08);
-  padding-top: 54px;
+  padding-top: 48px;
 }
 
 /* ── Topbar ───────────────────────────────────────── */
@@ -125,7 +125,7 @@ body {
 .bnav {
   position: fixed; bottom: 0; left: 0; right: 0;
   max-width: 600px; margin: 0 auto;
-  padding: 10px 0 14px;
+  padding: 8px 0 10px;
   display: flex; align-items: center; justify-content: space-around;
   background: var(--wa-teal); z-index: 100;
 }
@@ -148,7 +148,7 @@ body {
 .main {
   max-width: 600px;
   margin: 0 auto;
-  padding: 8px 0 140px;
+  padding: 4px 0 130px;
 }
 
 /* ── View containers ──────────────────────────────── */
@@ -214,8 +214,8 @@ body {
 .discussion {
   background: #fff;
   border-radius: 0 16px 16px 16px;
-  padding: 8px 12px 8px;
-  margin: 0 10px 8px 10px;
+  padding: 6px 10px;
+  margin: 0 8px 4px 8px;
   box-shadow: 0 1px 1px rgba(0,0,0,.06);
   position: relative;
 }
@@ -227,17 +227,17 @@ body {
 .discussion-pinned-badge {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  font-size: 11px;
+  gap: 3px;
+  font-size: 10px;
   color: var(--text-muted);
-  margin-bottom: 8px;
+  margin-bottom: 2px;
 }
 .discussion-pinned-badge .pin-icon { font-size: 12px; }
 .discussion-top {
   display: flex;
   align-items: flex-start;
-  gap: 8px;
-  margin-bottom: 4px;
+  gap: 6px;
+  margin-bottom: 2px;
 }
 .avatar {
   width: 32px;
@@ -280,8 +280,8 @@ body {
 .discussion-body {
   font-size: 14px;
   color: var(--text);
-  line-height: 1.4;
-  margin: 2px 0 4px 0;
+  line-height: 1.35;
+  margin: 1px 0 3px 0;
 }
 .discussion-link-preview {
   margin: 2px 0 4px 0;
@@ -611,7 +611,7 @@ body {
 }
 .quick-actions.open { display: flex; }
 .quick-action-btn {
-  flex: 1; padding: 8px 6px; border-radius: var(--radius-sm);
+  flex: 1; padding: 6px 4px; border-radius: var(--radius-sm);
   border: 1.5px solid var(--border); background: var(--white);
   font-size: 12px; font-weight: 500; color: var(--text);
   cursor: pointer; font-family: inherit; text-align: center;
@@ -622,26 +622,26 @@ body {
 
 /* ── Compose bar ─────────────────────────────────── */
 .compose-bar {
-  position: fixed; bottom: 47px; left: 0; right: 0;
+  position: fixed; bottom: 44px; left: 0; right: 0;
   max-width: 600px; margin: 0 auto;
-  padding: 6px 8px;
+  padding: 4px 6px;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   background: var(--bg);
   z-index: 99;
 }
 .compose-avatar { display: none; }
 .compose-input {
-  flex: 1; font-size: 15px; padding: 10px 16px;
-  border-radius: 24px; border: none;
+  flex: 1; font-size: 14px; padding: 8px 14px;
+  border-radius: 20px; border: none;
   background: #fff; color: var(--text); outline: none;
   font-family: inherit;
 }
 .compose-btn {
-  width: 42px; height: 42px; border-radius: 50%;
+  width: 36px; height: 36px; border-radius: 50%;
   border: none; background: var(--green); color: #fff;
-  cursor: pointer; font-size: 18px; flex-shrink: 0;
+  cursor: pointer; font-size: 16px; flex-shrink: 0;
   display: none;
 }
 
