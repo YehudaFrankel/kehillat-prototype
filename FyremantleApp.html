@@ -1561,7 +1561,7 @@ KeepAliveNow</textarea>
   <button class="compose-btn" onclick="openModal('postModal')">Post</button>
 </div>
 
-<!-- ── Bottom nav (3 text tabs) ─────────────────────── -->
+<!-- ── Bottom nav (4 tabs) ──────────────────────────── -->
 <div class="bnav" id="bottomNav">
   <button class="bnav-item" data-tab-key="discussions" onclick="switchTab('discussions')">
     <div class="bnav-bar" style="background:var(--purple);"></div>
@@ -1570,6 +1570,14 @@ KeepAliveNow</textarea>
   <button class="bnav-item" data-tab-key="events" onclick="switchTab('events')">
     <div class="bnav-bar" style="background:transparent;"></div>
     <div class="bnav-label">Events</div>
+  </button>
+  <button class="bnav-item" data-tab-key="dedications" onclick="switchTab('dedications')">
+    <div class="bnav-bar" style="background:transparent;"></div>
+    <div class="bnav-label">Sponsors</div>
+  </button>
+  <button class="bnav-item" data-tab-key="newsletter" onclick="switchTab('newsletter')">
+    <div class="bnav-bar" style="background:transparent;"></div>
+    <div class="bnav-label">Newsletter</div>
   </button>
 </div>
 
@@ -1583,13 +1591,9 @@ KeepAliveNow</textarea>
     </div>
     <button class="sidebar-menu-close" onclick="toggleSidebar()">&times;</button>
   </div>
-  <button class="sidebar-menu-item" onclick="sidebarNav('discussions')">Feed</button>
-  <button class="sidebar-menu-item" onclick="sidebarNav('events')">Events</button>
-  <button class="sidebar-menu-item" onclick="sidebarNav('dedications')">Sponsors</button>
   <button class="sidebar-menu-item org-only" onclick="sidebarNav('aliyah')">Aliyos</button>
-  <button class="sidebar-menu-item mem-only" onclick="sidebarNav('newsletter')">Newsletter</button>
   <button class="sidebar-menu-item org-only" onclick="sidebarNav('manage')">Members</button>
-  <div class="sidebar-divider"></div>
+  <div class="sidebar-divider org-only"></div>
   <select class="group-switcher" onchange="switchAdminGroup(this.value)">
     <option value="shul">Shul / Minyan</option>
     <option value="sports">Sports Team</option>
