@@ -2386,7 +2386,7 @@ function renderDiscussions() {
       html += '<div class="feed-event-card" onclick="switchTab(\'events\')" style="cursor:pointer">';
       html += '<div><div class="feed-event-name">' + esc(ev.name) + ' &mdash; ' + esc(ev.date) + '</div>';
       html += '<div class="feed-event-sub">' + (ev.warn ? 'No sponsor yet' : esc(ev.status)) + '</div></div>';
-      html += '<button class="feed-event-btn" onclick="switchTab(\'events\')">Manage</button>';
+      html += '<button class="feed-event-btn" onclick="switchTab(\'events\')">' + (isAdmin() ? 'Manage' : 'RSVP') + '</button>';
       html += '</div></div>';
     }
   }
