@@ -517,9 +517,70 @@ body {
   cursor: pointer; color: var(--text-muted); padding: 4px;
 }
 
+/* ── Status stories ───────────────────────────────── */
+.status-strip {
+  display: flex; gap: 14px; overflow-x: auto; scrollbar-width: none;
+  padding: 12px 14px; -webkit-overflow-scrolling: touch;
+}
+.status-strip::-webkit-scrollbar { display: none; }
+.status-item {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  cursor: pointer; flex-shrink: 0;
+}
+.status-ring {
+  width: 56px; height: 56px; border-radius: 50%;
+  padding: 2px; background: conic-gradient(var(--green) 0%, var(--green) 100%);
+  display: flex; align-items: center; justify-content: center;
+}
+.status-ring.unseen { background: conic-gradient(var(--green) 0%, var(--green) 100%); }
+.status-ring.seen { background: conic-gradient(var(--text-muted) 0%, var(--text-muted) 100%); }
+.status-ring.yours { background: none; border: 2px dashed var(--text-muted); }
+.status-avatar {
+  width: 48px; height: 48px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 600; color: #fff;
+  background: var(--wa-teal);
+}
+.status-name { font-size: 11px; color: var(--text); max-width: 60px; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.status-yours-plus {
+  position: absolute; bottom: 0; right: 0;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--green); color: #fff; font-size: 14px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid var(--bg);
+}
+.status-viewer {
+  background: #000; position: fixed; inset: 0; z-index: 300;
+  display: none; flex-direction: column; align-items: center; justify-content: center;
+}
+.status-viewer.open { display: flex; }
+.status-viewer-close {
+  position: absolute; top: 16px; right: 16px;
+  font-size: 24px; color: #fff; background: none; border: none; cursor: pointer;
+}
+.status-viewer-header {
+  position: absolute; top: 16px; left: 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.status-viewer-name { color: #fff; font-size: 14px; font-weight: 600; }
+.status-viewer-time { color: rgba(255,255,255,.6); font-size: 12px; }
+.status-viewer-content {
+  color: #fff; font-size: 18px; text-align: center; padding: 40px 24px;
+  max-width: 400px; line-height: 1.6;
+}
+.status-viewer-progress {
+  position: absolute; top: 4px; left: 8px; right: 8px;
+  height: 2px; background: rgba(255,255,255,.3); border-radius: 2px;
+}
+.status-viewer-progress-fill {
+  height: 100%; background: #fff; border-radius: 2px; width: 0%;
+  animation: statusProgress 5s linear forwards;
+}
+@keyframes statusProgress { to { width: 100%; } }
+
 /* ── Quick actions (above compose) ────────────────── */
 .quick-actions {
-  position: fixed; bottom: 120px; left: 0; right: 0;
+  position: fixed; bottom: 100px; left: 0; right: 0;
   max-width: 600px; margin: 0 auto;
   display: none; padding: 8px 14px;
   background: var(--white); border-top: 1px solid var(--border);
@@ -1326,6 +1387,71 @@ table.aliyah-table {
 
 </div>
 
+<!-- ═══ STATUS VIEW ═══ -->
+<div class="view" id="viewStatus">
+  <div style="padding:16px 14px 8px;">
+    <span style="font-size:18px;font-weight:600;color:var(--text);">Status</span>
+  </div>
+
+  <!-- Story circles -->
+  <div class="status-strip">
+    <div class="status-item" onclick="openStatus('yours')">
+      <div class="status-ring yours" style="position:relative;">
+        <div class="status-avatar" style="background:var(--purple);">DL</div>
+        <div class="status-yours-plus">+</div>
+      </div>
+      <div class="status-name">Your status</div>
+    </div>
+    <div class="status-item" onclick="openStatus(0)">
+      <div class="status-ring unseen"><div class="status-avatar" style="background:#E5A84B;">AS</div></div>
+      <div class="status-name">Avi Stern</div>
+    </div>
+    <div class="status-item" onclick="openStatus(1)">
+      <div class="status-ring unseen"><div class="status-avatar" style="background:#4CAF7D;">SL</div></div>
+      <div class="status-name">Sarah Levy</div>
+    </div>
+    <div class="status-item" onclick="openStatus(2)">
+      <div class="status-ring seen"><div class="status-avatar" style="background:#E07B6B;">NF</div></div>
+      <div class="status-name">Noa Friedman</div>
+    </div>
+    <div class="status-item" onclick="openStatus(3)">
+      <div class="status-ring unseen"><div class="status-avatar" style="background:#6B5CE7;">ER</div></div>
+      <div class="status-name">Eli Rosen</div>
+    </div>
+  </div>
+
+  <!-- Recent updates list -->
+  <div style="padding:12px 14px;">
+    <div style="font-size:13px;font-weight:600;color:var(--text-muted);margin-bottom:10px;">Recent updates</div>
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer;" onclick="openStatus(0)">
+      <div class="status-ring unseen" style="width:48px;height:48px;"><div class="status-avatar" style="width:42px;height:42px;font-size:14px;background:#E5A84B;">AS</div></div>
+      <div><div style="font-size:15px;font-weight:500;">Avi Stern</div><div style="font-size:13px;color:var(--text-muted);">Setting up for kiddush!</div></div>
+      <div style="font-size:11px;color:var(--text-muted);margin-left:auto;">2h ago</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer;" onclick="openStatus(1)">
+      <div class="status-ring unseen" style="width:48px;height:48px;"><div class="status-avatar" style="width:42px;height:42px;font-size:14px;background:#4CAF7D;">SL</div></div>
+      <div><div style="font-size:15px;font-weight:500;">Sarah Levy</div><div style="font-size:13px;color:var(--text-muted);">Shabbat Shalom from the Levy family!</div></div>
+      <div style="font-size:11px;color:var(--text-muted);margin-left:auto;">4h ago</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 0;cursor:pointer;" onclick="openStatus(2)">
+      <div class="status-ring seen" style="width:48px;height:48px;"><div class="status-avatar" style="width:42px;height:42px;font-size:14px;background:#E07B6B;">NF</div></div>
+      <div><div style="font-size:15px;font-weight:500;">Noa Friedman</div><div style="font-size:13px;color:var(--text-muted);">Beautiful sunset tonight</div></div>
+      <div style="font-size:11px;color:var(--text-muted);margin-left:auto;">Yesterday</div>
+    </div>
+  </div>
+</div>
+
+<!-- Status viewer (full-screen) -->
+<div class="status-viewer" id="statusViewer">
+  <div class="status-viewer-progress"><div class="status-viewer-progress-fill" id="statusProgressFill"></div></div>
+  <button class="status-viewer-close" onclick="closeStatus()">&times;</button>
+  <div class="status-viewer-header">
+    <div class="status-avatar" id="statusViewerAvatar" style="width:36px;height:36px;font-size:12px;">AS</div>
+    <div><div class="status-viewer-name" id="statusViewerName">Avi Stern</div><div class="status-viewer-time" id="statusViewerTime">2 hours ago</div></div>
+  </div>
+  <div class="status-viewer-content" id="statusViewerContent">Setting up for kiddush! 🕯️</div>
+</div>
+
 <!-- ═══ EVENTS VIEW ═══ -->
 <div class="view" id="viewEvents">
   <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px 8px;">
@@ -1572,23 +1698,19 @@ KeepAliveNow</textarea>
   <button class="compose-btn" onclick="openModal('postModal')">Post</button>
 </div>
 
-<!-- ── Bottom nav (4 tabs) ──────────────────────────── -->
+<!-- ── Bottom nav (3 tabs) ──────────────────────────── -->
 <div class="bnav" id="bottomNav">
   <button class="bnav-item" data-tab-key="discussions" onclick="switchTab('discussions')">
-    <div class="bnav-bar" style="background:var(--purple);"></div>
+    <div class="bnav-bar" style="background:#fff;"></div>
     <div class="bnav-label-active">Feed</div>
+  </button>
+  <button class="bnav-item" data-tab-key="status" onclick="switchTab('status')">
+    <div class="bnav-bar" style="background:transparent;"></div>
+    <div class="bnav-label">Status</div>
   </button>
   <button class="bnav-item" data-tab-key="events" onclick="switchTab('events')">
     <div class="bnav-bar" style="background:transparent;"></div>
     <div class="bnav-label">Events</div>
-  </button>
-  <button class="bnav-item" data-tab-key="dedications" onclick="switchTab('dedications')">
-    <div class="bnav-bar" style="background:transparent;"></div>
-    <div class="bnav-label">Sponsors</div>
-  </button>
-  <button class="bnav-item" data-tab-key="newsletter" onclick="switchTab('newsletter')">
-    <div class="bnav-bar" style="background:transparent;"></div>
-    <div class="bnav-label">Newsletter</div>
   </button>
 </div>
 
@@ -1603,6 +1725,8 @@ KeepAliveNow</textarea>
     <button class="sidebar-menu-close" onclick="toggleSidebar()">&times;</button>
   </div>
   <button class="sidebar-menu-item" onclick="sidebarNav('settings')">Settings</button>
+  <button class="sidebar-menu-item" onclick="sidebarNav('dedications')">Sponsors</button>
+  <button class="sidebar-menu-item" onclick="sidebarNav('newsletter')">Newsletter</button>
   <button class="sidebar-menu-item org-only" onclick="sidebarNav('aliyah')">Aliyos</button>
   <button class="sidebar-menu-item org-only" onclick="sidebarNav('manage')">Members</button>
   <div class="sidebar-divider"></div>
@@ -2241,6 +2365,33 @@ function pickAliyahMember(name) {
   document.getElementById('aliyahMemberList').style.display = 'none';
 }
 
+/* ── Status viewer ────────────────────────────────── */
+var statusData = [
+  { name: 'Avi Stern', initials: 'AS', color: '#E5A84B', text: 'Setting up for kiddush! \uD83D\uDD6F\uFE0F', time: '2 hours ago' },
+  { name: 'Sarah Levy', initials: 'SL', color: '#4CAF7D', text: 'Shabbat Shalom from the Levy family! \u2728', time: '4 hours ago' },
+  { name: 'Noa Friedman', initials: 'NF', color: '#E07B6B', text: 'Beautiful sunset tonight \uD83C\uDF05', time: 'Yesterday' },
+  { name: 'Eli Rosen', initials: 'ER', color: '#6B5CE7', text: 'Just finished setting up the new shtender. Looks amazing!', time: '6 hours ago' }
+];
+
+function openStatus(idx) {
+  if (idx === 'yours') { showToast('Tap + to post your status'); return; }
+  var s = statusData[idx];
+  if (!s) return;
+  document.getElementById('statusViewerAvatar').style.background = s.color;
+  document.getElementById('statusViewerAvatar').textContent = s.initials;
+  document.getElementById('statusViewerName').textContent = s.name;
+  document.getElementById('statusViewerTime').textContent = s.time;
+  document.getElementById('statusViewerContent').textContent = s.text;
+  document.getElementById('statusProgressFill').style.animation = 'none';
+  setTimeout(function() { document.getElementById('statusProgressFill').style.animation = 'statusProgress 5s linear forwards'; }, 10);
+  document.getElementById('statusViewer').classList.add('open');
+  setTimeout(function() { closeStatus(); }, 5000);
+}
+
+function closeStatus() {
+  document.getElementById('statusViewer').classList.remove('open');
+}
+
 /* ── Search ───────────────────────────────────────── */
 function toggleSearch() {
   var overlay = document.getElementById('searchOverlay');
@@ -2772,6 +2923,8 @@ function switchTab(tab) {
   /* show the target view */
   if (tab === 'discussions') {
     document.getElementById('viewDiscussions').classList.add('active');
+  } else if (tab === 'status') {
+    document.getElementById('viewStatus').classList.add('active');
   } else if (tab === 'events') {
     document.getElementById('viewEvents').classList.add('active');
     renderEvents();
@@ -2803,7 +2956,7 @@ function switchTab(tab) {
     var bar = bnItems[i].querySelector('.bnav-bar');
     var lbl = bnItems[i].querySelectorAll('.bnav-label, .bnav-label-active');
     if (key === tab) {
-      if (bar) bar.style.background = 'var(--purple)';
+      if (bar) bar.style.background = '#fff';
       for (var j = 0; j < lbl.length; j++) lbl[j].className = 'bnav-label-active';
     } else {
       if (bar) bar.style.background = 'transparent';
