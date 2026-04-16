@@ -606,34 +606,31 @@ body {
 }
 @keyframes statusProgress { to { width: 100%; } }
 
-/* ── Quick actions (above compose) ────────────────── */
+/* ── Quick actions (slides up from compose) ──────── */
 .quick-actions {
-  position: fixed; bottom: 100px; left: 0; right: 0;
-  max-width: 600px; margin: 0 auto;
-  display: none; padding: 8px 14px;
-  background: var(--white); border-top: 1px solid var(--border);
-  gap: 8px; z-index: 99;
+  display: none; padding: 10px 8px;
+  gap: 10px;
 }
 .quick-actions.open { display: flex; }
 .quick-action-btn {
-  flex: 1; padding: 6px 4px; border-radius: var(--radius-sm);
-  border: 1.5px solid var(--border); background: var(--white);
-  font-size: 12px; font-weight: 500; color: var(--text);
+  flex: 1; padding: 12px 4px; border-radius: var(--radius);
+  border: none; background: var(--border-light);
+  font-size: 13px; font-weight: 600; color: var(--text);
   cursor: pointer; font-family: inherit; text-align: center;
-  transition: all .15s;
+  transition: all .15s; min-height: 44px;
 }
-.quick-action-btn:hover { border-color: var(--purple); color: var(--purple); }
-.quick-action-btn .qa-icon { font-size: 16px; display: block; margin-bottom: 2px; }
+.quick-action-btn:hover { background: var(--purple-light); color: var(--purple); }
+.quick-action-btn .qa-icon { font-size: 18px; display: block; margin-bottom: 4px; }
 
 /* ── Compose bar ─────────────────────────────────── */
 .compose-bar {
   position: fixed; bottom: 62px; left: 0; right: 0;
   max-width: 600px; margin: 0 auto;
-  padding: 4px 6px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  background: var(--bg);
+  padding: 6px 8px;
+  display: flex; flex-direction: column;
+  gap: 0;
+  background: var(--white);
+  border-top: 1px solid var(--border);
   z-index: 99;
 }
 .compose-avatar { display: none; }
@@ -1712,18 +1709,18 @@ KeepAliveNow</textarea>
 
 </div><!-- /app-shell -->
 
-<!-- ── Quick actions (organizer only) ──────────────── -->
-<div class="quick-actions" id="quickActions">
-  <button class="quick-action-btn" onclick="closeQuickActions();openModal('postModal')"><span class="qa-icon">&#9998;</span>Post</button>
-  <button class="quick-action-btn" onclick="closeQuickActions();openModal('dedModal')"><span class="qa-icon">&#10084;</span>Sponsorship</button>
-</div>
-
 <!-- ── Compose bar (fixed) ─────────────────────────── -->
 <div class="compose-bar">
-  <input class="compose-input" id="composeInput" type="text" placeholder="What's on your mind?" onclick="toggleQuickActions()" readonly />
-  <button onclick="showToast('Photo added!')" style="font-size:16px;background:none;border:none;cursor:pointer;padding:2px;color:var(--text-muted);">&#128247;</button>
-  <button class="mic-btn" onclick="showToast('Recording...')">&#127908;</button>
-  <button class="compose-btn" onclick="openModal('postModal')">&#10148;</button>
+  <div class="quick-actions" id="quickActions">
+    <button class="quick-action-btn" onclick="closeQuickActions();openModal('postModal')"><span class="qa-icon">&#9998;</span>Post</button>
+    <button class="quick-action-btn" onclick="closeQuickActions();openModal('dedModal')"><span class="qa-icon">&#10084;</span>Sponsorship</button>
+  </div>
+  <div style="display:flex;align-items:center;gap:4px;padding:2px 0;">
+    <input class="compose-input" id="composeInput" type="text" placeholder="What's on your mind?" onclick="toggleQuickActions()" readonly />
+    <button onclick="showToast('Photo added!')" style="font-size:16px;background:none;border:none;cursor:pointer;padding:2px;color:var(--text-muted);">&#128247;</button>
+    <button class="mic-btn" onclick="showToast('Recording...')">&#127908;</button>
+    <button class="compose-btn" onclick="openModal('postModal')">&#10148;</button>
+  </div>
 </div>
 
 <!-- ── Bottom nav ─────────────────────────────────── -->
