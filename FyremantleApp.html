@@ -2228,26 +2228,28 @@ function sidebarNav(tab) {
 function switchRole() {
   currentRole = (currentRole === 'organizer') ? 'member' : 'organizer';
   document.body.className = 'role-' + currentRole;
+
+  /* update toggle buttons */
   var btn = document.getElementById('roleToggle');
   if (btn) btn.textContent = (currentRole === 'organizer') ? 'Switch to member' : 'Switch to organizer';
   var sbtn = document.getElementById('sidebarRoleToggle');
   if (sbtn) sbtn.textContent = (currentRole === 'organizer') ? 'Switch to member' : 'Switch to organizer';
+
+  /* update subtitle with green pill */
   var sub = document.getElementById('adminGroupSub');
   if (sub) {
     var g = adminGroups[currentAdminGroup];
-    sub.textContent = (currentRole === 'organizer')
-      ? (g.stats.v1 + ' members \u00B7 organizer')
-      : (g.stats.v1 + ' members');
+    sub.textContent = g.stats.v1 + ' members';
   }
+
+  /* update compose placeholder */
   var compose = document.getElementById('composeInput');
   if (compose) {
-    var v = adminGroups[currentAdminGroup].vocab;
-    compose.placeholder = (currentRole === 'organizer') ? v.composePlaceholder : 'Share something...';
+    compose.placeholder = (currentRole === 'organizer') ? 'What\'s on your mind?' : 'Share something with the group...';
   }
-  /* re-apply feed-only visibility */
-  var onFeed = document.querySelector('#viewDiscussions.active');
-  document.getElementById('alertBanner').style.display = (onFeed && currentRole === 'organizer') ? '' : 'none';
-  renderDiscussions();
+
+  /* force back to Feed tab — member shouldn't be on Manage/Aliyah */
+  switchTab('discussions');
 }
 
 /* init role on load */
