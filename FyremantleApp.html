@@ -1709,7 +1709,7 @@ KeepAliveNow</textarea>
       <div style="font-size:24px;text-align:center;margin-bottom:6px;">&#9733;</div>
       <div class="ded-modal-title">Record an Aliyah</div>
       <div class="ded-modal-label">Who got the aliyah?</div>
-      <input class="ded-modal-input" id="aliyahMemberInput" type="text" placeholder="Start typing a name..." oninput="filterAliyahMembers(this.value)" autocomplete="off" />
+      <input class="ded-modal-input" id="aliyahMemberInput" type="text" placeholder="Name" oninput="filterAliyahMembers(this.value)" autocomplete="off" />
       <div id="aliyahMemberList" style="display:none;background:var(--white);border:1px solid var(--border);border-radius:var(--radius-sm);margin-top:-10px;margin-bottom:10px;max-height:150px;overflow-y:auto;"></div>
       <div class="ded-modal-label">Which aliyah?</div>
       <div class="ded-modal-occasions">
@@ -2270,16 +2270,13 @@ function filterAliyahMembers(val) {
   for (var i = 0; i < aliyahMembers.length; i++) {
     if (aliyahMembers[i].name.toLowerCase().indexOf(lower) !== -1) matches.push(aliyahMembers[i]);
   }
+  if (matches.length === 0) { list.style.display = 'none'; return; }
   var html = '';
   for (var i = 0; i < matches.length; i++) {
-    html += '<div onclick="pickAliyahMember(\'' + esc(matches[i].name) + '\')" style="padding:10px 12px;cursor:pointer;border-bottom:1px solid var(--border);font-size:14px;">';
-    html += '<div style="font-weight:500;color:var(--text);">' + esc(matches[i].name) + '</div>';
-    html += '<div style="font-size:12px;color:var(--text-muted);">' + esc(matches[i].email) + '</div>';
+    html += '<div onclick="pickAliyahMember(\'' + esc(matches[i].name) + '\')" style="padding:10px 12px;cursor:pointer;border-bottom:1px solid var(--border);font-size:15px;font-weight:500;color:var(--text);">';
+    html += esc(matches[i].name);
     html += '</div>';
   }
-  html += '<div onclick="pickAliyahMember(\'' + esc(val) + '\')" style="padding:10px 12px;cursor:pointer;font-size:14px;color:var(--purple);font-weight:500;">';
-  html += '+ Add "' + esc(val) + '" as new person';
-  html += '</div>';
   list.innerHTML = html;
   list.style.display = 'block';
 }
