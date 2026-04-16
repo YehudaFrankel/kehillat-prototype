@@ -1730,13 +1730,8 @@ KeepAliveNow</textarea>
         <button class="ded-occasion" onclick="selectAmount(this,'360')">$360</button>
         <input class="ded-modal-input" type="text" placeholder="Other" style="width:70px;margin:0;padding:6px 8px;font-size:13px;" />
       </div>
-      <div class="ded-modal-label">Card details</div>
-      <input class="ded-modal-input" type="text" placeholder="Card number" style="margin-bottom:6px;letter-spacing:1px;" />
-      <div style="display:flex;gap:6px;margin-bottom:14px;">
-        <input class="ded-modal-input" type="text" placeholder="MM / YY" style="flex:1;margin:0;" />
-        <input class="ded-modal-input" type="text" placeholder="CVC" style="width:80px;margin:0;" />
-      </div>
-      <button class="ded-modal-send" onclick="closeModal('aliyahModal');showToast('Aliyah recorded!')" style="background:var(--purple);">Pay &amp; record aliyah</button>
+      <button class="ded-modal-send" onclick="closeModal('aliyahModal');showToast('Aliyah recorded!')" style="background:var(--purple);">Record aliyah</button>
+      <button class="ded-modal-send" onclick="closeModal('aliyahModal');showToast('Bill sent!')" style="background:var(--white);color:var(--purple);border:1.5px solid var(--purple);margin-top:6px;">Record &amp; send bill</button>
       <button class="ded-modal-cancel" onclick="closeModal('aliyahModal')">Cancel</button>
     </div>
   </div>
