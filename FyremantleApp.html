@@ -63,21 +63,21 @@ body {
   background: var(--bg);
   min-height: 100vh;
   box-shadow: 0 0 20px rgba(0,0,0,.08);
-  padding-top: 48px;
+  padding-top: 50px;
 }
 
 /* ── Topbar ───────────────────────────────────────── */
 .topbar {
   position: fixed; top: 0; left: 0; right: 0;
   max-width: 600px; margin: 0 auto;
-  padding: 8px 16px;
+  padding: 6px 14px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   background: var(--wa-teal);
   z-index: 101;
 }
-.topbar .gn { font-size: 18px; font-weight: 600; color: #fff; }
+.topbar .gn { font-size: 16px; font-weight: 600; color: #fff; }
 .topbar .gs {
   font-size: 12px; color: rgba(255,255,255,.7); font-weight: 400;
   margin-top: 1px;
@@ -215,7 +215,7 @@ body {
   background: #fff;
   border-radius: 0 16px 16px 16px;
   padding: 6px 10px;
-  margin: 0 8px 4px 8px;
+  margin: 0 8px 8px 8px;
   box-shadow: 0 1px 1px rgba(0,0,0,.06);
   position: relative;
 }
@@ -498,7 +498,7 @@ body {
 
 /* ── Search (inline in topbar) ────────────────────── */
 .search-overlay {
-  display: none; position: fixed; top: 50px; left: 0; right: 0;
+  display: none; position: fixed; top: 44px; left: 0; right: 0;
   max-width: 600px; margin: 0 auto;
   background: var(--wa-teal); padding: 4px 10px 6px;
   align-items: center; gap: 6px; z-index: 100;
@@ -2448,7 +2448,12 @@ function toggleSearch() {
   }
 }
 
+var searchCloseTimer = null;
 function searchPosts(val) {
+  if (searchCloseTimer) clearTimeout(searchCloseTimer);
+  if (val) {
+    searchCloseTimer = setTimeout(function() { toggleSearch(); }, 3000);
+  }
   var cards = document.querySelectorAll('.discussion');
   var lower = val.toLowerCase();
   for (var i = 0; i < cards.length; i++) {
@@ -2706,9 +2711,11 @@ function renderDiscussions() {
     /* inject dedication card after 1st discussion (Carol's moment) */
     if (i === 0 && g.dedications && g.dedications.length > 0) {
       var ded = g.dedications[0];
+      var dedInit = ded.member.split(' ').map(function(w){return w[0]}).join('').substring(0,2);
+      var dedColor = ded.color || '#25D366';
       html += '<div class="discussion">';
       html += '<div class="discussion-top">';
-      html += '<div class="avatar" style="background:' + ded.color + '">' + esc(ded.initials) + '</div>';
+      html += '<div class="avatar" style="background:' + dedColor + '">' + esc(dedInit) + '</div>';
       html += '<div class="discussion-meta">';
       html += '<div class="discussion-meta-row">';
       html += '<span class="discussion-author" style="color:' + ded.color + '">' + esc(ded.member) + '</span>';
