@@ -2249,6 +2249,7 @@ function closeOrgMenus() {
 }
 document.addEventListener('click', function(e) {
   if (!e.target.classList.contains('org-menu-btn')) closeOrgMenus();
+  if (!e.target.closest('.quick-actions') && !e.target.closest('.compose-bar')) closeQuickActions();
 });
 
 /* ── Admin guard ──────────────────────────────────── */
@@ -2693,6 +2694,7 @@ function switchTab(tab) {
   var isFeed = (tab === 'discussions');
   var compose = document.querySelector('.compose-bar');
   if (compose) compose.style.display = isFeed ? '' : 'none';
+  closeQuickActions();
 
   /* show the target view */
   if (tab === 'discussions') {
