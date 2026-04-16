@@ -1388,6 +1388,40 @@ table.aliyah-table {
 </div>
 </div>
 
+<!-- ═══ SETTINGS VIEW ═══ -->
+<div class="view" id="viewSettings">
+  <div style="padding:16px 16px 8px;">
+    <span style="font-size:18px;font-weight:600;color:var(--text);">Settings</span>
+  </div>
+  <div style="background:var(--white);border-radius:var(--radius-sm);margin:0 8px 12px;padding:20px;box-shadow:0 1px 3px rgba(0,0,0,.06);">
+    <!-- Profile photo -->
+    <div style="text-align:center;margin-bottom:20px;">
+      <div id="settingsAvatar" style="width:80px;height:80px;border-radius:50%;background:var(--purple);color:var(--purple-light);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:600;margin:0 auto 10px;cursor:pointer;position:relative;" onclick="document.getElementById('photoUpload').click()">
+        DL
+        <div style="position:absolute;bottom:0;right:0;width:24px;height:24px;border-radius:50%;background:var(--white);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;">&#128247;</div>
+      </div>
+      <input type="file" id="photoUpload" accept="image/*" style="display:none;" onchange="showToast('Photo updated!')">
+      <div style="font-size:13px;color:var(--text-muted);">Tap to change photo</div>
+    </div>
+    <!-- Name -->
+    <div style="margin-bottom:14px;">
+      <label style="font-size:14px;font-weight:500;color:var(--text);display:block;margin-bottom:4px;">Display name</label>
+      <input type="text" value="David Levy" style="width:100%;font-size:16px;padding:12px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:inherit;outline:none;" onfocus="this.style.borderColor='var(--purple)'" onblur="this.style.borderColor='var(--border)'" />
+    </div>
+    <!-- Email -->
+    <div style="margin-bottom:14px;">
+      <label style="font-size:14px;font-weight:500;color:var(--text);display:block;margin-bottom:4px;">Email</label>
+      <input type="email" value="david.levy@email.com" style="width:100%;font-size:16px;padding:12px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:inherit;outline:none;" onfocus="this.style.borderColor='var(--purple)'" onblur="this.style.borderColor='var(--border)'" />
+    </div>
+    <!-- Phone -->
+    <div style="margin-bottom:20px;">
+      <label style="font-size:14px;font-weight:500;color:var(--text);display:block;margin-bottom:4px;">Phone</label>
+      <input type="tel" value="(555) 123-4567" style="width:100%;font-size:16px;padding:12px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:inherit;outline:none;" onfocus="this.style.borderColor='var(--purple)'" onblur="this.style.borderColor='var(--border)'" />
+    </div>
+    <button onclick="showToast('Settings saved!')" style="width:100%;padding:14px;border-radius:var(--radius-sm);border:none;background:var(--purple);color:#fff;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit;">Save changes</button>
+  </div>
+</div>
+
 <!-- ═══ MANAGE VIEW ═══ -->
 <div class="view" id="viewManage">
 <div class="two-col">
@@ -1613,9 +1647,10 @@ KeepAliveNow</textarea>
     </div>
     <button class="sidebar-menu-close" onclick="toggleSidebar()">&times;</button>
   </div>
+  <button class="sidebar-menu-item" onclick="sidebarNav('settings')">Settings</button>
   <button class="sidebar-menu-item org-only" onclick="sidebarNav('aliyah')">Aliyos</button>
   <button class="sidebar-menu-item org-only" onclick="sidebarNav('manage')">Members</button>
-  <div class="sidebar-divider org-only"></div>
+  <div class="sidebar-divider"></div>
   <select class="group-switcher" onchange="switchAdminGroup(this.value)">
     <option value="shul">Shul / Minyan</option>
     <option value="sports">Sports Team</option>
@@ -1654,6 +1689,12 @@ KeepAliveNow</textarea>
         <button class="ded-occasion" onclick="selectAmount(this,'180')">$180</button>
         <button class="ded-occasion" onclick="selectAmount(this,'360')">$360</button>
         <input id="dedCustomAmount" class="ded-modal-input" type="text" placeholder="Other" style="width:80px;margin:0;padding:8px 10px;font-size:14px;" />
+      </div>
+      <div class="ded-modal-label">Card details</div>
+      <input class="ded-modal-input" type="text" placeholder="Card number" style="margin-bottom:8px;letter-spacing:1px;" />
+      <div style="display:flex;gap:8px;margin-bottom:20px;">
+        <input class="ded-modal-input" type="text" placeholder="MM / YY" style="flex:1;margin:0;" />
+        <input class="ded-modal-input" type="text" placeholder="CVC" style="width:90px;margin:0;" />
       </div>
       <button class="ded-modal-send" onclick="submitDedication()" style="background:var(--green);">Pay &amp; submit sponsorship</button>
       <button class="ded-modal-cancel" onclick="closeModal('dedModal')">Cancel</button>
@@ -2666,6 +2707,8 @@ function switchTab(tab) {
   } else if (tab === 'newsletter') {
     document.getElementById('viewNewsletter').classList.add('active');
     renderNewsletterArchive();
+  } else if (tab === 'settings') {
+    document.getElementById('viewSettings').classList.add('active');
   } else if (tab === 'manage') {
     document.getElementById('viewManage').classList.add('active');
     renderRequests('memberRequests');
