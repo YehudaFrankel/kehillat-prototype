@@ -130,11 +130,14 @@ body {
   background: var(--wa-teal); z-index: 100;
 }
 .bnav-item {
-  cursor: pointer; padding: 4px 24px; background: none; border: none; font-family: inherit;
+  cursor: pointer; padding: 6px 16px; background: none; border: none; font-family: inherit;
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  min-height: 44px; justify-content: center;
 }
 .bnav-bar { display: none; }
-.bnav-label { font-size: 14px; color: rgba(255,255,255,.6); font-weight: 500; }
-.bnav-label-active { font-size: 14px; color: #fff; font-weight: 600; }
+.bnav-icon { font-size: 18px; line-height: 1; }
+.bnav-label { font-size: 11px; color: rgba(255,255,255,.6); font-weight: 500; }
+.bnav-label-active { font-size: 11px; color: #fff; font-weight: 600; }
 .bnav-dot {
   width: 5px; height: 5px; border-radius: 50%; background: var(--coral);
   position: absolute; top: -2px; right: -2px;
@@ -264,9 +267,9 @@ body {
   font-weight: 600;
 }
 .cat-badge {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
-  padding: 3px 10px;
+  padding: 4px 12px;
   border-radius: 20px;
   text-transform: uppercase;
   letter-spacing: 0.02em;
@@ -496,23 +499,25 @@ body {
   background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,.08) 100%);
 }
 
-/* ── Search (inline in topbar) ────────────────────── */
-.search-overlay {
-  display: none; position: fixed; top: 55px; left: 0; right: 0;
-  max-width: 600px; margin: 0 auto;
-  background: var(--wa-teal); padding: 4px 10px 6px;
-  align-items: center; gap: 6px; z-index: 100;
+/* ── Search (inline in Home view) ─────────────────── */
+.home-search {
+  margin: 8px 8px 0;
+  padding: 8px 14px;
+  background: var(--white);
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.04);
+  cursor: text;
 }
-.search-overlay.open { display: flex; }
-.search-input {
-  flex: 1; font-size: 14px; padding: 7px 12px;
-  border: none; border-radius: 20px;
-  font-family: inherit; outline: none; background: rgba(255,255,255,.9); color: var(--text);
+.home-search-icon { font-size: 14px; color: var(--text-muted); }
+.home-search-input {
+  border: none; outline: none; background: none;
+  font-size: 14px; font-family: inherit; color: var(--text);
+  width: 100%;
 }
-.search-close {
-  font-size: 16px; background: none; border: none;
-  cursor: pointer; color: rgba(255,255,255,.7); padding: 4px;
-}
+.home-search-input::placeholder { color: var(--text-muted); }
 
 /* ── Reactions ────────────────────────────────────── */
 .reaction-bar { display: flex; gap: 4px; margin-top: 2px; }
@@ -633,10 +638,10 @@ body {
 }
 .compose-avatar { display: none; }
 .compose-input {
-  flex: 1; font-size: 14px; padding: 8px 14px;
+  flex: 1; font-size: 15px; padding: 10px 16px;
   border-radius: 20px; border: none;
   background: #fff; color: var(--text); outline: none;
-  font-family: inherit;
+  font-family: inherit; min-height: 44px;
 }
 .compose-btn {
   width: 36px; height: 36px; border-radius: 50%;
@@ -728,10 +733,10 @@ body {
 }
 .reply-input {
   flex: 1;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 8px 12px;
-  font-size: 13px;
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 10px 16px;
+  font-size: 14px;
   font-family: inherit;
   outline: none;
 }
@@ -740,11 +745,12 @@ body {
   background: var(--purple);
   color: #fff;
   border: none;
-  border-radius: var(--radius-sm);
-  padding: 8px 16px;
-  font-size: 13px;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
+  min-height: 44px;
 }
 .reply-send:hover { background: var(--purple-dark); }
 
@@ -809,9 +815,13 @@ body {
   padding: 14px 16px;
   margin: 0 8px 8px;
   background: var(--white);
-  border-radius: var(--radius-sm);
-  box-shadow: 0 1px 3px rgba(0,0,0,.06);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  border-left: 4px solid var(--purple);
+  transition: box-shadow .15s, transform .15s;
 }
+.event-item:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+.event-item.warn-event { border-left-color: var(--amber); }
 .event-date-circle {
   text-align: center; min-width: 52px;
   background: var(--purple-light); border-radius: var(--radius-sm);
@@ -826,9 +836,9 @@ body {
 }
 .event-confirmed.warning { color: var(--amber-dark); font-weight: 500; }
 .event-manage-btn {
-  font-size: 13px; padding: 8px 18px; border-radius: 20px;
+  font-size: 14px; padding: 10px 22px; border-radius: 20px;
   border: none; cursor: pointer; font-family: inherit;
-  font-weight: 600; transition: all .15s;
+  font-weight: 600; transition: all .15s; min-height: 44px;
 }
 .event-manage-btn.rsvp-btn { background: var(--green); color: #fff; }
 .event-manage-btn.rsvp-btn:hover { background: var(--green-dark); }
@@ -1015,21 +1025,6 @@ table.aliyah-table {
   margin-top: 10px;
 }
 
-/* ── Dedications ──────────────────────────────────── */
-.dedication-card {
-  padding: 16px 0;
-  border-bottom: 1px solid var(--border-light);
-}
-.dedication-card:last-child { border-bottom: none; }
-.ded-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-.ded-member { font-size: 14px; font-weight: 600; }
-.ded-date { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-.ded-text { font-size: 14px; color: var(--text-secondary); margin-top: 6px; }
-
 /* ── Modals ───────────────────────────────────────── */
 .modal-overlay {
   position: fixed;
@@ -1091,10 +1086,11 @@ table.aliyah-table {
   color: #fff;
   border: none;
   border-radius: var(--radius-sm);
-  padding: 10px 24px;
-  font-size: 14px;
+  padding: 12px 28px;
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
+  min-height: 44px;
 }
 .btn-primary:hover { background: var(--purple-dark); }
 .btn-secondary {
@@ -1102,8 +1098,8 @@ table.aliyah-table {
   color: var(--text-secondary);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  padding: 10px 24px;
-  font-size: 14px;
+  padding: 12px 28px;
+  font-size: 15px;
   font-weight: 500;
   cursor: pointer;
 }
@@ -1375,7 +1371,7 @@ table.aliyah-table {
     <div class="gs" id="adminGroupSub">84 members</div>
   </div>
   <div class="web-nav">
-    <button class="wna" data-tab-key="discussions" onclick="switchTab('discussions')">Feed</button>
+    <button class="wna" data-tab-key="discussions" onclick="switchTab('discussions')">Home</button>
     <button class="wn" data-tab-key="events" onclick="switchTab('events')">Events</button>
     <button class="wn" data-tab-key="dedications" onclick="switchTab('dedications')">Sponsors</button>
     <button class="wn" data-tab-key="aliyah" onclick="switchTab('aliyah')">Aliyos</button>
@@ -1383,13 +1379,7 @@ table.aliyah-table {
     <button class="wn mem-only" onclick="switchTab('discussions')">Me</button>
   </div>
   <div style="display:flex;align-items:center;gap:10px;">
-    <button onclick="toggleSearch()" style="font-size:18px;background:none;border:none;cursor:pointer;color:rgba(255,255,255,.7);padding:4px;">&#128269;</button>
     <div class="av" id="adminAvatar" onclick="toggleSidebar()" style="cursor:pointer;">DL</div>
-  </div>
-  <!-- Search overlay (inside topbar) -->
-  <div class="search-overlay" id="searchOverlay">
-    <input class="search-input" id="searchInput" type="text" placeholder="Search posts..." oninput="searchPosts(this.value)" />
-    <button class="search-close" onclick="toggleSearch()">&times;</button>
   </div>
 </div>
 
@@ -1400,8 +1390,14 @@ table.aliyah-table {
 <!-- ═══ DISCUSSIONS VIEW ═══ -->
 <div class="view active" id="viewDiscussions">
 
+<!-- Search bar -->
+<div class="home-search" onclick="document.getElementById('searchInput').focus()">
+  <span class="home-search-icon">&#128269;</span>
+  <input class="home-search-input" id="searchInput" type="text" placeholder="Search..." oninput="searchPosts(this.value)" />
+</div>
+
 <!-- Discussions list -->
-<div id="discussionsList" style="margin-top:15px;"></div>
+<div id="discussionsList" style="margin-top:8px;"></div>
 
 <!-- Subtle dedication link (Carol's safety net) -->
 <div style="text-align:center;padding:16px 0 8px;">
@@ -1732,19 +1728,27 @@ KeepAliveNow</textarea>
   <button class="compose-btn" onclick="openModal('postModal')">&#10148;</button>
 </div>
 
-<!-- ── Bottom nav (3 tabs) ──────────────────────────── -->
+<!-- ── Bottom nav ─────────────────────────────────── -->
 <div class="bnav" id="bottomNav">
   <button class="bnav-item" data-tab-key="discussions" onclick="switchTab('discussions')">
-    <div class="bnav-bar" style="background:#fff;"></div>
-    <div class="bnav-label-active">Feed</div>
-  </button>
-  <button class="bnav-item" data-tab-key="status" onclick="switchTab('status')">
-    <div class="bnav-bar" style="background:transparent;"></div>
-    <div class="bnav-label">Status</div>
+    <div class="bnav-icon">&#127968;</div>
+    <div class="bnav-label-active">Home</div>
   </button>
   <button class="bnav-item" data-tab-key="events" onclick="switchTab('events')">
-    <div class="bnav-bar" style="background:transparent;"></div>
+    <div class="bnav-icon">&#128197;</div>
     <div class="bnav-label">Events</div>
+  </button>
+  <button class="bnav-item bnav-shul org-only" data-tab-key="aliyah" onclick="switchTab('aliyah')" style="display:none;">
+    <div class="bnav-icon">&#9734;</div>
+    <div class="bnav-label">Aliyos</div>
+  </button>
+  <button class="bnav-item bnav-shul" data-tab-key="dedications" onclick="switchTab('dedications')" style="display:none;">
+    <div class="bnav-icon">&#10084;</div>
+    <div class="bnav-label">Sponsors</div>
+  </button>
+  <button class="bnav-item" data-tab-key="status" onclick="switchTab('status')">
+    <div class="bnav-icon">&#9675;</div>
+    <div class="bnav-label">Status</div>
   </button>
 </div>
 
@@ -1868,6 +1872,30 @@ KeepAliveNow</textarea>
   </div>
 </div>
 
+<!-- Notify member modal -->
+<div class="modal-overlay" id="notifyMemberModal">
+  <div class="modal" style="max-width:440px;">
+    <div class="modal-title">Notify member</div>
+    <div style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;" id="notifyMemberSub"></div>
+    <label>Send via</label>
+    <div style="display:flex;gap:8px;margin-bottom:14px;">
+      <button class="ded-occasion selected" onclick="selectNotifyMethod(this)" data-method="email">Email</button>
+      <button class="ded-occasion" onclick="selectNotifyMethod(this)" data-method="text">Text</button>
+      <button class="ded-occasion" onclick="selectNotifyMethod(this)" data-method="both">Both</button>
+    </div>
+    <label>Email</label>
+    <input type="email" id="notifyEmail" placeholder="member@email.com" />
+    <label>Phone</label>
+    <input type="tel" id="notifyPhone" placeholder="(555) 123-4567" />
+    <label>Message</label>
+    <textarea id="notifyMessage" style="min-height:80px;"></textarea>
+    <div class="modal-actions">
+      <button class="btn-primary" onclick="sendNotification()">Send</button>
+      <button class="btn-secondary" onclick="closeModal('notifyMemberModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
@@ -1876,7 +1904,7 @@ KeepAliveNow</textarea>
 var adminGroups = {
   shul: {
     name: 'Kehilat Shalom',
-    vocab: { feedTitle: 'Discussions', composePlaceholder: 'Post an announcement...', eventsTitle: 'Events', eventsAdd: '+ New event', dedTitle: 'Submitted Dedications', requestsTitle: 'Member Requests', navFeed: 'Feed', navEvents: 'Events', navSponsors: 'Sponsors', navAliyos: 'Aliyos', navMembers: 'Members' },
+    vocab: { feedTitle: 'Discussions', composePlaceholder: 'Post an announcement...', eventsTitle: 'Events', eventsAdd: '+ New event', dedTitle: 'Submitted Dedications', requestsTitle: 'Member Requests', navFeed: 'Home', navEvents: 'Events', navSponsors: 'Sponsors', navAliyos: 'Aliyos', navMembers: 'Members' },
     tabs: { aliyah: 'Aliyah / Entries', dedications: 'Dedications' },
     stats: { s1: 'Members', v1: '84', sub1: '+3 this month', s2: 'Contributions', v2: '$2,340', sub2: '+$480 this week', s3: 'Active discussions', v3: '8', sub3: '31 replies today', s4: 'Dues pending', v4: '11' },
     cats: { torah: 'Torah', current: 'Current events', community: 'Community', needs: 'Needs response' },
@@ -1891,9 +1919,9 @@ var adminGroups = {
       { title: '3 member requests', sub: 'Waiting since Dec 10', btn: 'Review requests', action: 'requestsModal' }
     ],
     events: [
-      { name: 'Shabbat morning', date: 'Dec 18', status: '22 confirmed' },
-      { name: 'Thursday shiur', date: 'Dec 19', status: '14 confirmed' },
-      { name: 'Chanukah party', date: 'Dec 28', status: 'no sponsor yet', warn: true }
+      { name: 'Shabbat morning', date: 'Dec 18', time: 'Shacharit 9:00 AM \u00B7 Musaf 10:30 \u00B7 Kiddush 11:30', status: '22 confirmed' },
+      { name: 'Thursday shiur', date: 'Dec 19', time: '7:30 PM \u00B7 Beit Midrash', status: '14 confirmed' },
+      { name: 'Chanukah party', date: 'Dec 28', time: '5:00 PM \u00B7 Social Hall', status: 'no sponsor yet', warn: true }
     ],
     discussions: [
       { id:1, pinned:true, author:'You', initials:'YF', color:'#6B5CE7', category:'community', time:'3 days ago', body:'Annual campaign is open through January 15. Please consider contributing -- every amount makes a difference for our kehillah.', link:null, replies:[{author:'Sarah L.',initials:'SL',color:'#4CAF7D',text:'Thank you for organizing this!',time:'2 days ago'},{author:'David C.',initials:'DC',color:'#E5A84B',text:'Happy to contribute. Is there a link?',time:'1 day ago'}] },
@@ -1934,7 +1962,7 @@ var adminGroups = {
   },
   sports: {
     name: 'Maccabi Mets',
-    vocab: { feedTitle: 'Locker Room', composePlaceholder: 'Post to the team...', eventsTitle: 'Games & Practice', eventsAdd: '+ New game', dedTitle: 'Sponsorships', requestsTitle: 'Player Requests', navFeed: 'Feed', navEvents: 'Games', navSponsors: 'Sponsors', navAliyos: 'Roster', navMembers: 'Players' },
+    vocab: { feedTitle: 'Locker Room', composePlaceholder: 'Post to the team...', eventsTitle: 'Games & Practice', eventsAdd: '+ New game', dedTitle: 'Sponsorships', requestsTitle: 'Player Requests', navFeed: 'Home', navEvents: 'Games', navSponsors: 'Sponsors', navAliyos: 'Roster', navMembers: 'Players' },
     tabs: { aliyah: 'Roster / Fees', dedications: 'Sponsorships' },
     stats: { s1: 'Players', v1: '24', sub1: '+2 this month', s2: 'Sponsorships', v2: '$1,850', sub2: '+$200 this week', s3: 'Active threads', v3: '5', sub3: '18 replies today', s4: 'Fees pending', v4: '6' },
     cats: { torah: 'Game talk', current: 'Strategy', community: 'Off-field', needs: 'Needs help' },
@@ -1949,9 +1977,9 @@ var adminGroups = {
       { title: '2 join requests', sub: 'Waiting since Dec 11', btn: 'Review requests', action: 'requestsModal' }
     ],
     events: [
-      { name: 'vs Hawks (Home)', date: 'Dec 14', status: '18 confirmed' },
-      { name: 'Practice', date: 'Dec 18', status: '12 confirmed' },
-      { name: 'vs Eagles (Away)', date: 'Dec 22', status: 'need carpool', warn: true }
+      { name: 'vs Hawks (Home)', date: 'Dec 14', time: '2:00 PM \u00B7 Memorial Field', status: '18 confirmed' },
+      { name: 'Practice', date: 'Dec 18', time: '6:30 PM \u00B7 Central Park', status: '12 confirmed' },
+      { name: 'vs Eagles (Away)', date: 'Dec 22', time: '3:00 PM \u00B7 Eagle Stadium', status: 'need carpool', warn: true }
     ],
     discussions: [
       { id:1, pinned:true, author:'Coach Mike', initials:'CM', color:'#4CAF7D', category:'community', time:'1 day ago', body:'Season fees are due by Dec 20. Venmo @maccabi-mets or pay at practice. $150 per player.', link:null, replies:[{author:'Jake R.',initials:'JR',color:'#E5A84B',text:'Sent!',time:'20 hours ago'}] },
@@ -1985,7 +2013,7 @@ var adminGroups = {
   },
   learning: {
     name: 'Daf Yomi Chevra',
-    vocab: { feedTitle: 'Study Hall', composePlaceholder: 'Share with the chevra...', eventsTitle: 'Sessions', eventsAdd: '+ New session', dedTitle: 'Contributions', requestsTitle: 'Join Requests', navFeed: 'Feed', navEvents: 'Sessions', navSponsors: 'Supporters', navAliyos: 'Attendance', navMembers: 'Members' },
+    vocab: { feedTitle: 'Study Hall', composePlaceholder: 'Share with the chevra...', eventsTitle: 'Sessions', eventsAdd: '+ New session', dedTitle: 'Contributions', requestsTitle: 'Join Requests', navFeed: 'Home', navEvents: 'Sessions', navSponsors: 'Supporters', navAliyos: 'Attendance', navMembers: 'Members' },
     tabs: { aliyah: 'Attendance', dedications: 'Contributions' },
     stats: { s1: 'Members', v1: '18', sub1: '+1 this month', s2: 'Contributions', v2: '$920', sub2: '+$72 this week', s3: 'Active threads', v3: '4', sub3: '15 replies today', s4: 'Streak at risk', v4: '3' },
     cats: { torah: 'Gemara', current: 'Halacha', community: 'General', needs: 'Resources' },
@@ -2000,9 +2028,9 @@ var adminGroups = {
       { title: '1 join request', sub: 'Waiting since Dec 12', btn: 'Review requests', action: 'requestsModal' }
     ],
     events: [
-      { name: 'Evening Daf', date: 'Dec 14', status: '14 confirmed' },
-      { name: 'Shabbat Review', date: 'Dec 21', status: '8 confirmed' },
-      { name: 'Siyum Celebration', date: 'Dec 28', status: 'need venue', warn: true }
+      { name: 'Evening Daf', date: 'Dec 14', time: '8:00 PM \u00B7 Zoom', status: '14 confirmed' },
+      { name: 'Shabbat Review', date: 'Dec 21', time: '4:00 PM \u00B7 Rabbi\'s house', status: '8 confirmed' },
+      { name: 'Siyum Celebration', date: 'Dec 28', time: '7:00 PM', status: 'need venue', warn: true }
     ],
     discussions: [
       { id:1, pinned:true, author:'Rav Moshe', initials:'RM', color:'#6B5CE7', category:'torah', time:'1 day ago', body:'This week we start the sugya on shomrim. Prepare the Rashba on daf 42a before the shiur.', link:null, replies:[{author:'Ari K.',initials:'AK',color:'#4CAF7D',text:'Will do. The Steinsaltz app has good notes on this.',time:'20 hours ago'}] },
@@ -2034,7 +2062,7 @@ var adminGroups = {
   },
   chavurah: {
     name: 'Bayit Chadash',
-    vocab: { feedTitle: 'Chat', composePlaceholder: 'Post to the group...', eventsTitle: 'Gatherings', eventsAdd: '+ New gathering', dedTitle: 'Dedications', requestsTitle: 'Member Requests', navFeed: 'Feed', navEvents: 'Events', navSponsors: 'Sponsors', navAliyos: 'Hosting', navMembers: 'Families' },
+    vocab: { feedTitle: 'Chat', composePlaceholder: 'Post to the group...', eventsTitle: 'Gatherings', eventsAdd: '+ New gathering', dedTitle: 'Dedications', requestsTitle: 'Member Requests', navFeed: 'Home', navEvents: 'Events', navSponsors: 'Sponsors', navAliyos: 'Hosting', navMembers: 'Families' },
     tabs: { aliyah: 'Hosting / Duties', dedications: 'Dedications' },
     stats: { s1: 'Families', v1: '12', sub1: '+1 this month', s2: 'Contributions', v2: '$680', sub2: '+$120 this week', s3: 'Active threads', v3: '4', sub3: '11 replies today', s4: 'Hosts needed', v4: '3' },
     cats: { torah: 'Torah', current: 'Logistics', community: 'Community', needs: 'Volunteers' },
@@ -2049,9 +2077,9 @@ var adminGroups = {
       { title: '1 join request', sub: 'Waiting since Dec 11', btn: 'Review requests', action: 'requestsModal' }
     ],
     events: [
-      { name: 'Shabbat Dinner', date: 'Dec 14', status: '8 families' },
-      { name: 'Chanukah Potluck', date: 'Dec 18', status: '6 families' },
-      { name: 'Planning Meeting', date: 'Dec 22', status: 'need host', warn: true }
+      { name: 'Shabbat Dinner', date: 'Dec 14', time: '6:30 PM \u00B7 Cohen\'s home', status: '8 families' },
+      { name: 'Chanukah Potluck', date: 'Dec 18', time: '5:00 PM \u00B7 Community room', status: '6 families' },
+      { name: 'Planning Meeting', date: 'Dec 22', time: '8:00 PM \u00B7 Zoom', status: 'need host', warn: true }
     ],
     discussions: [
       { id:1, pinned:true, author:'Rivka S.', initials:'RS', color:'#6B5CE7', category:'community', time:'2 days ago', body:'Chanukah round-robin hosting sign-up! Each family hosts one night. Reply with your preferred date.', link:null, replies:[{author:'Ezra N.',initials:'EN',color:'#4CAF7D',text:'We can do the first night!',time:'1 day ago'},{author:'Tali F.',initials:'TF',color:'#E5A84B',text:'We will take night 3.',time:'1 day ago'}] },
@@ -2082,7 +2110,7 @@ var adminGroups = {
   },
   professional: {
     name: 'Tech Leaders NYC',
-    vocab: { feedTitle: 'Forum', composePlaceholder: 'Start a discussion...', eventsTitle: 'Meetups', eventsAdd: '+ New meetup', dedTitle: 'Sponsorships', requestsTitle: 'Join Requests', navFeed: 'Feed', navEvents: 'Meetups', navSponsors: 'Sponsors', navAliyos: 'Directory', navMembers: 'Members' },
+    vocab: { feedTitle: 'Forum', composePlaceholder: 'Start a discussion...', eventsTitle: 'Meetups', eventsAdd: '+ New meetup', dedTitle: 'Sponsorships', requestsTitle: 'Join Requests', navFeed: 'Home', navEvents: 'Meetups', navSponsors: 'Sponsors', navAliyos: 'Directory', navMembers: 'Members' },
     tabs: { aliyah: 'Member Directory', dedications: 'Sponsorships' },
     stats: { s1: 'Members', v1: '156', sub1: '+12 this month', s2: 'Sponsorships', v2: '$4,200', sub2: '+$800 this week', s3: 'Active threads', v3: '14', sub3: '47 replies today', s4: 'Pending apps', v4: '8' },
     cats: { torah: 'Industry', current: 'Careers', community: 'Networking', needs: 'Resources' },
@@ -2097,9 +2125,9 @@ var adminGroups = {
       { title: '5 join requests', sub: 'Waiting since Dec 8', btn: 'Review requests', action: 'requestsModal' }
     ],
     events: [
-      { name: 'Monthly Meetup', date: 'Jan 15', status: '42 confirmed' },
-      { name: 'AI Workshop', date: 'Jan 22', status: '28 confirmed' },
-      { name: 'Happy Hour', date: 'Feb 1', status: 'need venue', warn: true }
+      { name: 'Monthly Meetup', date: 'Jan 15', time: '12:00 PM \u00B7 WeWork Midtown', status: '42 confirmed' },
+      { name: 'AI Workshop', date: 'Jan 22', time: '6:00 PM \u00B7 NYU Tandon', status: '28 confirmed' },
+      { name: 'Happy Hour', date: 'Feb 1', time: '5:30 PM', status: 'need venue', warn: true }
     ],
     discussions: [
       { id:1, pinned:true, author:'Sarah Chen', initials:'SC', color:'#534AB7', category:'community', time:'1 day ago', body:'Reminder: annual membership renewal is open. $200 gets you access to all meetups, directory, and Slack. Renew at the next event or online.', link:null, replies:[{author:'Mike J.',initials:'MJ',color:'#0F6E56',text:'Done! Great value.',time:'20 hours ago'}] },
@@ -2134,7 +2162,7 @@ var adminGroups = {
   },
   friends: {
     name: 'The Friday Crew',
-    vocab: { feedTitle: 'Group Chat', composePlaceholder: 'Say something...', eventsTitle: 'Plans', eventsAdd: '+ Make a plan', dedTitle: 'Group Fund', requestsTitle: 'Invites', navFeed: 'Feed', navEvents: 'Plans', navSponsors: 'Fund', navAliyos: 'Memories', navMembers: 'Friends' },
+    vocab: { feedTitle: 'Group Chat', composePlaceholder: 'Say something...', eventsTitle: 'Plans', eventsAdd: '+ Make a plan', dedTitle: 'Group Fund', requestsTitle: 'Invites', navFeed: 'Home', navEvents: 'Plans', navSponsors: 'Fund', navAliyos: 'Memories', navMembers: 'Friends' },
     tabs: { aliyah: 'Memories / Photos', dedications: 'Group Fund' },
     stats: { s1: 'Friends', v1: '11', sub1: '+1 this month', s2: 'Group fund', v2: '$340', sub2: '+$60 this week', s3: 'Active chats', v3: '6', sub3: '22 messages today', s4: 'RSVPs needed', v4: '4' },
     cats: { torah: 'Plans', current: 'Recommendations', community: 'Random', needs: 'Help' },
@@ -2149,9 +2177,9 @@ var adminGroups = {
       { title: '1 friend wants to join', sub: 'Referred by Jake', btn: 'Review', action: 'requestsModal' }
     ],
     events: [
-      { name: 'Friday dinner', date: 'Dec 20', status: '7 confirmed' },
-      { name: 'Game night', date: 'Dec 27', status: '9 confirmed' },
-      { name: 'Ski trip', date: 'Jan 10', status: '4 unpaid', warn: true }
+      { name: 'Friday dinner', date: 'Dec 20', time: '7:00 PM \u00B7 Jake\'s place', status: '7 confirmed' },
+      { name: 'Game night', date: 'Dec 27', time: '8:00 PM \u00B7 TBD', status: '9 confirmed' },
+      { name: 'Ski trip', date: 'Jan 10', time: 'All day \u00B7 Hunter Mountain', status: '4 unpaid', warn: true }
     ],
     discussions: [
       { id:1, pinned:true, author:'Jake M.', initials:'JM', color:'#534AB7', category:'torah', time:'2 hours ago', body:'Friday dinner at Lucia\'s? 7:30 PM. Need a headcount by Thursday so I can book.', link:null, replies:[{author:'Emma T.',initials:'ET',color:'#0F6E56',text:'In! Can we do 8 PM?',time:'1 hour ago'},{author:'Noah R.',initials:'NR',color:'#BA7517',text:'In. 7:30 works.',time:'45 min ago'}] },
@@ -2183,7 +2211,7 @@ var adminGroups = {
   },
   other: {
     name: 'Greenwood HOA',
-    vocab: { feedTitle: 'Announcements', composePlaceholder: 'Post an update...', eventsTitle: 'Meetings & Events', eventsAdd: '+ New event', dedTitle: 'Contributions', requestsTitle: 'New Residents', navFeed: 'Feed', navEvents: 'Calendar', navSponsors: 'Funds', navAliyos: 'Directory', navMembers: 'Residents' },
+    vocab: { feedTitle: 'Announcements', composePlaceholder: 'Post an update...', eventsTitle: 'Meetings & Events', eventsAdd: '+ New event', dedTitle: 'Contributions', requestsTitle: 'New Residents', navFeed: 'Home', navEvents: 'Calendar', navSponsors: 'Funds', navAliyos: 'Directory', navMembers: 'Residents' },
     tabs: { aliyah: 'Resident Directory', dedications: 'Community Fund' },
     stats: { s1: 'Households', v1: '67', sub1: '+2 this month', s2: 'Fund balance', v2: '$8,420', sub2: '+$1,200 this quarter', s3: 'Open threads', v3: '5', sub3: '14 replies today', s4: 'Dues overdue', v4: '9' },
     cats: { torah: 'Announcements', current: 'Maintenance', community: 'Safety', needs: 'Social' },
@@ -2198,9 +2226,9 @@ var adminGroups = {
       { title: '2 new resident registrations', sub: 'Moved in Dec 1', btn: 'Review', action: 'requestsModal' }
     ],
     events: [
-      { name: 'Board meeting', date: 'Jan 8', status: '5 confirmed' },
-      { name: 'Block party', date: 'Jan 20', status: '23 confirmed' },
-      { name: 'Pool cleanup day', date: 'Feb 1', status: 'need volunteers', warn: true }
+      { name: 'Board meeting', date: 'Jan 8', time: '7:00 PM \u00B7 Clubhouse', status: '5 confirmed' },
+      { name: 'Block party', date: 'Jan 20', time: '2:00 PM \u00B7 Main St', status: '23 confirmed' },
+      { name: 'Pool cleanup day', date: 'Feb 1', time: '9:00 AM \u00B7 Community pool', status: 'need volunteers', warn: true }
     ],
     discussions: [
       { id:1, pinned:true, author:'Board', initials:'BD', color:'#534AB7', category:'torah', time:'3 days ago', body:'Reminder: Q1 2025 dues ($450) are due January 15. Pay online or mail a check. Late fees apply after Jan 31.', link:null, replies:[{author:'Karen P.',initials:'KP',color:'#0F6E56',text:'Paid online today.',time:'2 days ago'}] },
@@ -2286,6 +2314,14 @@ function switchAdminGroup(type) {
       else allNavBtns[i].textContent = navMap[key];
     }
   }
+
+  /* shul-only bottom nav tabs (Aliyos + Sponsors) */
+  var shulBtns = document.querySelectorAll('.bnav-shul');
+  var isShul = (type === 'shul');
+  for (var j = 0; j < shulBtns.length; j++) {
+    shulBtns[j].style.display = isShul ? '' : 'none';
+  }
+  applyRole();
 
   /* filter pills */
   var pills = document.querySelectorAll('.pill');
@@ -2437,25 +2473,15 @@ function closeStatus() {
 }
 
 /* ── Search ───────────────────────────────────────── */
-function toggleSearch() {
-  var overlay = document.getElementById('searchOverlay');
-  var main = document.querySelector('.main');
-  overlay.classList.toggle('open');
-  if (overlay.classList.contains('open')) {
-    document.getElementById('searchInput').focus();
-    if (main) main.style.paddingTop = '40px';
-  } else {
-    document.getElementById('searchInput').value = '';
-    searchPosts('');
-    if (main) main.style.paddingTop = '';
-  }
-}
-
 var searchCloseTimer = null;
 function searchPosts(val) {
   if (searchCloseTimer) clearTimeout(searchCloseTimer);
   if (val) {
-    searchCloseTimer = setTimeout(function() { toggleSearch(); }, 3000);
+    searchCloseTimer = setTimeout(function() {
+      document.getElementById('searchInput').value = '';
+      document.getElementById('searchInput').blur();
+      searchPosts('');
+    }, 3000);
   }
   var cards = document.querySelectorAll('.discussion');
   var lower = val.toLowerCase();
@@ -2768,6 +2794,7 @@ function renderDiscussions() {
       html += '<div class="discussion-time">2 days ago</div></div></div>';
       html += '<div class="feed-event-card" onclick="switchTab(\'events\')" style="cursor:pointer">';
       html += '<div><div class="feed-event-name">' + esc(ev.name) + ' &mdash; ' + esc(ev.date) + '</div>';
+      if (ev.time) html += '<div class="feed-event-sub">' + esc(ev.time) + '</div>';
       html += '<div class="feed-event-sub">' + (ev.warn ? 'No sponsor yet' : esc(ev.status)) + '</div></div>';
       html += '<button class="feed-event-btn" onclick="switchTab(\'events\')">' + (isAdmin() ? 'Manage' : 'RSVP') + '</button>';
       html += '</div></div>';
@@ -2796,14 +2823,14 @@ function renderAliyah() {
     html += '</div></div>';
     if (a.dedication) html += '<div style="font-size:13px;color:var(--text-muted);margin-top:2px;margin-left:46px;">' + esc(a.dedication) + '</div>';
     if (a.status !== 'paid' && isAdmin()) {
-      html += '<div style="margin-top:6px;margin-left:46px;">';
-      html += '<button onclick="markPaid(' + i + ')" style="font-size:13px;color:var(--purple);background:none;border:none;cursor:pointer;font-family:inherit;font-weight:500;padding:0;">Send bill</button>';
-      html += ' &middot; <button onclick="markPaid(' + i + ')" style="font-size:13px;color:var(--green);background:none;border:none;cursor:pointer;font-family:inherit;font-weight:500;padding:0;">Mark paid</button>';
+      html += '<div class="discussion-footer" style="margin-left:46px;">';
+      html += '<button class="disc-btn reply-btn" onclick="openNotifyMember(\'' + esc(a.member) + '\',\'' + esc(a.amount) + '\')">Notify member</button>';
+      html += '<button class="disc-btn" onclick="markPaid(' + i + ')" style="color:var(--green);">Mark paid</button>';
       html += '</div>';
     }
     html += '</div>';
   }
-  if (aliyahData.length === 0) html = '<div style="padding:16px;text-align:center;color:var(--text-muted);font-size:14px;">No aliyos recorded yet.</div>';
+  if (aliyahData.length === 0) html = '<div style="padding:32px 16px;text-align:center;color:var(--text-muted);font-size:15px;">Nothing here yet. Tap + to add the first one.</div>';
   el.innerHTML = html;
 }
 
@@ -2812,24 +2839,31 @@ function renderDedications() {
   var html = '';
   for (var i = 0; i < dedications.length; i++) {
     var d = dedications[i];
-    var statusColor = d.status === 'paid' ? 'var(--green)' : 'var(--amber)';
+    var statusBg = d.status === 'paid' ? 'var(--green-light)' : 'var(--amber-light)';
+    var statusFg = d.status === 'paid' ? 'var(--green-dark)' : 'var(--amber-dark)';
     var statusText = d.status === 'paid' ? '\u2714 Paid' : 'Unpaid';
-    html += '<div style="background:var(--white);border-radius:var(--radius-sm);padding:12px 14px;margin:0 8px 8px;box-shadow:0 1px 3px rgba(0,0,0,.06);">';
-    html += '<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:4px;">';
-    html += '<div><div style="font-size:15px;font-weight:600;">' + esc(d.member) + '</div>';
-    html += '<div style="font-size:13px;color:var(--text-muted);">' + esc(d.date) + '</div></div>';
-    html += '<div style="font-size:12px;font-weight:500;color:' + statusColor + ';">' + statusText + '</div>';
+    var dedInit = d.member.split(' ').map(function(w){return w[0]}).join('').substring(0,2);
+    var dedColor = d.color || '#25D366';
+    html += '<div class="discussion">';
+    html += '<div class="discussion-top">';
+    html += '<div class="avatar" style="background:' + dedColor + '">' + esc(dedInit) + '</div>';
+    html += '<div class="discussion-meta">';
+    html += '<div class="discussion-meta-row">';
+    html += '<span class="discussion-author">' + esc(d.member) + '</span>';
+    html += '<span class="cat-badge" style="background:' + statusBg + ';color:' + statusFg + ';">' + statusText + '</span>';
     html += '</div>';
-    html += '<div style="font-size:14px;color:var(--text);line-height:1.4;">' + esc(d.text) + '</div>';
+    html += '<div class="discussion-time">' + esc(d.date) + '</div>';
+    html += '</div></div>';
+    html += '<div class="discussion-body">' + esc(d.text) + '</div>';
     if (d.status !== 'paid' && isAdmin()) {
-      html += '<div style="margin-top:6px;">';
-      html += '<button onclick="showToast(\'Bill sent!\')" style="font-size:13px;color:var(--purple);background:none;border:none;cursor:pointer;font-family:inherit;font-weight:500;padding:0;">Send bill</button>';
-      html += ' \u00B7 <button onclick="showToast(\'Marked as paid\')" style="font-size:13px;color:var(--green);background:none;border:none;cursor:pointer;font-family:inherit;font-weight:500;padding:0;">Mark paid</button>';
+      html += '<div class="discussion-footer">';
+      html += '<button class="disc-btn reply-btn" onclick="showToast(\'Notification sent!\')">Notify member</button>';
+      html += '<button class="disc-btn" onclick="showToast(\'Marked as paid\')" style="color:var(--green);">Mark paid</button>';
       html += '</div>';
     }
     html += '</div>';
   }
-  if (dedications.length === 0) html = '<div style="padding:16px;text-align:center;color:var(--text-muted);font-size:14px;">No sponsorships yet.</div>';
+  if (dedications.length === 0) html = '<div style="padding:32px 16px;text-align:center;color:var(--text-muted);font-size:15px;">No sponsorships yet. Be the first to honor someone.</div>';
   el.innerHTML = html;
 }
 
@@ -2840,10 +2874,11 @@ function renderEvents() {
   var html = '';
   for (var i = 0; i < events.length; i++) {
     var ev = events[i];
-    html += '<div class="event-item">';
+    html += '<div class="event-item' + (ev.warn ? ' warn-event' : '') + '">';
     html += '<div class="event-date-circle"><div class="event-date-day">' + esc(ev.date.split(' ')[1]) + '</div>';
     html += '<div class="event-date-mo">' + esc(ev.date.split(' ')[0]) + '</div></div>';
     html += '<div class="event-info"><div class="event-name">' + esc(ev.name) + '</div>';
+    if (ev.time) html += '<div style="font-size:12px;color:var(--text-muted);margin-top:1px;">' + esc(ev.time) + '</div>';
     html += '<div class="event-confirmed' + (ev.warn ? ' warning' : '') + '">' + esc(ev.status) + '</div></div>';
     if (isAdmin()) {
       html += '<button class="event-manage-btn manage-btn" onclick="openEventDetail(' + i + ')">Manage</button>';
@@ -2853,7 +2888,7 @@ function renderEvents() {
     html += '</div>';
   }
   if (events.length === 0) {
-    html = '<p style="font-size:13px;color:var(--text-muted);padding:8px 0;">No upcoming events.</p>';
+    html = '<div style="padding:32px 16px;text-align:center;color:var(--text-muted);font-size:15px;">No upcoming events. Tap + to create one.</div>';
   }
   el.innerHTML = html;
 }
@@ -3120,6 +3155,28 @@ function sendSponsorAsk() {
   btn.textContent = 'Message sent';
   btn.classList.add('sent');
   showToast('Sponsor request sent to David & Sarah Cohen');
+}
+
+function openNotifyMember(name, amount) {
+  document.getElementById('notifyMemberSub').textContent = 'Remind ' + name + ' about their outstanding ' + amount;
+  document.getElementById('notifyMessage').value = 'Hi ' + name.split(' ')[0] + ',\n\nFriendly reminder: your ' + amount + ' is outstanding. You can pay online or at any time in person.\n\nThank you!';
+  document.getElementById('notifyEmail').value = '';
+  document.getElementById('notifyPhone').value = '';
+  var btns = document.querySelectorAll('#notifyMemberModal .ded-occasion');
+  for (var i = 0; i < btns.length; i++) btns[i].classList.remove('selected');
+  btns[0].classList.add('selected');
+  openModal('notifyMemberModal');
+}
+
+function selectNotifyMethod(el) {
+  var btns = document.querySelectorAll('#notifyMemberModal .ded-occasion');
+  for (var i = 0; i < btns.length; i++) btns[i].classList.remove('selected');
+  el.classList.add('selected');
+}
+
+function sendNotification() {
+  closeModal('notifyMemberModal');
+  showToast('Notification sent!');
 }
 
 // Send reminder
@@ -3440,6 +3497,9 @@ function showToast(msg) {
 }
 
 /* ── INIT ─────────────────────────────────────────── */
+/* show shul-only bottom nav tabs on initial load */
+var shulInit = document.querySelectorAll('.bnav-shul');
+for (var si = 0; si < shulInit.length; si++) shulInit[si].style.display = '';
 applyRole();
 renderDiscussions();
 renderAliyah();
