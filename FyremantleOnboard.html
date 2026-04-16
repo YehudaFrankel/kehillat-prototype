@@ -617,178 +617,61 @@ input::placeholder, textarea::placeholder {
 <body>
 
 <div class="wizard-container">
-  <!-- Step tabs — 3 real steps -->
-  <div class="step-tabs" id="stepTabs">
-    <div class="step-tab">
-      <span class="step-tab-label active" data-step="0">Set up</span>
-    </div>
-    <span class="step-tab-line" data-line="0"></span>
-    <div class="step-tab">
-      <span class="step-tab-label future" data-step="1">First event</span>
-    </div>
-    <span class="step-tab-line" data-line="1"></span>
-    <div class="step-tab">
-      <span class="step-tab-label future" data-step="2">Go live</span>
-    </div>
-  </div>
+  <div class="wizard-card" style="padding:28px 24px;">
 
-  <div class="wizard-card">
-    <div class="steps-viewport">
-      <div class="steps-track" id="stepsTrack">
+    <h2 style="font-size:22px;font-weight:600;text-align:center;margin-bottom:4px;">Create your group</h2>
+    <p style="font-size:14px;color:var(--text-muted);text-align:center;margin-bottom:24px;">Takes about 60 seconds</p>
 
-        <!-- ============ Step 1: Your Group + Invite ============ -->
-        <div class="step-panel active-panel" id="step0">
-          <h2>What kind of group is this?</h2>
-          <p class="subtitle">This shapes the language and features we suggest -- you can always change it later.</p>
+    <!-- Group name -->
+    <input type="text" id="groupName" placeholder="Group name" style="width:100%;font-size:16px;padding:14px;border:1.5px solid var(--border);border-radius:24px;font-family:inherit;outline:none;margin-bottom:16px;box-sizing:border-box;text-align:center;" onfocus="this.style.borderColor='#25D366'" onblur="this.style.borderColor='var(--border)'" />
 
-          <div class="type-grid" id="typeGrid">
-            <div class="type-card" data-type="Shul / minyan">
-              <div class="type-circle purple"></div>
-              <span class="type-label">Shul / minyan</span>
-            </div>
-            <div class="type-card" data-type="Learning group">
-              <div class="type-circle teal"></div>
-              <span class="type-label">Learning group</span>
-            </div>
-            <div class="type-card" data-type="Sports team">
-              <div class="type-circle blue"></div>
-              <span class="type-label">Sports team</span>
-            </div>
-            <div class="type-card" data-type="Chavurah">
-              <div class="type-circle pink"></div>
-              <span class="type-label">Chavurah</span>
-            </div>
-            <div class="type-card" data-type="Professional">
-              <div class="type-circle ltblue"></div>
-              <span class="type-label">Professional</span>
-            </div>
-            <div class="type-card" data-type="Other">
-              <div class="type-circle mint"></div>
-              <span class="type-label">Other</span>
-            </div>
-          </div>
-          <div class="error-msg" id="errGroupType"></div>
-
-          <div class="field-row">
-            <div class="field-group">
-              <label for="groupName">Group name</label>
-              <input type="text" id="groupName" placeholder="Fyremantle">
-              <div class="error-msg" id="errGroupName"></div>
-            </div>
-            <div class="field-group">
-              <label for="annualDues">Annual dues <span class="optional">(optional)</span></label>
-              <div class="input-prefix">
-                <span class="prefix">$</span>
-                <input type="number" id="annualDues" placeholder="360">
-              </div>
-            </div>
-          </div>
-
-          <div style="margin-top:28px; padding-top:24px; border-top:1px solid var(--border-light);">
-            <h2 style="font-size:1.15rem;">Now invite your people</h2>
-            <p class="subtitle">Share a link or type their info. They'll get a personal invite from you.</p>
-
-            <button class="btn btn-outline" onclick="copyOnboardInviteLink()" style="width:100%; margin-bottom:16px; display:flex; align-items:center; justify-content:center; gap:8px;">
-              <span style="font-size:16px;">&#128279;</span> Copy invite link for WhatsApp
-            </button>
-
-            <p style="font-size:12px; color:var(--text-muted); text-align:center; margin-bottom:14px;">or add individually</p>
-
-            <div class="invite-rows" id="inviteRows">
-              <div class="invite-row">
-                <input type="text" placeholder="Email or phone number" oninput="updateInviteCount()">
-              </div>
-            </div>
-
-            <button class="add-another-btn" onclick="addInviteRow()">+ Add another</button>
-            <p class="invite-callout" id="inviteCount" style="min-height:18px;"></p>
-          </div>
-
-          <button class="btn btn-primary" onclick="goToStep(1)" style="margin-top:20px; width:100%;">Continue &rarr;</button>
-        </div>
-
-        <!-- ============ Step 2: First Event ============ -->
-        <div class="step-panel" id="step1">
-          <h2>Create your first event</h2>
-          <p class="subtitle" id="eventSubtitle">Give members something to look forward to</p>
-
-          <div class="field-group">
-            <label for="eventName">Event name</label>
-            <input type="text" id="eventName" placeholder="Shabbat Dinner">
-          </div>
-
-          <div class="field-row">
-            <div class="field-group">
-              <label for="eventDate">Date</label>
-              <input type="date" id="eventDate">
-            </div>
-            <div class="field-group">
-              <label for="eventTime">Time</label>
-              <input type="time" id="eventTime">
-            </div>
-          </div>
-
-          <div class="field-group">
-            <label for="eventLocation">Location</label>
-            <input type="text" id="eventLocation" placeholder="123 Main St.">
-          </div>
-
-          <div class="toggle-row">
-            <span id="sponsorLabel">Needs a sponsor?</span>
-            <label class="toggle">
-              <input type="checkbox" id="needsSponsor">
-              <span class="slider"></span>
-            </label>
-          </div>
-
-          <div class="btn-row" style="margin-top:20px">
-            <button class="btn btn-back" onclick="goToStep(0)">&larr; Back</button>
-            <button class="btn btn-primary" onclick="goToStep(2)">Continue</button>
-          </div>
-          <a class="skip-link" onclick="goToStep(2)">Skip -- I'll add events later</a>
-        </div>
-
-        <!-- ============ Step 3: Go Live ============ -->
-        <div class="step-panel" id="step2">
-          <div class="success-content">
-            <div class="checkmark-circle" id="checkAnim">
-              <svg viewBox="0 0 80 80">
-                <circle class="circle-bg" cx="40" cy="40" r="36"/>
-                <circle class="circle-stroke" cx="40" cy="40" r="36"/>
-                <polyline class="check" points="24,42 35,53 56,30"/>
-              </svg>
-            </div>
-            <h2>Your community is ready!</h2>
-            <p class="success-subtitle">Everything is set up. You can always adjust settings later.</p>
-
-            <div class="summary-card" id="summaryCard">
-              <div class="summary-row">
-                <span class="summary-label">Community</span>
-                <span class="summary-value" id="sumName">--</span>
-              </div>
-              <div class="summary-row">
-                <span class="summary-label">Type</span>
-                <span class="summary-value" id="sumType">--</span>
-              </div>
-              <div class="summary-row">
-                <span class="summary-label">Members invited</span>
-                <span class="summary-value" id="sumMembers">None yet</span>
-              </div>
-              <div class="summary-row">
-                <span class="summary-label">First event</span>
-                <span class="summary-value" id="sumEvent">None yet</span>
-              </div>
-            </div>
-
-            <div class="btn-group-vertical">
-              <button class="btn btn-purple" onclick="goDashboard()">Go to Dashboard</button>
-              <button class="btn btn-outline" onclick="shareLink()">Share invite link</button>
-            </div>
-          </div>
-        </div>
-
+    <!-- Group type -->
+    <p style="font-size:14px;font-weight:500;color:var(--text);margin-bottom:10px;">What kind of group?</p>
+    <div class="type-grid" id="typeGrid">
+      <div class="type-card" data-type="Shul / minyan">
+        <div class="type-circle purple"></div>
+        <span class="type-label">Shul</span>
+      </div>
+      <div class="type-card" data-type="Sports team">
+        <div class="type-circle blue"></div>
+        <span class="type-label">Sports</span>
+      </div>
+      <div class="type-card" data-type="Learning group">
+        <div class="type-circle teal"></div>
+        <span class="type-label">Learning</span>
+      </div>
+      <div class="type-card" data-type="Chavurah">
+        <div class="type-circle pink"></div>
+        <span class="type-label">Chavurah</span>
+      </div>
+      <div class="type-card" data-type="Professional">
+        <div class="type-circle ltblue"></div>
+        <span class="type-label">Professional</span>
+      </div>
+      <div class="type-card" data-type="Other">
+        <div class="type-circle mint"></div>
+        <span class="type-label">Other</span>
       </div>
     </div>
+
+    <!-- Invite -->
+    <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border);">
+      <p style="font-size:14px;font-weight:500;color:var(--text);margin-bottom:10px;">Invite your people</p>
+      <button onclick="copyOnboardInviteLink()" style="width:100%;padding:12px;font-size:15px;font-weight:600;font-family:inherit;background:#25D366;color:#fff;border:none;border-radius:24px;cursor:pointer;margin-bottom:10px;">
+        Copy invite link
+      </button>
+      <p style="font-size:12px;color:var(--text-muted);text-align:center;margin-bottom:12px;">Share via WhatsApp, text, or email</p>
+      <div style="display:flex;gap:8px;">
+        <input type="text" placeholder="Email or phone" style="flex:1;font-size:15px;padding:12px;border:1.5px solid var(--border);border-radius:24px;font-family:inherit;outline:none;" onfocus="this.style.borderColor='#25D366'" onblur="this.style.borderColor='var(--border)'" />
+        <button onclick="showToast('Invite sent!')" style="padding:12px 20px;border-radius:24px;border:none;background:#075E54;color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;">Invite</button>
+      </div>
+    </div>
+
+    <!-- Create -->
+    <button onclick="goDashboard()" style="width:100%;padding:16px;font-size:17px;font-weight:600;font-family:inherit;background:#075E54;color:#fff;border:none;border-radius:24px;cursor:pointer;margin-top:24px;">
+      Create group
+    </button>
+
   </div>
 </div>
 
