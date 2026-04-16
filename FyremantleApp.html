@@ -311,7 +311,27 @@ body {
   color: var(--text-muted);
   margin-right: auto;
 }
-.org-acts { display: flex; gap: 8px; }
+/* ── Org "..." menu ───────────────────────────────── */
+.org-menu-wrap { position: relative; }
+.org-menu-btn {
+  font-size: 18px; color: var(--text-muted); background: none; border: none;
+  cursor: pointer; padding: 2px 6px; font-family: inherit; line-height: 1;
+}
+.org-menu-btn:hover { color: var(--text); }
+.org-menu {
+  display: none; position: absolute; right: 0; bottom: 100%;
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); box-shadow: 0 4px 12px rgba(0,0,0,.1);
+  padding: 4px 0; z-index: 50; min-width: 100px;
+}
+.org-menu.open { display: block; }
+.org-menu button {
+  display: block; width: 100%; text-align: left;
+  padding: 10px 16px; font-size: 14px; font-weight: 500;
+  color: var(--text); background: none; border: none;
+  cursor: pointer; font-family: inherit;
+}
+.org-menu button:hover { background: var(--bg); }
 .disc-btn {
   font-size: 12px;
   font-weight: 500;
@@ -2146,6 +2166,20 @@ function catLabel(cat) {
 }
 function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
+/* ── Org menu ─────────────────────────────────────── */
+function toggleOrgMenu(id) {
+  closeOrgMenus();
+  var menu = document.getElementById('orgMenu-' + id);
+  if (menu) menu.classList.add('open');
+}
+function closeOrgMenus() {
+  var menus = document.querySelectorAll('.org-menu');
+  for (var i = 0; i < menus.length; i++) menus[i].classList.remove('open');
+}
+document.addEventListener('click', function(e) {
+  if (!e.target.classList.contains('org-menu-btn')) closeOrgMenus();
+});
+
 /* ── Admin guard ──────────────────────────────────── */
 function isAdmin() { return currentRole === 'organizer'; }
 
@@ -2249,6 +2283,9 @@ function applyRole() {
   if (nlBody) nlBody.setAttribute('contenteditable', isOrg);
   var nlActions = document.querySelector('.nl-actions');
   if (nlActions) nlActions.style.display = isOrg ? '' : 'none';
+
+  /* re-render feed to update Pin/Remove visibility */
+  if (document.getElementById('discussionsList')) renderDiscussions();
 }
 
 function switchRole() {
@@ -2301,11 +2338,13 @@ function renderDiscussions() {
     html += '<div class="discussion-footer">';
     html += '<span class="discussion-replies">' + (d.replies.length > 0 ? d.replies.length + ' replies' : '') + '</span>';
     html += '<button class="disc-btn reply-btn" onclick="toggleReply(' + d.id + ')">Reply</button>';
-    if (currentRole === 'organizer') {
-      html += '<div class="org-acts">';
-      html += '<button class="disc-btn pin-btn' + (d.pinned ? ' pin-active' : '') + '" onclick="togglePin(' + d.id + ')">' + (d.pinned ? 'Unpin' : 'Pin') + '</button>';
-      html += '<button class="disc-btn remove-btn" onclick="removeDiscussion(' + d.id + ')">Remove</button>';
-      html += '</div>';
+    if (isAdmin()) {
+      html += '<div class="org-menu-wrap" style="position:relative;">';
+      html += '<button class="org-menu-btn" onclick="toggleOrgMenu(' + d.id + ')">&#8943;</button>';
+      html += '<div class="org-menu" id="orgMenu-' + d.id + '">';
+      html += '<button onclick="togglePin(' + d.id + ');closeOrgMenus()">' + (d.pinned ? 'Unpin' : 'Pin') + '</button>';
+      html += '<button onclick="removeDiscussion(' + d.id + ');closeOrgMenus()">Remove</button>';
+      html += '</div></div>';
     }
     html += '</div>';
 
