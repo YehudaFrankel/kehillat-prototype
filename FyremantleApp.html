@@ -671,29 +671,39 @@ body {
   cursor: default;
 }
 
-/* Coming up — date circle layout */
+/* Event cards */
 .event-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 7px 0;
-  border-bottom: 1px solid var(--border-light);
+  gap: 14px;
+  padding: 14px 16px;
+  margin: 0 8px 8px;
+  background: var(--white);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 1px 3px rgba(0,0,0,.06);
 }
-.event-item:last-child { border-bottom: none; padding-bottom: 0; }
-.event-date-circle { text-align: center; min-width: 28px; }
-.event-date-day { font-size: 15px; font-weight: 500; color: var(--text); line-height: 1; }
-.event-date-mo { font-size: 9px; color: var(--text-muted); text-transform: uppercase; }
+.event-date-circle {
+  text-align: center; min-width: 52px;
+  background: var(--purple-light); border-radius: var(--radius-sm);
+  padding: 8px 4px;
+}
+.event-date-day { font-size: 22px; font-weight: 700; color: var(--purple); line-height: 1; }
+.event-date-mo { font-size: 10px; font-weight: 700; color: var(--purple); text-transform: uppercase; letter-spacing: .5px; margin-top: 2px; }
 .event-info { flex: 1; }
-.event-name { font-size: 12px; font-weight: 500; color: var(--text); }
+.event-name { font-size: 15px; font-weight: 600; color: var(--text); }
 .event-confirmed {
-  font-size: 10px; color: var(--text-muted); margin-top: 1px;
+  font-size: 13px; color: var(--text-muted); margin-top: 2px;
 }
 .event-confirmed.warning { color: var(--amber-dark); font-weight: 500; }
 .event-manage-btn {
-  font-size: 10px; padding: 2px 9px; border-radius: 20px;
-  border: none; background: #185FA5; color: #E6F1FB;
-  cursor: pointer; font-family: inherit;
+  font-size: 13px; padding: 8px 18px; border-radius: 20px;
+  border: none; cursor: pointer; font-family: inherit;
+  font-weight: 600; transition: all .15s;
 }
+.event-manage-btn.rsvp-btn { background: var(--green); color: #fff; }
+.event-manage-btn.rsvp-btn:hover { background: var(--green-dark); }
+.event-manage-btn.rsvp-going { background: var(--green-light); color: var(--green-dark); border: 1.5px solid var(--green); }
+.event-manage-btn.manage-btn { background: #185FA5; color: #E6F1FB; }
 
 /* ── Newsletter banner ────────────────────────────── */
 .newsletter-banner {
@@ -1264,13 +1274,11 @@ table.aliyah-table {
 
 <!-- ═══ EVENTS VIEW ═══ -->
 <div class="view" id="viewEvents">
-<div class="card">
-  <div class="card-header">
-    <span class="card-title" id="eventsCardTitle">Events</span>
-    <a class="card-link org-only" id="eventsAddLink" onclick="openNewEvent()">+ New event</a>
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px 8px;">
+    <span style="font-size:18px;font-weight:600;color:var(--text);" id="eventsCardTitle">Events</span>
+    <a class="card-link org-only" id="eventsAddLink" onclick="openNewEvent()" style="font-size:14px;">+ New event</a>
   </div>
   <div id="eventsList"></div>
-</div>
 </div>
 
 <!-- ═══ ALIYAH VIEW ═══ -->
@@ -2131,6 +2139,19 @@ function catLabel(cat) {
 }
 function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
+/* ── RSVP toggle ──────────────────────────────────── */
+function toggleEventRsvp(btn) {
+  if (btn.classList.contains('rsvp-going')) {
+    btn.classList.remove('rsvp-going');
+    btn.classList.add('rsvp-btn');
+    btn.textContent = 'RSVP';
+  } else {
+    btn.classList.remove('rsvp-btn');
+    btn.classList.add('rsvp-going');
+    btn.textContent = 'Going \u2714';
+  }
+}
+
 /* ── Org menu ─────────────────────────────────────── */
 function toggleOrgMenu(id) {
   closeOrgMenus();
@@ -2446,9 +2467,9 @@ function renderEvents() {
     html += '<div class="event-info"><div class="event-name">' + esc(ev.name) + '</div>';
     html += '<div class="event-confirmed' + (ev.warn ? ' warning' : '') + '">' + esc(ev.status) + '</div></div>';
     if (isAdmin()) {
-      html += '<button class="event-manage-btn" onclick="openEventDetail(' + i + ')">Manage</button>';
+      html += '<button class="event-manage-btn manage-btn" onclick="openEventDetail(' + i + ')">Manage</button>';
     } else {
-      html += '<button class="event-manage-btn" style="background:var(--green);color:#fff;" onclick="showToast(\'RSVP sent!\')">RSVP</button>';
+      html += '<button class="event-manage-btn rsvp-btn" onclick="toggleEventRsvp(this)">RSVP</button>';
     }
     html += '</div>';
   }
