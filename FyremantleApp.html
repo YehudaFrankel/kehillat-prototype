@@ -1267,7 +1267,7 @@ table.aliyah-table {
 <div class="card">
   <div class="card-header">
     <span class="card-title" id="eventsCardTitle">Events</span>
-    <a class="card-link" id="eventsAddLink" onclick="openNewEvent()">+ New event</a>
+    <a class="card-link org-only" id="eventsAddLink" onclick="openNewEvent()">+ New event</a>
   </div>
   <div id="eventsList"></div>
 </div>
@@ -2445,7 +2445,11 @@ function renderEvents() {
     html += '<div class="event-date-mo">' + esc(ev.date.split(' ')[0]) + '</div></div>';
     html += '<div class="event-info"><div class="event-name">' + esc(ev.name) + '</div>';
     html += '<div class="event-confirmed' + (ev.warn ? ' warning' : '') + '">' + esc(ev.status) + '</div></div>';
-    html += '<button class="event-manage-btn" onclick="openEventDetail(' + i + ')">Manage</button>';
+    if (isAdmin()) {
+      html += '<button class="event-manage-btn" onclick="openEventDetail(' + i + ')">Manage</button>';
+    } else {
+      html += '<button class="event-manage-btn" style="background:var(--green);color:#fff;" onclick="showToast(\'RSVP sent!\')">RSVP</button>';
+    }
     html += '</div>';
   }
   if (events.length === 0) {
