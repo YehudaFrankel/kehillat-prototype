@@ -2439,12 +2439,15 @@ function closeStatus() {
 /* ── Search ───────────────────────────────────────── */
 function toggleSearch() {
   var overlay = document.getElementById('searchOverlay');
+  var main = document.querySelector('.main');
   overlay.classList.toggle('open');
   if (overlay.classList.contains('open')) {
     document.getElementById('searchInput').focus();
+    if (main) main.style.paddingTop = '40px';
   } else {
     document.getElementById('searchInput').value = '';
     searchPosts('');
+    if (main) main.style.paddingTop = '';
   }
 }
 
