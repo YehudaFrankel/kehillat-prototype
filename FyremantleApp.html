@@ -73,16 +73,20 @@ body {
   background: var(--white);
   min-height: 100vh;
   box-shadow: 0 0 20px rgba(0,0,0,.06);
+  padding-top: 70px;
 }
 
 /* ── Topbar ───────────────────────────────────────── */
 .topbar {
+  position: fixed; top: 0; left: 0; right: 0;
+  max-width: 600px; margin: 0 auto;
   padding: 16px 20px 14px;
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: space-between;
   background: var(--white);
+  z-index: 101;
 }
 .topbar .gn { font-size: 20px; font-weight: 600; color: var(--text); }
 .topbar .gs {
