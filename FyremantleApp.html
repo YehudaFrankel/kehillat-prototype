@@ -484,6 +484,25 @@ body {
   padding: 8px 20px; border-radius: 20px; cursor: pointer; font-family: inherit;
 }
 
+/* ── Quick actions (above compose) ────────────────── */
+.quick-actions {
+  position: fixed; bottom: 120px; left: 0; right: 0;
+  max-width: 600px; margin: 0 auto;
+  display: none; padding: 8px 14px;
+  background: var(--white); border-top: 1px solid var(--border);
+  gap: 8px; z-index: 99;
+}
+.quick-actions.open { display: flex; }
+.quick-action-btn {
+  flex: 1; padding: 12px 8px; border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border); background: var(--white);
+  font-size: 13px; font-weight: 500; color: var(--text);
+  cursor: pointer; font-family: inherit; text-align: center;
+  transition: all .15s;
+}
+.quick-action-btn:hover { border-color: var(--purple); color: var(--purple); }
+.quick-action-btn .qa-icon { font-size: 18px; display: block; margin-bottom: 4px; }
+
 /* ── Compose bar ─────────────────────────────────── */
 .compose-bar {
   position: fixed; bottom: 56px; left: 0; right: 0;
@@ -1267,7 +1286,7 @@ table.aliyah-table {
 
 <!-- Subtle dedication link (Carol's safety net) -->
 <div style="text-align:center;padding:16px 0 8px;">
-  <a onclick="openModal('dedModal')" style="font-size:14px;color:var(--text-muted);cursor:pointer;text-decoration:none;">Want to honor someone? &#10084;</a>
+  <a onclick="openModal('dedModal')" style="font-size:14px;color:var(--text-muted);cursor:pointer;text-decoration:none;">Want to sponsor something? &#10084;</a>
 </div>
 
 </div>
@@ -1554,9 +1573,16 @@ KeepAliveNow</textarea>
 
 </div><!-- /app-shell -->
 
+<!-- ── Quick actions (organizer only) ──────────────── -->
+<div class="quick-actions" id="quickActions">
+  <button class="quick-action-btn" onclick="closeQuickActions();openModal('postModal')"><span class="qa-icon">&#9998;</span>Post</button>
+  <button class="quick-action-btn" onclick="closeQuickActions();openModal('dedModal')"><span class="qa-icon">&#10084;</span>Sponsorship</button>
+  <button class="quick-action-btn org-only" onclick="closeQuickActions();switchTab('aliyah')"><span class="qa-icon">&#9733;</span>Aliyah</button>
+</div>
+
 <!-- ── Compose bar (fixed) ─────────────────────────── -->
 <div class="compose-bar">
-  <button onclick="openModal('dedModal')" style="font-size:20px;background:none;border:none;cursor:pointer;padding:4px;">&#10084;</button>
+  <button onclick="toggleQuickActions()" style="font-size:22px;background:none;border:none;cursor:pointer;padding:4px;color:var(--purple);font-weight:700;">+</button>
   <input class="compose-input" id="composeInput" type="text" placeholder="What's on your mind?" onclick="openModal('postModal')" readonly />
   <button class="compose-btn" onclick="openModal('postModal')">Post</button>
 </div>
@@ -1611,8 +1637,8 @@ KeepAliveNow</textarea>
   <div class="modal" style="max-width:480px;">
     <div class="ded-modal-inner">
       <div class="ded-modal-heart">&#10084;</div>
-      <div class="ded-modal-title">Honor Someone Special</div>
-      <div class="ded-modal-sub">Dedicate a moment to someone who matters</div>
+      <div class="ded-modal-title">Make a Sponsorship</div>
+      <div class="ded-modal-sub">Sponsor something meaningful for your community</div>
       <div class="ded-modal-label">Who are you thinking of?</div>
       <input class="ded-modal-input" id="dedHonorWho" type="text" placeholder="Their name" />
       <div class="ded-modal-label">What's the occasion?</div>
@@ -1625,8 +1651,8 @@ KeepAliveNow</textarea>
       </div>
       <div class="ded-modal-label">Your message</div>
       <textarea class="ded-modal-textarea" id="dedMessage" placeholder="Write from the heart..."></textarea>
-      <button class="ded-modal-send" onclick="submitDedication()">Send with love &#10084;</button>
-      <button class="ded-modal-cancel" onclick="closeModal('dedModal')">Maybe later</button>
+      <button class="ded-modal-send" onclick="submitDedication()">Submit sponsorship</button>
+      <button class="ded-modal-cancel" onclick="closeModal('dedModal')">Cancel</button>
     </div>
   </div>
 </div>
@@ -2143,6 +2169,16 @@ function catLabel(cat) {
 }
 function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
+/* ── Quick actions toggle ─────────────────────────── */
+function toggleQuickActions() {
+  var qa = document.getElementById('quickActions');
+  qa.classList.toggle('open');
+}
+function closeQuickActions() {
+  var qa = document.getElementById('quickActions');
+  qa.classList.remove('open');
+}
+
 /* ── RSVP toggle ──────────────────────────────────── */
 function toggleEventRsvp(btn) {
   if (btn.classList.contains('rsvp-going')) {
@@ -2364,7 +2400,7 @@ function renderDiscussions() {
       html += '<div class="ded-feed-top">';
       html += '<div class="ded-feed-avatar" style="background:' + ded.color + '">' + esc(ded.initials) + '</div>';
       html += '<div>';
-      html += '<div class="ded-feed-label">&#10084; Dedication</div>';
+      html += '<div class="ded-feed-label">&#10084; Sponsorship</div>';
       html += '<div class="ded-feed-name">' + esc(ded.member) + '</div>';
       html += '<div class="ded-feed-time">' + esc(ded.date) + '</div>';
       html += '</div></div>';
