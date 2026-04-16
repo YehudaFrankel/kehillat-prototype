@@ -2706,20 +2706,20 @@ function renderDiscussions() {
     /* inject dedication card after 1st discussion (Carol's moment) */
     if (i === 0 && g.dedications && g.dedications.length > 0) {
       var ded = g.dedications[0];
-      html += '<div class="ded-feed-card">';
-      html += '<div class="ded-feed-top">';
-      html += '<div class="ded-feed-avatar" style="background:' + ded.color + '">' + esc(ded.initials) + '</div>';
+      html += '<div class="discussion">';
+      html += '<div class="discussion-top">';
+      html += '<div class="avatar" style="background:' + ded.color + '">' + esc(ded.initials) + '</div>';
       html += '<div class="discussion-meta">';
       html += '<div class="discussion-meta-row">';
-      html += '<span class="ded-feed-name">' + esc(ded.member) + '</span>';
-      html += '<span class="ded-feed-label">Honored</span>';
+      html += '<span class="discussion-author" style="color:' + ded.color + '">' + esc(ded.member) + '</span>';
+      html += '<span class="cat-badge" style="background:var(--green-light);color:var(--green-dark);">Honored</span>';
       html += '</div>';
-      html += '<div class="ded-feed-time">' + esc(ded.date) + '</div>';
+      html += '<div class="discussion-time">' + esc(ded.date) + '</div>';
       html += '</div></div>';
-      html += '<div class="ded-feed-body">' + esc(ded.text) + '</div>';
-      html += '<div class="ded-feed-footer">';
-      html += '<span class="ded-feed-responses">7 responses</span>';
-      html += '<button class="ded-feed-respond" onclick="openDedReply(\'' + esc(ded.member) + '\',\'' + esc(ded.text).replace(/'/g, "\\'") + '\')">Respond</button>';
+      html += '<div class="discussion-body">' + esc(ded.text) + '</div>';
+      html += '<div class="discussion-footer">';
+      html += '<span class="discussion-replies">7 responses</span>';
+      html += '<button class="disc-btn reply-btn" onclick="openDedReply(\'' + esc(ded.member) + '\',\'' + esc(ded.text).replace(/'/g, "\\'") + '\')">Respond</button>';
       html += '</div></div>';
     }
 
