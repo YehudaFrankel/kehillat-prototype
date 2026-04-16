@@ -1246,54 +1246,19 @@ table.aliyah-table {
 </div>
 
 
-<!-- ── Alert banner ──────────────────────────────────── -->
-<div class="alert-banner org-only-flex" id="alertBanner">
-  <div class="alert-banner-t" id="alertText">Shabbat dinner still needs a sponsor &mdash; can you help?</div>
-  <button class="alert-banner-b" onclick="openModal('askSponsorModal')">Reach out</button>
-</div>
-
-<!-- ── Pin banner ────────────────────────────────────── -->
-<div class="pin-banner" id="pinBanner">
-  <div class="pin-banner-dot"></div>
-  <div class="pin-banner-text">Annual campaign open through Jan 15</div>
-</div>
-
 <!-- ── Main content ────────────────────────────────── -->
 <div class="main">
 
 <!-- ═══ DISCUSSIONS VIEW ═══ -->
 <div class="view active" id="viewDiscussions">
 
-<!-- Filter pills -->
-<div class="filter-pills" id="filterPills" style="padding:0 8px 10px;">
-  <span class="pill active" data-filter="all">All</span>
-  <span class="pill" data-filter="torah">Torah</span>
-  <span class="pill" data-filter="current">Current events</span>
-  <span class="pill" data-filter="community">Community</span>
-  <span class="pill" data-filter="needs">Questions</span>
-</div>
-
-<!-- Welcome card (Jennifer's moment — new members see this) -->
-<div class="welcome-card" id="welcomeCard">
-  <div class="welcome-card-title">Welcome! You're in.</div>
-  <div class="welcome-card-text">You just joined a community that's been going strong. <b>84 members</b> are here. Scroll down &mdash; there's a lot of life here.</div>
-</div>
-
 <!-- Discussions list -->
 <div id="discussionsList"></div>
 
-<!-- Make a dedication (Carol's moment) -->
-<div class="ded-cta-card" onclick="openModal('dedModal')">
-  <span class="ded-cta-text">Honor someone special</span>
-  <button class="ded-cta-btn">Make a Dedication</button>
+<!-- Subtle dedication link (Carol's safety net) -->
+<div style="text-align:center;padding:16px 0 8px;">
+  <a onclick="openModal('dedModal')" style="font-size:14px;color:var(--text-muted);cursor:pointer;text-decoration:none;">Want to honor someone? &#10084;</a>
 </div>
-
-<!-- Feed footer — the weight of time -->
-<div style="text-align:center;padding:24px 16px 8px;font-size:13px;color:var(--text-muted);line-height:1.6;">
-  You've seen the recent highlights.<br>
-  This group has been going since 2022. &#10084;
-</div>
-
 
 </div>
 
@@ -1583,9 +1548,9 @@ KeepAliveNow</textarea>
 
 <!-- ── Compose bar (fixed) ─────────────────────────── -->
 <div class="compose-bar">
-  <div class="compose-avatar">DL</div>
+  <button onclick="openModal('dedModal')" style="font-size:20px;background:none;border:none;cursor:pointer;padding:4px;">&#10084;</button>
   <input class="compose-input" id="composeInput" type="text" placeholder="What's on your mind?" onclick="openModal('postModal')" readonly />
-  <button class="compose-btn">Post</button>
+  <button class="compose-btn" onclick="openModal('postModal')">Post</button>
 </div>
 
 <!-- ── Bottom nav (3 text tabs) ─────────────────────── -->
@@ -2607,10 +2572,6 @@ function switchTab(tab) {
 
   /* show/hide feed-only elements */
   var isFeed = (tab === 'discussions');
-  document.getElementById('alertBanner').style.display = (isFeed && currentRole === 'organizer') ? '' : 'none';
-  document.getElementById('pinBanner').style.display = isFeed ? '' : 'none';
-  var welcome = document.getElementById('welcomeCard');
-  if (welcome) welcome.style.display = isFeed ? '' : 'none';
   var compose = document.querySelector('.compose-bar');
   if (compose) compose.style.display = isFeed ? '' : 'none';
 
@@ -2654,17 +2615,6 @@ function switchTab(tab) {
     }
   }
 }
-
-// Filter pills
-document.getElementById('filterPills').addEventListener('click', function(e) {
-  if (e.target.classList.contains('pill')) {
-    var pills = this.querySelectorAll('.pill');
-    for (var i = 0; i < pills.length; i++) pills[i].classList.remove('active');
-    e.target.classList.add('active');
-    activeFilter = e.target.getAttribute('data-filter');
-    renderDiscussions();
-  }
-});
 
 // Pin/Unpin
 function togglePin(id) {
