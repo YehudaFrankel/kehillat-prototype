@@ -2229,28 +2229,29 @@ function sidebarNav(tab) {
 
 function switchRole() {
   currentRole = (currentRole === 'organizer') ? 'member' : 'organizer';
-  document.body.className = 'role-' + currentRole;
+  var isOrg = (currentRole === 'organizer');
+
+  /* brute force — toggle every org-only and mem-only element */
+  var orgEls = document.querySelectorAll('.org-only, .org-only-flex, .org-only-grid');
+  for (var i = 0; i < orgEls.length; i++) orgEls[i].style.display = isOrg ? '' : 'none';
+  var memEls = document.querySelectorAll('.mem-only, .mem-only-flex');
+  for (var i = 0; i < memEls.length; i++) memEls[i].style.display = isOrg ? 'none' : '';
 
   /* update toggle buttons */
   var btn = document.getElementById('roleToggle');
-  if (btn) btn.textContent = (currentRole === 'organizer') ? 'Switch to member' : 'Switch to organizer';
+  if (btn) btn.textContent = isOrg ? 'Switch to member' : 'Switch to organizer';
   var sbtn = document.getElementById('sidebarRoleToggle');
-  if (sbtn) sbtn.textContent = (currentRole === 'organizer') ? 'Switch to member' : 'Switch to organizer';
+  if (sbtn) sbtn.textContent = isOrg ? 'Switch to member' : 'Switch to organizer';
 
-  /* update subtitle with green pill */
+  /* update subtitle */
   var sub = document.getElementById('adminGroupSub');
-  if (sub) {
-    var g = adminGroups[currentAdminGroup];
-    sub.textContent = g.stats.v1 + ' members';
-  }
+  if (sub) sub.textContent = adminGroups[currentAdminGroup].stats.v1 + ' members';
 
   /* update compose placeholder */
   var compose = document.getElementById('composeInput');
-  if (compose) {
-    compose.placeholder = (currentRole === 'organizer') ? 'What\'s on your mind?' : 'Share something with the group...';
-  }
+  if (compose) compose.placeholder = isOrg ? 'What\'s on your mind?' : 'Share something with the group...';
 
-  /* force back to Feed tab — member shouldn't be on Manage/Aliyah */
+  /* force back to Feed tab */
   switchTab('discussions');
 }
 
