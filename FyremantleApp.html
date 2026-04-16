@@ -480,6 +480,32 @@ body {
   padding: 8px 20px; border-radius: 20px; cursor: pointer; font-family: inherit;
 }
 
+/* ── Post photo ──────────────────────────────────── */
+.post-photo {
+  width: 100%; border-radius: var(--radius-sm); margin: 8px 0;
+  max-height: 240px; object-fit: cover; display: block;
+}
+.post-photo-placeholder {
+  width: 100%; height: 180px; border-radius: var(--radius-sm);
+  margin: 8px 0; display: flex; align-items: center; justify-content: center;
+  font-size: 14px; color: var(--text-muted);
+}
+
+/* ── Search bar ──────────────────────────────────── */
+.search-bar {
+  display: none; padding: 8px 14px;
+  background: var(--white); border-bottom: 1px solid var(--border);
+  position: fixed; top: 70px; left: 0; right: 0;
+  max-width: 600px; margin: 0 auto; z-index: 100;
+}
+.search-bar.open { display: block; }
+.search-input {
+  width: 100%; font-size: 15px; padding: 10px 14px;
+  border: 1.5px solid var(--border); border-radius: 24px;
+  font-family: inherit; outline: none; background: var(--bg);
+}
+.search-input:focus { border-color: var(--purple); }
+
 /* ── Quick actions (above compose) ────────────────── */
 .quick-actions {
   position: fixed; bottom: 120px; left: 0; right: 0;
@@ -1267,7 +1293,15 @@ table.aliyah-table {
     <button class="wn org-only" data-tab-key="manage" onclick="switchTab('manage')">Members</button>
     <button class="wn mem-only" onclick="switchTab('discussions')">Me</button>
   </div>
-  <div class="av" id="adminAvatar" onclick="toggleSidebar()" style="cursor:pointer;">DL</div>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <button onclick="toggleSearch()" style="font-size:18px;background:none;border:none;cursor:pointer;color:var(--text-muted);padding:4px;">&#128269;</button>
+    <div class="av" id="adminAvatar" onclick="toggleSidebar()" style="cursor:pointer;">DL</div>
+  </div>
+</div>
+
+<!-- Search bar -->
+<div class="search-bar" id="searchBar">
+  <input class="search-input" id="searchInput" type="text" placeholder="Search posts..." oninput="searchPosts(this.value)" />
 </div>
 
 
@@ -1410,6 +1444,9 @@ table.aliyah-table {
     <textarea id="postBody" placeholder="Share a thought, question, or link..."></textarea>
     <label>Link (optional)</label>
     <input type="url" id="postLink" placeholder="https://...">
+    <div style="margin-top:12px;padding:12px;border:1.5px dashed var(--border);border-radius:var(--radius-sm);text-align:center;cursor:pointer;color:var(--text-muted);" onclick="showToast('Photo selected!')">
+      &#128247; Add a photo
+    </div>
     <div class="modal-actions">
       <button class="btn-primary" onclick="submitPost()">Post</button>
       <button class="btn-secondary" onclick="closeModal('postModal')">Cancel</button>
@@ -1428,7 +1465,10 @@ table.aliyah-table {
     <label>Description (optional)</label>
     <textarea id="eventDesc" placeholder="Details about the event..."></textarea>
     <div class="modal-actions">
-      <button class="btn-primary" onclick="submitEvent()">Create event</button>
+      <label style="display:flex;align-items:center;gap:8px;margin-top:10px;font-size:14px;color:var(--text);cursor:pointer;">
+        <input type="checkbox" checked style="width:18px;height:18px;accent-color:var(--purple);" /> Email all members about this event
+      </label>
+      <button class="btn-primary" onclick="submitEvent()" style="margin-top:14px;">Create event</button>
       <button class="btn-secondary" onclick="closeModal('newEventModal')">Cancel</button>
     </div>
   </div>
@@ -1523,6 +1563,7 @@ KeepAliveNow</textarea>
 <div class="compose-bar">
   <button onclick="toggleQuickActions()" style="font-size:22px;background:none;border:none;cursor:pointer;padding:4px;color:var(--purple);font-weight:700;">+</button>
   <input class="compose-input" id="composeInput" type="text" placeholder="What's on your mind?" onclick="openModal('postModal')" readonly />
+  <button onclick="showToast('Photo added!')" style="font-size:18px;background:none;border:none;cursor:pointer;padding:4px;color:var(--text-muted);">&#128247;</button>
   <button class="compose-btn" onclick="openModal('postModal')">Post</button>
 </div>
 
@@ -1697,9 +1738,9 @@ var adminGroups = {
       { id:4, pinned:false, author:'Avi Stern', initials:'AS', color:'#E5A84B', category:'community', time:'1 day ago', body:'Youth group needs volunteers for Chanukah party setup Dec 28, 3 PM.', link:null, replies:[{author:'Rachel G.',initials:'RG',color:'#6B5CE7',text:'Count me in!',time:'22 hours ago'}] },
       { id:5, pinned:false, author:'Noa Friedman', initials:'NF', color:'#E07B6B', category:'needs', time:'3 days ago', body:'We need someone to coordinate the kiddush schedule for January. Any volunteers?', link:null, replies:[{author:'Sarah L.',initials:'SL',color:'#4CAF7D',text:'I might be able to help.',time:'2 days ago'}] },
       { id:6, pinned:false, author:'Sarah Levy', initials:'SL', color:'#4CAF7D', category:'torah', time:'2 weeks ago', body:'The shiur on Hilchot Shabbat last Tuesday was incredible. 38 people showed up! Rabbi David really brought it to life.', link:null, replies:[{author:'Avi S.',initials:'AS',color:'#E5A84B',text:'Best one yet.',time:'2 weeks ago'}] },
-      { id:7, pinned:false, author:'Eli Rosen', initials:'ER', color:'#6B5CE7', category:'community', time:'3 weeks ago', body:'Welcome to the three new families who joined this month: the Goldbergs, Fischers, and Levis. Looking forward to seeing you at kiddush!', link:null, replies:[{author:'Miriam S.',initials:'MS',color:'#E07B6B',text:'Welcome!! So glad you are here.',time:'3 weeks ago'},{author:'David C.',initials:'DC',color:'#4CAF7D',text:'We should do a welcome dinner.',time:'3 weeks ago'}] },
+      { id:7, pinned:false, author:'Eli Rosen', initials:'ER', color:'#6B5CE7', category:'community', time:'3 weeks ago', body:'Welcome to the three new families who joined this month: the Goldbergs, Fischers, and Levis. Looking forward to seeing you at kiddush!', link:null, photo:'#E1F5EE', photoLabel:'Welcome dinner photo', replies:[{author:'Miriam S.',initials:'MS',color:'#E07B6B',text:'Welcome!! So glad you are here.',time:'3 weeks ago'},{author:'David C.',initials:'DC',color:'#4CAF7D',text:'We should do a welcome dinner.',time:'3 weeks ago'}] },
       { id:8, pinned:false, author:'Rachel Green', initials:'RG', color:'#E5A84B', category:'current', time:'1 month ago', body:'Anyone interested in carpooling to the regional Shabbaton next month? We have 3 spots in our car.', link:null, replies:[{author:'Noa F.',initials:'NF',color:'#E07B6B',text:'Yes please! Count us in.',time:'1 month ago'}] },
-      { id:9, pinned:false, author:'David Cohen', initials:'DC', color:'#4CAF7D', category:'community', time:'3 months ago', body:'Just want to say thank you to everyone who came to the food drive. Over 500 pounds collected for local families. This kehillah is special.', link:null, replies:[{author:'Rabbi G.',initials:'RG',color:'#6B5CE7',text:'Proud of this community.',time:'3 months ago'},{author:'Eli R.',initials:'ER',color:'#E5A84B',text:'Incredible turnout.',time:'3 months ago'}] }
+      { id:9, pinned:false, author:'David Cohen', initials:'DC', color:'#4CAF7D', category:'community', time:'3 months ago', body:'Just want to say thank you to everyone who came to the food drive. Over 500 pounds collected for local families. This kehillah is special.', link:null, photo:'#FAEEDA', photoLabel:'Food drive — 500 lbs collected!', replies:[{author:'Rabbi G.',initials:'RG',color:'#6B5CE7',text:'Proud of this community.',time:'3 months ago'},{author:'Eli R.',initials:'ER',color:'#E5A84B',text:'Incredible turnout.',time:'3 months ago'}] }
     ],
     aliyahData: [
       { member:'David Cohen', initials:'DC', color:'#6B5CE7', type:'Shishi', date:'Dec 14', dedication:'Refuah shleimah for Miriam bat Sarah', amount:'$180', status:'paid' },
@@ -2195,6 +2236,28 @@ function pickAliyahMember(name) {
   document.getElementById('aliyahMemberList').style.display = 'none';
 }
 
+/* ── Search ───────────────────────────────────────── */
+function toggleSearch() {
+  var bar = document.getElementById('searchBar');
+  bar.classList.toggle('open');
+  if (bar.classList.contains('open')) {
+    document.getElementById('searchInput').focus();
+  } else {
+    document.getElementById('searchInput').value = '';
+    searchPosts('');
+  }
+}
+
+function searchPosts(val) {
+  var cards = document.querySelectorAll('.discussion');
+  var lower = val.toLowerCase();
+  for (var i = 0; i < cards.length; i++) {
+    if (!val) { cards[i].style.display = ''; continue; }
+    var text = cards[i].textContent.toLowerCase();
+    cards[i].style.display = text.indexOf(lower) !== -1 ? '' : 'none';
+  }
+}
+
 /* ── Quick actions toggle ─────────────────────────── */
 function toggleQuickActions() {
   var qa = document.getElementById('quickActions');
@@ -2387,6 +2450,12 @@ function renderDiscussions() {
     html += '</div></div>';
 
     html += '<div class="discussion-body">' + esc(d.body) + '</div>';
+
+    if (d.photo) {
+      html += '<div class="post-photo-placeholder" style="background:' + d.photo + ';margin-left:50px;">';
+      html += '&#128247; ' + esc(d.photoLabel || 'Photo');
+      html += '</div>';
+    }
 
     if (d.link) {
       html += '<div class="discussion-link-preview">';
