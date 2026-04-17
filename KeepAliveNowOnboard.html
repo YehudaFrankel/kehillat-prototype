@@ -613,6 +613,7 @@ input::placeholder, textarea::placeholder {
   transform: translateX(-50%) translateY(0);
 }
 </style>
+<script src="js/sentry-init.js"></script>
 </head>
 <body>
 
@@ -680,6 +681,17 @@ input::placeholder, textarea::placeholder {
 <script>
 var currentStep = 0;
 var selectedType = '';
+var apiBase = window.location.origin + '/apps/webservice.jsp';
+var communityID = '';
+var inviteCode = '';
+var organizerEmail = '';
+
+// Read email from URL param (passed from signup page)
+var urlParams = new URLSearchParams(window.location.search);
+var encEmail = urlParams.get('email');
+if (encEmail) {
+  try { organizerEmail = atob(decodeURIComponent(encEmail)); } catch(e) { organizerEmail = encEmail; }
+}
 
 // Steps mapping: visual step index -> actual panel index
 // Step 0 = "Your group" + "Invite members" (combined)
@@ -910,12 +922,40 @@ function showToast(msg) {
 }
 
 function goDashboard() {
-  showToast('Welcome! Your community is live.');
-  setTimeout(function() { window.location.href = 'KeepAliveNowApp.html'; }, 1800);
+  var name = document.getElementById('groupName').value.trim();
+  if (!name || !selectedType) { showToast('Please fill in group name and type'); return; }
+  if (!organizerEmail) { showToast('Missing email - please sign up first'); return; }
+  var btn = document.querySelector('[onclick="goDashboard()"]');
+  btn.disabled = true;
+  btn.textContent = 'Creating...';
+  var params = 'func=appFYCreateCommunity&Email=' + encodeURIComponent(organizerEmail) + '&CommunityName=' + encodeURIComponent(name) + '&CommunityType=' + encodeURIComponent(selectedType) + '&OrganizationID=InfoGrasp';
+  fetch(apiBase + '?' + params)
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.rsp && data.rsp.stat === 'ok') {
+        communityID = data.CommunityID;
+        inviteCode = data.InviteCode;
+        showToast('Welcome! Your community is live.');
+        setTimeout(function() {
+          window.location.href = 'KeepAliveNowApp.html?CommunityID=' + communityID + '&MemberID=' + data.MemberID;
+        }, 1800);
+      } else {
+        btn.disabled = false;
+        btn.textContent = 'Create your group';
+        showToast(data.rsp && data.rsp.errormsg ? data.rsp.errormsg : 'Something went wrong');
+      }
+    })
+    .catch(function() { btn.disabled = false; btn.textContent = 'Create your group'; showToast('Connection error - please try again'); });
+}
+
+function getInviteUrl() {
+  var base = window.location.origin + '/mobile/KeepAliveNowSignup.html';
+  if (inviteCode) base += '?invite=' + inviteCode;
+  return base;
 }
 
 function copyOnboardInviteLink() {
-  var url = window.location.href.replace('KeepAliveNowOnboard.html', 'KeepAliveNowSignup.html');
+  var url = getInviteUrl();
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(url).then(function() {
       showToast('Invite link copied! Share it in WhatsApp or text.');
@@ -926,7 +966,7 @@ function copyOnboardInviteLink() {
 }
 
 function shareLink() {
-  var url = window.location.href.replace('KeepAliveNowOnboard.html', 'KeepAliveNowSignup.html');
+  var url = getInviteUrl();
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(url).then(function() {
       showToast('Invite link copied!');
